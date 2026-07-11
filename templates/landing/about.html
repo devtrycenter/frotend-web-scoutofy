@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="id">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+    <title>Tentang Kami - Scoutify</title>
+    
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/landing.css') }}">
+
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-container": "#132924",
+                        "secondary-container": "#ffca98",
+                        "on-secondary-container": "#7a532b",
+                        "primary": "#361F1A",
+                        "surface-container-low": "#faf2f0",
+                        "surface-variant": "#e9e1df",
+                        "secondary": "#7d562d",
+                        "primary-fixed": "#ffdad3",
+                        "surface-container-high": "#eee6e5",
+                        "on-secondary-fixed": "#2c1600",
+                        "inverse-surface": "#33302f",
+                        "tertiary": "#00140f",
+                        "surface-container-lowest": "#ffffff",
+                        "on-background": "#1e1b1a",
+                        "surface-container-highest": "#e9e1df",
+                        "on-surface-variant": "#504442",
+                        "on-primary-fixed": "#2b1611",
+                        "on-tertiary-container": "#7a918a",
+                        "on-secondary": "#ffffff",
+                        "inverse-on-surface": "#f7efed",
+                        "outline-variant": "#d4c3bf",
+                        "surface-container": "#f4ecea",
+                        "on-tertiary-fixed": "#091f1b",
+                        "on-error-container": "#93000a",
+                        "surface-bright": "#fff8f6",
+                        "on-primary-fixed-variant": "#5c403a",
+                        "surface-tint": "#755751",
+                        "surface": "#fff8f6",
+                        "on-secondary-fixed-variant": "#623f18",
+                        "error-container": "#ffdad6",
+                        "surface-dim": "#e0d8d7",
+                        "primary-fixed-dim": "#e5beb6",
+                        "primary-container": "#361f1a",
+                        "tertiary-fixed": "#cfe8e0",
+                        "secondary-fixed": "#ffdcbe",
+                        "on-tertiary-fixed-variant": "#354b45",
+                        "on-tertiary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "tertiary-fixed-dim": "#b3ccc4",
+                        "outline": "#827471",
+                        "inverse-primary": "#e5beb6",
+                        "error": "#ba1a1a",
+                        "on-surface": "#1e1b1a",
+                        "on-primary": "#ffffff",
+                        "background": "#fff8f6",
+                        "secondary-fixed-dim": "#f0bd8b",
+                        "on-primary-container": "#a7847d"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "2rem",
+                        "lg": "3rem",
+                        "xl": "5rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-margin-mobile": "16px",
+                        "container-margin-desktop": "40px",
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Space Grotesk"],
+                        "body-md": ["Space Grotesk"],
+                        "headline-lg-mobile": ["Space Grotesk"],
+                        "headline-lg": ["Space Grotesk"],
+                        "label-sm": ["Space Grotesk"],
+                        "label-lg": ["Space Grotesk"],
+                        "body-lg": ["Space Grotesk"]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-secondary-container dot-pattern">
+
+    {% include 'utils/navbar_landing.html' %}
+
+    <main>
+        <section class="relative pt-36 pb-20 md:pt-48 md:pb-32 overflow-hidden px-4 md:px-container-margin-desktop" id="about-hero">
+            <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+                <div class="absolute inset-0 parallax-layer" data-speed="0.15">
+                    <img class="w-full h-full object-cover opacity-20 md:opacity-30" src="{{ url_for('static', filename='img/background_AI_Detecktion_Smaphore.png') }}" alt="AI Detection Background"/>
+                    <div class="absolute inset-0 bg-gradient-to-b from-background/40 via-background/80 to-background"></div>
+                </div>
+                
+                <div class="absolute top-20 right-10 md:right-32 w-48 h-48 bg-secondary-container/40 blur-3xl rounded-full parallax-layer" data-speed="0.3"></div>
+                <div class="absolute bottom-10 left-10 md:left-32 w-64 h-64 bg-primary-fixed/40 blur-3xl rounded-full parallax-layer" data-speed="0.5"></div>
+                <div class="absolute top-1/2 left-1/4 w-32 h-32 bg-tertiary-fixed-dim/30 blur-2xl rounded-full parallax-layer" data-speed="-0.3"></div>
+            </div>
+
+            <div class="relative z-10 max-w-5xl mx-auto text-center reveal active">
+                <div class="inline-flex items-center gap-1.5 md:gap-2 bg-white text-primary px-4 py-2 md:px-8 md:py-3 rounded-full font-label-lg mb-6 md:mb-8 shadow-[0_6px_0_#e9e1df] border-2 border-surface-container-high hover:translate-y-1 transition-transform text-xs md:text-base">
+                    <span class="material-symbols-outlined text-base md:text-lg">local_library</span>
+                    <span>Kisah Kami</span>
+                </div>
+                
+                <h1 class="font-headline-lg text-4xl sm:text-5xl md:text-[72px] md:leading-[1.1] text-primary mb-6 md:mb-8 font-extrabold tracking-tight drop-shadow-sm">
+                    Mendigitalkan Semangat <br class="hidden sm:block"/> <span class="text-secondary">Tunas Kelapa</span>
+                </h1>
+                
+                <p class="font-body-lg text-base sm:text-lg md:text-2xl text-on-surface-variant max-w-3xl mx-auto font-medium leading-relaxed px-2">
+                    Scoutify lahir dari keinginan untuk menghubungkan tradisi kepramukaan yang kaya dengan teknologi masa kini. Kami percaya bahwa setiap petualangan bisa menjadi lebih seru, aman, dan edukatif dengan alat yang tepat.
+                </p>
+            </div>
+        </section>
+
+        <section class="py-20 md:py-32 bg-surface-container-low px-4 md:px-container-margin-desktop relative overflow-hidden" id="mission">
+            <div class="absolute top-0 left-0 w-full h-12 md:h-24 bg-background wavy-divider rotate-180"></div>
+            
+            <div class="max-w-7xl mx-auto relative z-10 mt-8 md:mt-12">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+                    <div class="reveal order-2 lg:order-1">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 relative">
+                            <div class="absolute inset-0 bg-secondary-fixed opacity-20 blur-3xl rounded-full parallax-layer" data-speed="0.15"></div>
+                            
+                            <div class="squishy-card p-6 md:p-8 rounded-[2rem] flex flex-col items-center text-center relative z-10">
+                                <div class="w-16 h-16 bg-secondary-container rounded-full flex items-center justify-center text-on-secondary-container mb-4 floating border-4 border-white shadow-lg">
+                                    <span class="material-symbols-outlined text-3xl">visibility</span>
+                                </div>
+                                <h3 class="font-headline-md text-xl md:text-2xl text-primary mb-3">Visi Kami</h3>
+                                <p class="text-on-surface-variant font-medium text-sm md:text-base">Menjadi platform rujukan utama bagi setiap anggota pramuka dalam mengembangkan keterampilan dan karakter unggul di era digital.</p>
+                            </div>
+                            <div class="squishy-card p-6 md:p-8 rounded-[2rem] flex flex-col items-center text-center mt-0 sm:mt-12 relative z-10" style="transition-delay: 0.1s">
+                                <div class="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center mb-4 floating border-4 border-white shadow-lg" style="animation-delay: 0.5s">
+                                    <span class="material-symbols-outlined text-3xl">rocket_launch</span>
+                                </div>
+                                <h3 class="font-headline-md text-xl md:text-2xl text-primary mb-3">Misi Kami</h3>
+                                <p class="text-on-surface-variant font-medium text-sm md:text-base">Menyediakan alat edukasi interaktif, teknologi AI terdepan, dan panduan praktis yang mudah diakses di mana saja.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="reveal text-center lg:text-left order-1 lg:order-2 relative">
+                        <span class="bg-primary text-on-primary px-6 md:px-8 py-2 md:py-3 rounded-full font-label-sm uppercase tracking-[0.2em] border-2 border-white shadow-xl text-[10px] md:text-xs">Tujuan Kami</span>
+                        <h2 class="font-headline-lg text-3xl sm:text-4xl md:text-5xl text-primary mt-6 mb-6 font-extrabold leading-tight">Membawa Pramuka <br/>ke Abad 21</h2>
+                        <div class="w-20 md:w-32 h-1.5 md:h-2 bg-secondary-container mx-auto lg:mx-0 rounded-full mb-6"></div>
+                        <p class="text-on-surface-variant text-base md:text-xl font-medium leading-relaxed mb-8">
+                            Kami menggabungkan nilai-nilai Dasa Darma dengan inovasi seperti Vision AI untuk membaca sandi Semaphore, interaktif kuis SKU, dan peta digital. Scoutify hadir agar belajar kepramukaan tidak lagi sekadar membaca buku, melainkan sebuah petualangan interaktif.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="absolute bottom-0 left-0 w-full h-12 md:h-24 bg-background wavy-divider"></div>
+        </section>
+
+        <section class="py-20 md:py-32 bg-surface px-4 md:px-container-margin-desktop relative overflow-hidden" id="team">
+            <div class="absolute top-40 right-10 w-64 h-64 bg-primary-fixed-dim/20 blur-[80px] rounded-full parallax-layer" data-speed="0.25"></div>
+            <div class="absolute bottom-20 left-10 w-80 h-80 bg-tertiary-fixed-dim/20 blur-[100px] rounded-full parallax-layer" data-speed="-0.15"></div>
+
+            <div class="max-w-7xl mx-auto relative z-10">
+                <div class="text-center mb-16 md:mb-24 reveal">
+                    <div class="inline-block px-4 py-1 rounded-full border-2 border-secondary-container text-secondary font-bold text-sm uppercase tracking-widest mb-4 bg-white/50">Tim Pengembang</div>
+                    <h2 class="font-headline-lg text-4xl sm:text-5xl md:text-6xl text-primary mb-4 font-extrabold leading-tight">Di Balik Layar Scoutify</h2>
+                    <p class="text-on-surface-variant max-w-2xl mx-auto text-base md:text-xl font-medium">Dikembangkan secara mandiri dan penuh dedikasi di bawah naungan <span class="text-primary font-bold">TryCenter</span>.</p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 max-w-4xl mx-auto gap-8 md:gap-16">
+                    
+                    <div class="squishy-card p-8 md:p-12 rounded-[2.5rem] md:rounded-[3rem] reveal text-center group bg-white/80 backdrop-blur-sm">
+                        <div class="w-32 h-32 md:w-40 md:h-40 mx-auto mb-6 rounded-full overflow-hidden border-[6px] md:border-[8px] border-surface-container-high shadow-xl ring-4 ring-secondary-container/50 group-hover:scale-110 transition-transform duration-500 relative bg-white">
+                            <img alt="Husain Mulyansyah" src="{{ url_for('static', filename='img/pasfoto-husainmulyansyah-bgputih.png') }}" class="w-full h-full object-cover relative z-10 hover:scale-110 transition-transform duration-500"/>
+                        </div>
+                        <h3 class="font-headline-md text-2xl md:text-3xl text-primary font-extrabold mb-1 group-hover:text-secondary transition-colors">Husain Mulyansyah</h3>
+                        <p class="text-xs md:text-sm text-secondary font-black uppercase tracking-[0.1em] mb-4">Frontend & Backend Developer</p>
+                        <div class="w-16 h-1.5 bg-surface-container-high mx-auto rounded-full mb-4 md:mb-6 group-hover:bg-secondary transition-colors"></div>
+                        <p class="text-on-surface-variant font-medium text-sm md:text-base px-2">Merancang sistem arsitektur data dan membangun antarmuka pengguna yang responsif untuk memastikan aplikasi berjalan mulus.</p>
+                    </div>
+
+                    <div class="squishy-card p-8 md:p-12 rounded-[2.5rem] md:rounded-[3rem] reveal text-center group bg-white/80 backdrop-blur-sm" style="transition-delay: 0.1s">
+                        <div class="w-32 h-32 md:w-40 md:h-40 mx-auto mb-6 rounded-full overflow-hidden border-[6px] md:border-[8px] border-surface-container-high shadow-xl ring-4 ring-primary-fixed/50 group-hover:scale-110 transition-transform duration-500 relative bg-white">
+                            <img alt="A Fahri Putra Pratama" src="{{ url_for('static', filename='img/pasfoto-pahripratama-bgputih.png') }}" class="w-full h-full object-cover relative z-10 hover:scale-110 transition-transform duration-500"/>
+                        </div>
+                        <h3 class="font-headline-md text-2xl md:text-3xl text-primary font-extrabold mb-1 group-hover:text-secondary transition-colors">A Fahri Putra Pratama</h3>
+                        <p class="text-xs md:text-sm text-secondary font-black uppercase tracking-[0.1em] mb-4">Frontend & Backend Developer</p>
+                        <div class="w-16 h-1.5 bg-surface-container-high mx-auto rounded-full mb-4 md:mb-6 group-hover:bg-secondary transition-colors"></div>
+                        <p class="text-on-surface-variant font-medium text-sm md:text-base px-2">Fokus pada integrasi logika backend yang kompleks dan pengalaman interaksi pengguna di sisi frontend.</p>
+                    </div>
+
+                </div>
+                
+                <div class="text-center mt-12 reveal" style="transition-delay: 0.3s">
+                    <p class="text-on-surface-variant font-medium text-sm">Dikembangkan di <span class="font-bold text-primary">Tegal, Jawa Tengah</span> oleh TryCenter.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-20 md:py-32 px-4 md:px-container-margin-desktop mb-10" id="cta-about">
+            <div class="max-w-5xl mx-auto bg-secondary-container text-on-secondary-container rounded-[3rem] md:rounded-[5rem] p-8 sm:p-12 md:p-20 relative overflow-hidden shadow-[0_30px_60px_rgba(30,10,7,0.1)] border-b-[12px] md:border-b-[24px] border-primary/20 text-center">
+                <div class="relative z-10 reveal">
+                    <span class="material-symbols-outlined text-6xl md:text-8xl mb-6 text-primary" style="animation: floating 3s ease-in-out infinite;">explore</span>
+                    <h2 class="font-headline-lg text-4xl sm:text-5xl md:text-6xl text-primary mb-6 font-extrabold tracking-tight drop-shadow-sm">Mari Bergabung Dalam Perjalanan Kami</h2>
+                    <p class="font-body-lg text-lg md:text-2xl text-primary/80 mb-10 font-medium max-w-2xl mx-auto">Kami selalu terbuka untuk masukan, kolaborasi, dan cerita petualangan seru dari para pengguna Scoutify.</p>
+                    
+                    <a href="{{ url_for('landing') }}#features" class="inline-flex items-center justify-center gap-3 bg-primary text-on-primary px-8 py-5 md:px-12 md:py-6 rounded-full font-headline-md text-lg md:text-xl hover:scale-105 transition-all shadow-[0_15px_30px_rgba(30,10,7,0.3)] border-b-[6px] md:border-b-8 border-black active:border-b-4 active:translate-y-1">
+                        <span class="material-symbols-outlined">rocket_launch</span>
+                        Lihat Fitur Kami
+                    </a>
+                </div>
+                
+                <div class="absolute -top-10 -left-10 w-40 h-40 bg-white/30 rounded-full blur-2xl pointer-events-none parallax-layer" data-speed="0.2"></div>
+                <div class="absolute -bottom-10 -right-10 w-64 h-64 bg-primary/10 rounded-full blur-3xl pointer-events-none parallax-layer" data-speed="-0.2"></div>
+            </div>
+        </section>
+    </main>
+
+    {% include 'utils/footer.html' %}
+
+    <script>
+        // Header Scroll Effect dengan transisi yang lebih mulus
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('main-header');
+            if(header) {
+                if (window.scrollY > 50) {
+                    header.querySelector('nav').classList.add('shadow-[0_10px_30px_rgba(0,0,0,0.05)]', 'md:mt-3', 'py-2', 'md:py-4', 'bg-white/95');
+                    header.querySelector('nav').classList.remove('md:mt-6', 'py-3', 'md:py-5', 'bg-white/90');
+                } else {
+                    header.querySelector('nav').classList.remove('shadow-[0_10px_30px_rgba(0,0,0,0.05)]', 'md:mt-3', 'py-2', 'md:py-4', 'bg-white/95');
+                    header.querySelector('nav').classList.add('md:mt-6', 'py-3', 'md:py-5', 'bg-white/90');
+                }
+            }
+        });
+
+        // Parallax Scroll Effect yang Smooth
+        window.addEventListener('scroll', () => {
+            if(window.innerWidth > 768) {
+                const scrolled = window.scrollY;
+                const layers = document.querySelectorAll('.parallax-layer');
+                
+                requestAnimationFrame(() => {
+                    layers.forEach(layer => {
+                        const speed = layer.getAttribute('data-speed') || 0.1;
+                        const yPos = -(scrolled * speed); 
+                        layer.style.transform = `translateY(${yPos}px) translateZ(0)`;
+                    });
+                });
+            }
+        });
+
+        // Mobile Menu Toggle Logic
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = document.getElementById('menu-icon');
+        const menuLinks = document.querySelectorAll('.menu-link-item');
+        let isMenuOpen = false;
+
+        if(mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', () => {
+                isMenuOpen = !isMenuOpen;
+                if (isMenuOpen) {
+                    mobileMenu.classList.remove('translate-y-[-100%]');
+                    mobileMenu.classList.add('translate-y-0', 'open');
+                    menuIcon.textContent = 'close';
+                    document.body.style.overflow = 'hidden'; 
+                } else {
+                    closeMenu();
+                }
+            });
+        }
+
+        function closeMenu() {
+            if(mobileMenu) {
+                mobileMenu.classList.remove('translate-y-0', 'open');
+                mobileMenu.classList.add('translate-y-[-100%]');
+                menuIcon.textContent = 'menu';
+                document.body.style.overflow = '';
+                isMenuOpen = false;
+            }
+        }
+
+        menuLinks.forEach(link => {
+            link.addEventListener('click', closeMenu);
+        });
+
+        // Intersection Observer for Reveal Animation
+        const revealCallback = (entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        };
+
+        const revealObserver = new IntersectionObserver(revealCallback, {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        });
+
+        document.querySelectorAll('.reveal').forEach(el => {
+            revealObserver.observe(el);
+        });
+    </script>
+</body>
+</html>

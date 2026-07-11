@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="id">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>Leaderboard - Scoutify</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+        darkMode: "class",
+        theme: {
+            extend: {
+                "colors": {
+                    "tertiary-container": "#132924",
+                    "secondary-container": "#ffca98",
+                    "on-secondary-container": "#7a532b",
+                    "primary": "#361F1A",
+                    "surface-container-low": "#faf2f0",
+                    "surface-variant": "#e9e1df",
+                    "secondary": "#7d562d",
+                    "primary-fixed": "#ffdad3",
+                    "surface-container-high": "#eee6e5",
+                    "on-secondary-fixed": "#2c1600",
+                    "inverse-surface": "#33302f",
+                    "tertiary": "#00140f",
+                    "surface-container-lowest": "#ffffff",
+                    "on-background": "#1e1b1a",
+                    "surface-container-highest": "#e9e1df",
+                    "on-surface-variant": "#504442",
+                    "on-primary-fixed": "#2b1611",
+                    "outline-variant": "#d4c3bf",
+                    "surface-container": "#f4ecea",
+                    "surface-bright": "#fff8f6",
+                    "surface-tint": "#755751",
+                    "surface": "#fff8f6",
+                    "background": "#fff8f6",
+                    "success": "#22c55e",
+                    "warning": "#f59e0b",
+                    "error": "#ba1a1a",
+                },
+                "borderRadius": {
+                    "DEFAULT": "2rem",
+                    "lg": "3rem",
+                    "xl": "5rem",
+                    "full": "9999px"
+                },
+                "fontFamily": {
+                    "headline-md": ["Space Grotesk"],
+                    "body-md": ["Space Grotesk"],
+                    "headline-lg": ["Space Grotesk"],
+                    "label-lg": ["Space Grotesk"],
+                    "body-lg": ["Space Grotesk"]
+                }
+            },
+        },
+    }
+</script>
+<style>
+    body {
+        background-color: #faf2f0;
+    }
+    
+    .dot-pattern {
+        background-image: radial-gradient(#d4c3bf 1.5px, transparent 1.5px);
+        background-size: 24px 24px;
+    }
+
+    .squishy-btn {
+        transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.5);
+    }
+    .squishy-btn:active {
+        transform: translateY(4px) scale(0.95);
+        border-bottom-width: 2px !important;
+        margin-top: 2px;
+    }
+
+    .card-solid {
+        background: #ffffff;
+        border: 4px solid #eee6e5;
+        border-bottom-width: 8px;
+        border-radius: 2rem;
+        transition: all 0.3s ease;
+    }
+    .card-solid:hover {
+        border-color: #ffca98;
+        transform: translateY(-4px);
+        border-bottom-width: 6px;
+        margin-top: 2px;
+    }
+
+    #sidebar {
+        transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #faf2f0; }
+    ::-webkit-scrollbar-thumb { background: #d4c3bf; border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: #827471; }
+</style>
+</head>
+<body class="text-on-background font-body-md dot-pattern h-screen flex overflow-hidden selection:bg-secondary-container">
+
+<aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-72 bg-white border-r-[6px] border-surface-container-high flex flex-col transform -translate-x-full lg:translate-x-0 lg:relative lg:flex-shrink-0 shadow-[20px_0_50px_rgba(0,0,0,0.05)] lg:shadow-none h-full">
+    
+    <div class="p-6 md:p-8 flex items-center justify-between">
+        <a href="{{ url_for('landing') }}" class="flex items-center gap-3 group">
+            <div class="w-12 h-12 bg-secondary rounded-full flex items-center justify-center text-white group-hover:rotate-12 transition-transform shadow-md">
+                <span class="material-symbols-outlined text-3xl">eco</span>
+            </div>
+            <span class="font-headline-lg text-2xl font-extrabold text-primary tracking-tight">Scoutify</span>
+        </a>
+        <button id="close-sidebar" class="lg:hidden text-on-surface-variant hover:text-primary">
+            <span class="material-symbols-outlined text-3xl">close</span>
+        </button>
+    </div>
+
+    <nav class="flex-1 px-4 md:px-6 space-y-3 overflow-y-auto">
+        <a href="{{ url_for('dashboard') }}" class="flex items-center gap-4 px-5 py-4 {% if request.endpoint == 'dashboard' %}bg-primary text-white shadow-[0_8px_0_#2b1611] border-2 border-primary{% else %}text-on-surface-variant hover:bg-surface-container hover:text-primary{% endif %} rounded-2xl font-bold transition-all squishy-btn group">
+            <span class="material-symbols-outlined {% if request.endpoint == 'dashboard' %}filled{% else %}group-hover:text-secondary{% endif %}">dashboard</span>
+            Dashboard
+        </a>
+        <a href="{{ url_for('progres_sku') }}" class="flex items-center gap-4 px-5 py-4 {% if request.endpoint == 'progres_sku' %}bg-primary text-white shadow-[0_8px_0_#2b1611] border-2 border-primary{% else %}text-on-surface-variant hover:bg-surface-container hover:text-primary{% endif %} rounded-2xl font-bold transition-all squishy-btn group">
+            <span class="material-symbols-outlined {% if request.endpoint == 'progres_sku' %}filled{% else %}group-hover:text-secondary{% endif %}">task_alt</span>
+            Progres SKU-ku
+        </a>
+        <a href="{{ url_for('materi') }}" class="flex items-center gap-4 px-5 py-4 {% if request.endpoint == 'materi' %}bg-primary text-white shadow-[0_8px_0_#2b1611] border-2 border-primary{% else %}text-on-surface-variant hover:bg-surface-container hover:text-primary{% endif %} rounded-2xl font-bold transition-all squishy-btn group">
+            <span class="material-symbols-outlined {% if request.endpoint == 'materi' %}filled{% else %}group-hover:text-secondary{% endif %}">menu_book</span>
+            Materi & Belajar
+        </a>
+        <a href="{{ url_for('ai_semaphore') }}" class="flex items-center gap-4 px-5 py-4 {% if request.endpoint == 'ai_semaphore' %}bg-primary text-white shadow-[0_8px_0_#2b1611] border-2 border-primary{% else %}text-on-surface-variant hover:bg-surface-container hover:text-primary{% endif %} rounded-2xl font-bold transition-all squishy-btn group">
+            <span class="material-symbols-outlined {% if request.endpoint == 'ai_semaphore' %}filled{% else %}group-hover:text-secondary{% endif %}">linked_camera</span>
+            AI Semaphore
+        </a>
+        <a href="{{ url_for('leaderboard') }}" class="flex items-center gap-4 px-5 py-4 {% if request.endpoint == 'leaderboard' %}bg-primary text-white shadow-[0_8px_0_#2b1611] border-2 border-primary{% else %}text-on-surface-variant hover:bg-surface-container hover:text-primary{% endif %} rounded-2xl font-bold transition-all squishy-btn group">
+            <span class="material-symbols-outlined {% if request.endpoint == 'leaderboard' %}filled{% else %}group-hover:text-secondary{% endif %}">emoji_events</span>
+            Leaderboard
+        </a>
+
+        <div class="h-1 bg-surface-container-high rounded-full my-4 mx-2"></div>
+
+        <a href="{{ url_for('landing') }}" class="flex items-center gap-4 px-5 py-4 text-on-surface-variant hover:bg-secondary-container hover:text-primary rounded-2xl font-bold transition-colors group">
+            <span class="material-symbols-outlined group-hover:text-primary transition-colors">public</span>
+            Halaman Depan
+        </a>
+    </nav>
+
+    <div class="p-6">
+        <a href="{{ url_for('logout') }}" class="flex items-center justify-center gap-3 w-full bg-surface-container-high text-primary px-5 py-4 rounded-2xl font-bold hover:bg-error hover:text-white transition-all shadow-sm border-b-4 border-outline-variant squishy-btn">
+            <span class="material-symbols-outlined">logout</span>
+            Keluar
+        </a>
+    </div>
+</aside>
+
+<div id="sidebar-overlay" class="fixed inset-0 bg-primary/40 backdrop-blur-sm z-40 hidden lg:hidden"></div>
+
+<div class="flex-1 flex flex-col h-full overflow-hidden">
+    
+    <header class="bg-white/80 backdrop-blur-xl border-b-[6px] border-surface-container-high px-6 py-4 flex items-center justify-between z-30 sticky top-0">
+        <div class="flex items-center gap-4">
+            <button id="open-sidebar" class="lg:hidden text-primary hover:text-secondary transition-colors p-2 bg-surface-container rounded-xl">
+                <span class="material-symbols-outlined text-2xl">menu_open</span>
+            </button>
+            <div>
+                <h1 class="font-headline-md text-xl md:text-2xl font-black text-primary">Leaderboard</h1>
+                <p class="text-on-surface-variant text-xs md:text-sm font-medium hidden sm:block">Lihat siapa pramuka terbaik saat ini.</p>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-4">
+            <button class="relative p-3 bg-surface-container-low border-2 border-surface-container-high rounded-full hover:bg-secondary-container transition-colors text-primary">
+                <span class="material-symbols-outlined">notifications</span>
+                {% if user and user.unread_notif %}
+                    <span class="absolute top-1 right-1 w-3 h-3 bg-error border-2 border-white rounded-full"></span>
+                {% endif %}
+            </button>
+            <div class="hidden sm:flex items-center gap-3 pl-4 border-l-4 border-surface-container-high cursor-pointer hover:opacity-80 transition-opacity">
+                <div class="text-right">
+                    <div class="font-black text-primary text-sm">{{ user.fullname | default(user.username) | default('Pramuka') }}</div>
+                    <div class="text-xs font-bold text-secondary uppercase tracking-widest">{{ user.tingkat | default('Penggalang Ramu') }}</div>
+                </div>
+                <div class="w-12 h-12 rounded-full overflow-hidden border-[3px] border-secondary-container">
+                    <img src="https://ui-avatars.com/api/?name={{ (user.fullname | default('Pramuka')) | urlencode }}&background=ffca98&color=361F1A&size=128" alt="Profile" class="w-full h-full object-cover">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
+        <div class="max-w-4xl mx-auto space-y-8">
+            
+            <div class="text-center mb-10">
+                <h2 class="font-headline-lg text-4xl font-black text-primary mb-2">Papan Peringkat</h2>
+                <p class="text-on-surface-variant font-medium">Berlomba menjadi Pramuka terbaik di seluruh Indonesia.</p>
+            </div>
+
+            <div class="flex items-end justify-center gap-2 sm:gap-6 mb-12 h-64">
+                
+                <div class="flex flex-col items-center w-24 sm:w-32 group">
+                    <div class="relative w-16 h-16 sm:w-20 sm:h-20 rounded-full border-4 border-surface-container-high bg-white shadow-lg z-10 -mb-4 group-hover:-translate-y-2 transition-transform">
+                        {% set r2_name = (leaderboard_data[1].fullname if leaderboard_data and leaderboard_data|length > 1 else 'Merliana') %}
+                        <img src="https://ui-avatars.com/api/?name={{ r2_name | urlencode }}&background=e9e1df&color=361F1A" class="w-full h-full rounded-full object-cover">
+                        <div class="absolute -bottom-2 -right-2 bg-surface-container-high text-primary w-8 h-8 rounded-full flex items-center justify-center font-black text-sm border-2 border-white shadow-sm">2</div>
+                    </div>
+                    <div class="w-full h-32 bg-gradient-to-t from-surface-container-high to-surface-variant rounded-t-2xl border-4 border-b-0 border-surface-container-high flex flex-col items-center pt-8 text-primary">
+                        <div class="font-black text-sm truncate w-full px-2 text-center" title="{{ r2_name }}">{{ r2_name }}</div>
+                        <div class="text-xs font-bold opacity-70">{{ leaderboard_data[1].points if leaderboard_data and leaderboard_data|length > 1 else '58' }} XP</div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col items-center w-28 sm:w-36 group">
+                    <span class="material-symbols-outlined text-warning text-4xl mb-2 animate-bounce">workspace_premium</span>
+                    <div class="relative w-20 h-20 sm:w-24 sm:h-24 rounded-full border-[6px] border-warning bg-white shadow-xl z-10 -mb-6 group-hover:-translate-y-2 transition-transform">
+                        {% set r1_name = (leaderboard_data[0].fullname if leaderboard_data and leaderboard_data|length > 0 else 'Mysens ID') %}
+                        <img src="https://ui-avatars.com/api/?name={{ r1_name | urlencode }}&background=ffca98&color=361F1A" class="w-full h-full rounded-full object-cover">
+                        <div class="absolute -bottom-3 -right-3 bg-warning text-white w-10 h-10 rounded-full flex items-center justify-center font-black text-lg border-4 border-white shadow-md">1</div>
+                    </div>
+                    <div class="w-full h-40 bg-gradient-to-t from-secondary-container to-[#ffdca8] rounded-t-2xl border-4 border-b-0 border-warning flex flex-col items-center pt-10 text-on-secondary-container">
+                        <div class="font-black text-base truncate w-full px-2 text-center" title="{{ r1_name }}">{{ r1_name }}</div>
+                        <div class="text-xs font-bold opacity-80">{{ leaderboard_data[0].points if leaderboard_data and leaderboard_data|length > 0 else '130' }} XP</div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col items-center w-24 sm:w-32 group">
+                    <div class="relative w-16 h-16 sm:w-20 sm:h-20 rounded-full border-4 border-surface-container-high bg-white shadow-lg z-10 -mb-4 group-hover:-translate-y-2 transition-transform">
+                        {% set r3_name = (leaderboard_data[2].fullname if leaderboard_data and leaderboard_data|length > 2 else 'Fahri') %}
+                        <img src="https://ui-avatars.com/api/?name={{ r3_name | urlencode }}&background=e9e1df&color=361F1A" class="w-full h-full rounded-full object-cover">
+                        <div class="absolute -bottom-2 -right-2 bg-surface-container-high text-primary w-8 h-8 rounded-full flex items-center justify-center font-black text-sm border-2 border-white shadow-sm">3</div>
+                    </div>
+                    <div class="w-full h-24 bg-gradient-to-t from-surface-container-high to-surface-variant rounded-t-2xl border-4 border-b-0 border-surface-container-high flex flex-col items-center pt-8 text-primary">
+                        <div class="font-black text-sm truncate w-full px-2 text-center" title="{{ r3_name }}">{{ r3_name }}</div>
+                        <div class="text-xs font-bold opacity-70">{{ leaderboard_data[2].points if leaderboard_data and leaderboard_data|length > 2 else '45' }} XP</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-solid p-4 sm:p-6 space-y-3">
+                {% if leaderboard_data and leaderboard_data|length > 3 %}
+                    {% for p in leaderboard_data[3:] %}
+                    <div class="flex items-center justify-between p-4 bg-surface-container rounded-2xl border-2 border-transparent hover:border-surface-container-high transition-colors">
+                        <div class="flex items-center gap-4">
+                            <div class="w-8 font-black text-on-surface-variant text-center text-lg">{{ loop.index + 3 }}</div>
+                            <img src="https://ui-avatars.com/api/?name={{ p.fullname | urlencode }}&background=fff&color=000" class="w-12 h-12 rounded-full border-2 border-white shadow-sm">
+                            <div>
+                                <div class="font-bold text-primary">{{ p.fullname }}</div>
+                                <div class="text-xs font-medium text-on-surface-variant">{{ p.province | default('-') }}</div>
+                            </div>
+                        </div>
+                        <div class="font-black text-secondary">{{ p.points }} XP</div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="flex items-center justify-between p-4 bg-surface-container rounded-2xl border-2 border-transparent hover:border-surface-container-high transition-colors">
+                        <div class="flex items-center gap-4">
+                            <div class="w-8 font-black text-on-surface-variant text-center text-lg">4</div>
+                            <img src="https://ui-avatars.com/api/?name=Andi&background=fff&color=000" class="w-12 h-12 rounded-full border-2 border-white shadow-sm">
+                            <div>
+                                <div class="font-bold text-primary">Andi Pratama</div>
+                                <div class="text-xs font-medium text-on-surface-variant">Jawa Barat</div>
+                            </div>
+                        </div>
+                        <div class="font-black text-secondary">30 XP</div>
+                    </div>
+
+                    <div class="flex items-center justify-between p-4 bg-surface-container rounded-2xl border-2 border-transparent hover:border-surface-container-high transition-colors">
+                        <div class="flex items-center gap-4">
+                            <div class="w-8 font-black text-on-surface-variant text-center text-lg">5</div>
+                            <img src="https://ui-avatars.com/api/?name=Budi&background=fff&color=000" class="w-12 h-12 rounded-full border-2 border-white shadow-sm">
+                            <div>
+                                <div class="font-bold text-primary">Budi Santoso</div>
+                                <div class="text-xs font-medium text-on-surface-variant">Jawa Timur</div>
+                            </div>
+                        </div>
+                        <div class="font-black text-secondary">25 XP</div>
+                    </div>
+                {% endif %}
+            </div>
+
+            <footer class="text-center text-on-surface-variant text-sm font-bold pt-8 pb-4 opacity-60">
+                &copy; 2024 Scoutify. Salam Pramuka! ⛺
+            </footer>
+        </div>
+    </main>
+</div>
+
+<script>
+    const sidebar = document.getElementById('sidebar');
+    const openBtn = document.getElementById('open-sidebar');
+    const closeBtn = document.getElementById('close-sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+
+    function openSidebar() {
+        sidebar.classList.remove('-translate-x-full');
+        overlay.classList.remove('hidden');
+    }
+
+    function closeSidebar() {
+        sidebar.classList.add('-translate-x-full');
+        overlay.classList.add('hidden');
+    }
+
+    openBtn.addEventListener('click', openSidebar);
+    closeBtn.addEventListener('click', closeSidebar);
+    overlay.addEventListener('click', closeSidebar);
+</script>
+</body>
+</html>

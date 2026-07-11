@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="id">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+    <title>Kebijakan Privasi - Scoutify</title>
+    
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/landing.css') }}">
+
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-container": "#132924",
+                        "secondary-container": "#ffca98",
+                        "on-secondary-container": "#7a532b",
+                        "primary": "#361F1A",
+                        "surface-container-low": "#faf2f0",
+                        "surface-variant": "#e9e1df",
+                        "secondary": "#7d562d",
+                        "primary-fixed": "#ffdad3",
+                        "surface-container-high": "#eee6e5",
+                        "on-secondary-fixed": "#2c1600",
+                        "inverse-surface": "#33302f",
+                        "tertiary": "#00140f",
+                        "surface-container-lowest": "#ffffff",
+                        "on-background": "#1e1b1a",
+                        "surface-container-highest": "#e9e1df",
+                        "on-surface-variant": "#504442",
+                        "on-primary-fixed": "#2b1611",
+                        "on-tertiary-container": "#7a918a",
+                        "on-secondary": "#ffffff",
+                        "inverse-on-surface": "#f7efed",
+                        "outline-variant": "#d4c3bf",
+                        "surface-container": "#f4ecea",
+                        "on-tertiary-fixed": "#091f1b",
+                        "on-error-container": "#93000a",
+                        "surface-bright": "#fff8f6",
+                        "on-primary-fixed-variant": "#5c403a",
+                        "surface-tint": "#755751",
+                        "surface": "#fff8f6",
+                        "on-secondary-fixed-variant": "#623f18",
+                        "error-container": "#ffdad6",
+                        "surface-dim": "#e0d8d7",
+                        "primary-fixed-dim": "#e5beb6",
+                        "primary-container": "#361f1a",
+                        "tertiary-fixed": "#cfe8e0",
+                        "secondary-fixed": "#ffdcbe",
+                        "on-tertiary-fixed-variant": "#354b45",
+                        "on-tertiary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "tertiary-fixed-dim": "#b3ccc4",
+                        "outline": "#827471",
+                        "inverse-primary": "#e5beb6",
+                        "error": "#ba1a1a",
+                        "on-surface": "#1e1b1a",
+                        "on-primary": "#ffffff",
+                        "background": "#fff8f6",
+                        "secondary-fixed-dim": "#f0bd8b",
+                        "on-primary-container": "#a7847d"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "2rem",
+                        "lg": "3rem",
+                        "xl": "5rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-margin-mobile": "16px",
+                        "container-margin-desktop": "40px",
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Space Grotesk"],
+                        "body-md": ["Space Grotesk"],
+                        "headline-lg-mobile": ["Space Grotesk"],
+                        "headline-lg": ["Space Grotesk"],
+                        "label-sm": ["Space Grotesk"],
+                        "label-lg": ["Space Grotesk"],
+                        "body-lg": ["Space Grotesk"]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-secondary-container dot-pattern">
+
+    {% include 'utils/navbar_landing.html' %}
+
+    <main>
+        <section class="relative pt-36 pb-16 md:pt-48 md:pb-24 overflow-hidden px-4 md:px-container-margin-desktop" id="privacy-hero">
+            <div class="absolute inset-0 z-0 pointer-events-none">
+                <div class="absolute top-10 left-10 md:left-20 w-48 h-48 bg-primary-fixed/50 blur-[80px] rounded-full parallax-layer" data-speed="0.2"></div>
+                <div class="absolute bottom-10 right-10 md:right-32 w-64 h-64 bg-tertiary-fixed-dim/40 blur-[100px] rounded-full parallax-layer" data-speed="-0.15"></div>
+            </div>
+
+            <div class="relative z-10 max-w-4xl mx-auto text-center reveal active">
+                <div class="inline-flex items-center gap-1.5 md:gap-2 bg-white text-primary px-4 py-2 md:px-8 md:py-3 rounded-full font-label-lg mb-6 md:mb-8 shadow-[0_6px_0_#e9e1df] border-2 border-surface-container-high hover:translate-y-1 transition-transform text-xs md:text-base cursor-default">
+                    <span class="material-symbols-outlined text-base md:text-lg">shield_locked</span>
+                    <span>Keamanan Terjamin</span>
+                </div>
+                
+                <h1 class="font-headline-lg text-4xl sm:text-5xl md:text-[64px] md:leading-[1.1] text-primary mb-6 md:mb-8 font-extrabold tracking-tight drop-shadow-sm">
+                    Kebijakan <span class="text-secondary">Privasi</span>
+                </h1>
+                
+                <p class="font-body-lg text-base sm:text-lg md:text-2xl text-on-surface-variant max-w-2xl mx-auto font-medium leading-relaxed px-2">
+                    Bagi Pramuka, janji adalah kehormatan. Kami berjanji untuk melindungi data dan privasimu saat menggunakan Scoutify.
+                </p>
+                <div class="mt-8 text-sm font-bold text-on-surface-variant/60 uppercase tracking-widest">
+                    Terakhir Diperbarui: 15 Juni 2026
+                </div>
+            </div>
+        </section>
+
+        <section class="py-12 md:py-20 px-4 md:px-container-margin-desktop relative z-10">
+            <div class="max-w-4xl mx-auto space-y-8 md:space-y-12">
+                
+                <div class="bg-white p-6 md:p-10 rounded-[2rem] md:rounded-[3rem] border-[4px] md:border-[6px] border-surface-container-high shadow-[0_20px_40px_rgba(0,0,0,0.05)] reveal group hover:border-secondary-container transition-colors duration-500">
+                    <div class="flex flex-col md:flex-row gap-6 md:gap-8 items-start">
+                        <div class="w-16 h-16 md:w-20 md:h-20 shrink-0 bg-primary-fixed rounded-full flex items-center justify-center border-4 border-white shadow-lg group-hover:rotate-12 transition-transform duration-500 text-primary">
+                            <span class="material-symbols-outlined text-3xl md:text-4xl">inventory_2</span>
+                        </div>
+                        <div>
+                            <h3 class="font-headline-md text-2xl md:text-3xl font-extrabold text-primary mb-4">1. Data yang Kami Kumpulkan</h3>
+                            <p class="text-on-surface-variant font-medium text-base md:text-lg leading-relaxed mb-4">
+                                Saat kamu mendaftar atau menggunakan Scoutify, kami hanya mengumpulkan informasi yang benar-benar diperlukan untuk membuat pengalaman belajarmu lebih baik:
+                            </p>
+                            <ul class="space-y-3 text-on-surface-variant font-medium text-base md:text-lg">
+                                <li class="flex items-start gap-3">
+                                    <span class="material-symbols-outlined text-secondary mt-0.5">check_circle</span>
+                                    <span><strong>Informasi Akun:</strong> Nama, alamat email, dan kata sandi (yang kami enkripsi dengan aman).</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <span class="material-symbols-outlined text-secondary mt-0.5">check_circle</span>
+                                    <span><strong>Data Penggunaan:</strong> Progres kuis, skor *badge*, dan aktivitas di dalam aplikasi untuk mempersonalisasi materimu.</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <span class="material-symbols-outlined text-secondary mt-0.5">check_circle</span>
+                                    <span><strong>Kamera & AI:</strong> Fitur Kamera AI Semaphore mengelola tangkapan gambar secara langsung (*real-time*) di perangkatmu. Kami <strong>tidak menyimpan</strong> foto wajah atau data gambar tersebut di server kami.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 md:p-10 rounded-[2rem] md:rounded-[3rem] border-[4px] md:border-[6px] border-surface-container-high shadow-[0_20px_40px_rgba(0,0,0,0.05)] reveal group hover:border-tertiary-fixed transition-colors duration-500">
+                    <div class="flex flex-col md:flex-row gap-6 md:gap-8 items-start">
+                        <div class="w-16 h-16 md:w-20 md:h-20 shrink-0 bg-tertiary-fixed-dim rounded-full flex items-center justify-center border-4 border-white shadow-lg group-hover:-rotate-12 transition-transform duration-500 text-tertiary">
+                            <span class="material-symbols-outlined text-3xl md:text-4xl">model_training</span>
+                        </div>
+                        <div>
+                            <h3 class="font-headline-md text-2xl md:text-3xl font-extrabold text-primary mb-4">2. Bagaimana Kami Menggunakan Data</h3>
+                            <p class="text-on-surface-variant font-medium text-base md:text-lg leading-relaxed mb-4">
+                                Data yang dikumpulkan semata-mata digunakan untuk memastikan Scoutify berjalan optimal:
+                            </p>
+                            <ul class="space-y-3 text-on-surface-variant font-medium text-base md:text-lg">
+                                <li class="flex items-start gap-3">
+                                    <span class="material-symbols-outlined text-tertiary mt-0.5">check_circle</span>
+                                    <span>Menyediakan, memelihara, dan meningkatkan kualitas aplikasi (termasuk deteksi *bug*).</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <span class="material-symbols-outlined text-tertiary mt-0.5">check_circle</span>
+                                    <span>Menyimpan progres SKU dan *Leaderboard* agar tidak hilang saat kamu berganti perangkat.</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <span class="material-symbols-outlined text-tertiary mt-0.5">check_circle</span>
+                                    <span>Meningkatkan model *Artificial Intelligence* (AI) kami secara anonim agar deteksi sandi semakin akurat.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 md:p-10 rounded-[2rem] md:rounded-[3rem] border-[4px] md:border-[6px] border-surface-container-high shadow-[0_20px_40px_rgba(0,0,0,0.05)] reveal group hover:border-secondary transition-colors duration-500">
+                    <div class="flex flex-col md:flex-row gap-6 md:gap-8 items-start">
+                        <div class="w-16 h-16 md:w-20 md:h-20 shrink-0 bg-secondary-fixed rounded-full flex items-center justify-center border-4 border-white shadow-lg group-hover:rotate-12 transition-transform duration-500 text-secondary">
+                            <span class="material-symbols-outlined text-3xl md:text-4xl">admin_panel_settings</span>
+                        </div>
+                        <div>
+                            <h3 class="font-headline-md text-2xl md:text-3xl font-extrabold text-primary mb-4">3. Keamanan Tingkat Tinggi</h3>
+                            <p class="text-on-surface-variant font-medium text-base md:text-lg leading-relaxed mb-4">
+                                Kami menerapkan standar keamanan terbaik di industri untuk melindungi informasi pribadimu dari akses yang tidak sah. Data sensitif seperti kata sandi dienkripsi, dan kami <strong>tidak akan pernah</strong> menjual datamu kepada pihak ketiga untuk tujuan iklan.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 md:p-10 rounded-[2rem] md:rounded-[3rem] border-[4px] md:border-[6px] border-surface-container-high shadow-[0_20px_40px_rgba(0,0,0,0.05)] reveal group hover:border-primary transition-colors duration-500">
+                    <div class="flex flex-col md:flex-row gap-6 md:gap-8 items-start">
+                        <div class="w-16 h-16 md:w-20 md:h-20 shrink-0 bg-surface-container-highest rounded-full flex items-center justify-center border-4 border-white shadow-lg group-hover:scale-110 transition-transform duration-500 text-primary">
+                            <span class="material-symbols-outlined text-3xl md:text-4xl">person_check</span>
+                        </div>
+                        <div>
+                            <h3 class="font-headline-md text-2xl md:text-3xl font-extrabold text-primary mb-4">4. Hak Pengguna (Kontrol Penuh)</h3>
+                            <p class="text-on-surface-variant font-medium text-base md:text-lg leading-relaxed mb-4">
+                                Kamu memegang kendali penuh atas datamu. Kapan saja, kamu memiliki hak untuk:
+                            </p>
+                            <ul class="space-y-3 text-on-surface-variant font-medium text-base md:text-lg">
+                                <li class="flex items-start gap-3">
+                                    <span class="material-symbols-outlined text-primary mt-0.5">check_circle</span>
+                                    <span>Meminta salinan data yang kami miliki tentangmu.</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <span class="material-symbols-outlined text-primary mt-0.5">check_circle</span>
+                                    <span>Memperbarui atau memperbaiki data yang tidak akurat melalui menu Profil.</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <span class="material-symbols-outlined text-primary mt-0.5">check_circle</span>
+                                    <span>Menghapus akun dan seluruh riwayat datamu dari server kami secara permanen.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center pt-10 pb-10 reveal">
+                    <h3 class="font-headline-md text-xl md:text-2xl text-primary font-bold mb-4">Punya Pertanyaan Lain?</h3>
+                    <p class="text-on-surface-variant font-medium text-base md:text-lg mb-8">
+                        Jika kamu butuh penjelasan lebih lanjut terkait kebijakan privasi ini, jangan ragu untuk menyapa kami.
+                    </p>
+                    <a href="{{ url_for('about') }}#cta-about" class="inline-flex items-center gap-2 bg-primary text-on-primary px-8 py-4 rounded-full font-headline-md text-lg hover:scale-105 transition-all shadow-[0_10px_20px_rgba(30,10,7,0.2)] border-b-[4px] border-black active:border-b-2 active:translate-y-1">
+                        <span class="material-symbols-outlined">mail</span> Hubungi Tim Kami
+                    </a>
+                </div>
+
+            </div>
+        </section>
+
+        <div class="w-full h-12 md:h-24 bg-surface-container-low wavy-divider mb-[-2px]"></div>
+
+    </main>
+
+    <div class="bg-surface-container-low">
+        {% include 'utils/footer.html' %}
+    </div>
+
+    <script>
+        // 1. Header Scroll Effect
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('main-header');
+            if(header) {
+                if (window.scrollY > 50) {
+                    header.querySelector('nav').classList.add('shadow-[0_10px_30px_rgba(0,0,0,0.05)]', 'md:mt-3', 'py-2', 'md:py-4', 'bg-white/95');
+                    header.querySelector('nav').classList.remove('md:mt-6', 'py-3', 'md:py-5', 'bg-white/90');
+                } else {
+                    header.querySelector('nav').classList.remove('shadow-[0_10px_30px_rgba(0,0,0,0.05)]', 'md:mt-3', 'py-2', 'md:py-4', 'bg-white/95');
+                    header.querySelector('nav').classList.add('md:mt-6', 'py-3', 'md:py-5', 'bg-white/90');
+                }
+            }
+        });
+
+        // 2. Parallax Scroll Effect
+        window.addEventListener('scroll', () => {
+            if(window.innerWidth > 768) {
+                const scrolled = window.scrollY;
+                const layers = document.querySelectorAll('.parallax-layer');
+                
+                requestAnimationFrame(() => {
+                    layers.forEach(layer => {
+                        const speed = layer.getAttribute('data-speed') || 0.1;
+                        const yPos = -(scrolled * speed); 
+                        layer.style.transform = `translateY(${yPos}px) translateZ(0)`; 
+                    });
+                });
+            }
+        });
+
+        // 3. Intersection Observer (Reveal Animation)
+        const revealCallback = (entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        };
+
+        const revealObserver = new IntersectionObserver(revealCallback, {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        });
+
+        document.querySelectorAll('.reveal').forEach(el => {
+            revealObserver.observe(el);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="id">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>Uji SKU - Scoutify</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+        darkMode: "class",
+        theme: {
+            extend: {
+                "colors": {
+                    "tertiary-container": "#132924",
+                    "secondary-container": "#ffca98",
+                    "on-secondary-container": "#7a532b",
+                    "primary": "#361F1A",
+                    "surface-container-low": "#faf2f0",
+                    "surface-variant": "#e9e1df",
+                    "secondary": "#7d562d",
+                    "primary-fixed": "#ffdad3",
+                    "surface-container-high": "#eee6e5",
+                    "on-secondary-fixed": "#2c1600",
+                    "inverse-surface": "#33302f",
+                    "tertiary": "#00140f",
+                    "surface-container-lowest": "#ffffff",
+                    "on-background": "#1e1b1a",
+                    "surface-container-highest": "#e9e1df",
+                    "on-surface-variant": "#504442",
+                    "on-primary-fixed": "#2b1611",
+                    "on-tertiary-container": "#7a918a",
+                    "on-secondary": "#ffffff",
+                    "outline-variant": "#d4c3bf",
+                    "surface-container": "#f4ecea",
+                    "surface-bright": "#fff8f6",
+                    "surface-tint": "#755751",
+                    "surface": "#fff8f6",
+                    "background": "#fff8f6",
+                    "error": "#ba1a1a",
+                    "success": "#22c55e",
+                },
+                "borderRadius": {
+                    "DEFAULT": "2rem",
+                    "lg": "3rem",
+                    "xl": "5rem",
+                    "full": "9999px"
+                },
+                "fontFamily": {
+                    "headline-md": ["Space Grotesk"],
+                    "body-md": ["Space Grotesk"],
+                    "headline-lg": ["Space Grotesk"],
+                    "label-lg": ["Space Grotesk"],
+                    "body-lg": ["Space Grotesk"]
+                }
+            },
+        },
+    }
+</script>
+<style>
+    body { background-color: #faf2f0; }
+    
+    /* Dot Pattern Background */
+    .dot-pattern {
+        background-image: radial-gradient(#d4c3bf 1.5px, transparent 1.5px);
+        background-size: 24px 24px;
+    }
+
+    /* Squishy UI Elements */
+    .squishy-btn { transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.5); }
+    .squishy-btn:active {
+        transform: translateY(4px) scale(0.96);
+        border-bottom-width: 2px !important;
+        margin-top: 2px;
+    }
+
+    .card-solid {
+        background: #ffffff;
+        border: 4px solid #eee6e5;
+        border-bottom-width: 8px;
+        border-radius: 2rem;
+        transition: all 0.3s ease;
+    }
+    .card-solid:hover {
+        border-color: #ffca98;
+        transform: translateY(-4px);
+        border-bottom-width: 6px;
+        margin-top: 2px;
+    }
+
+    /* Form Inputs */
+    .input-solid {
+        width: 100%; background: #faf2f0;
+        border: 4px solid #eee6e5; border-radius: 1.5rem;
+        padding: 1rem 1.25rem; font-weight: 700; color: #361F1A;
+        transition: all 0.3s ease; outline: none;
+    }
+    .input-solid:focus {
+        background: #ffffff; border-color: #7d562d;
+        box-shadow: 0 0 0 4px rgba(125, 86, 45, 0.1);
+    }
+    .input-solid::placeholder { color: #827471; font-weight: 500; }
+
+    /* Custom Checkbox for Grading */
+    .grade-checkbox {
+        appearance: none;
+        width: 24px; height: 24px;
+        border: 3px solid #d4c3bf; border-radius: 8px;
+        outline: none; cursor: pointer; transition: all 0.2s ease;
+        display: flex; align-items: center; justify-content: center;
+    }
+    .grade-checkbox:checked {
+        background-color: #22c55e; border-color: #22c55e;
+    }
+    .grade-checkbox:checked::after {
+        content: '\e5ca'; font-family: 'Material Symbols Outlined';
+        color: white; font-size: 18px; font-weight: 900;
+    }
+
+    /* View Transitions */
+    .view-section {
+        display: none;
+        animation: fadeSlideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .view-section.active { display: block; }
+    @keyframes fadeSlideUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Sidebar */
+    #sidebar { transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #faf2f0; }
+    ::-webkit-scrollbar-thumb { background: #d4c3bf; border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: #827471; }
+</style>
+</head>
+<body class="text-on-background font-body-md dot-pattern h-screen flex overflow-hidden selection:bg-secondary-container">
+
+<aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-72 bg-white border-r-[6px] border-surface-container-high flex flex-col transform -translate-x-full lg:translate-x-0 lg:relative lg:flex-shrink-0 shadow-[20px_0_50px_rgba(0,0,0,0.05)] lg:shadow-none h-full">
+    <div class="p-6 md:p-8 flex items-center justify-between">
+        <a href="dashboard.html" class="flex items-center gap-3 group">
+            <div class="w-12 h-12 bg-secondary rounded-full flex items-center justify-center text-white group-hover:rotate-12 transition-transform shadow-md">
+                <span class="material-symbols-outlined text-3xl">eco</span>
+            </div>
+            <span class="font-headline-lg text-2xl font-extrabold text-primary tracking-tight">Scoutify</span>
+        </a>
+        <button id="close-sidebar" class="lg:hidden text-on-surface-variant hover:text-primary">
+            <span class="material-symbols-outlined text-3xl">close</span>
+        </button>
+    </div>
+
+    <nav class="flex-1 px-4 md:px-6 space-y-3 overflow-y-auto">
+        <a href="dashboard.html" class="flex items-center gap-4 px-5 py-4 text-on-surface-variant hover:bg-surface-container rounded-2xl font-bold transition-colors group">
+            <span class="material-symbols-outlined group-hover:text-secondary transition-colors">dashboard</span>
+            Dashboard
+        </a>
+        <a href="management.html" class="flex items-center gap-4 px-5 py-4 text-on-surface-variant hover:bg-surface-container rounded-2xl font-bold transition-colors group">
+            <span class="material-symbols-outlined group-hover:text-secondary transition-colors">groups</span>
+            Manajemen Siswa
+        </a>
+        <a href="#" class="flex items-center gap-4 px-5 py-4 bg-primary text-white rounded-2xl font-bold shadow-[0_8px_0_#2b1611] border-2 border-primary squishy-btn">
+            <span class="material-symbols-outlined filled">checklist</span>
+            Uji SKU
+            <span class="ml-auto bg-error text-white text-xs px-2 py-1 rounded-full font-black">3 Antre</span>
+        </a>
+        <a href="#" class="flex items-center gap-4 px-5 py-4 text-on-surface-variant hover:bg-surface-container rounded-2xl font-bold transition-colors group">
+            <span class="material-symbols-outlined group-hover:text-secondary transition-colors">leaderboard</span>
+            Leaderboard
+        </a>
+    </nav>
+
+    <div class="p-6">
+        <a href="index.html" class="flex items-center justify-center gap-3 w-full bg-surface-container-high text-primary px-5 py-4 rounded-2xl font-bold hover:bg-error hover:text-white transition-all shadow-sm border-b-4 border-outline-variant squishy-btn">
+            <span class="material-symbols-outlined">logout</span> Keluar
+        </a>
+    </div>
+</aside>
+
+<div id="sidebar-overlay" class="fixed inset-0 bg-primary/40 backdrop-blur-sm z-40 hidden lg:hidden"></div>
+
+<div class="flex-1 flex flex-col h-full overflow-hidden">
+    
+    <header class="bg-white/80 backdrop-blur-xl border-b-[6px] border-surface-container-high px-6 py-4 flex items-center justify-between z-30 sticky top-0">
+        <div class="flex items-center gap-4">
+            <button id="open-sidebar" class="lg:hidden text-primary hover:text-secondary transition-colors p-2 bg-surface-container rounded-xl">
+                <span class="material-symbols-outlined text-2xl">menu_open</span>
+            </button>
+            <div>
+                <h1 class="font-headline-md text-xl md:text-2xl font-black text-primary">Evaluasi SKU</h1>
+                <p class="text-on-surface-variant text-xs md:text-sm font-medium hidden sm:block">Periksa dan berikan penilaian syarat kecakapan.</p>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-4">
+            <div class="hidden sm:flex items-center gap-3 pl-4 border-l-4 border-surface-container-high">
+                <div class="text-right">
+                    <div class="font-black text-primary text-sm">Fahri Putra</div>
+                    <div class="text-xs font-bold text-secondary uppercase tracking-widest">Pembina</div>
+                </div>
+                <div class="w-12 h-12 rounded-full overflow-hidden border-[3px] border-secondary-container">
+                    <img src="https://ui-avatars.com/api/?name=Fahri+Putra&background=ffca98&color=361F1A&size=128" alt="Profile" class="w-full h-full object-cover">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
+        <div class="max-w-7xl mx-auto relative">
+            
+            <div id="view-queue" class="view-section active space-y-8">
+                
+                <div class="flex flex-col md:flex-row gap-4 justify-between items-center bg-white p-4 rounded-[2rem] border-[4px] border-surface-container-high shadow-sm">
+                    <div class="flex items-center gap-3 w-full md:w-auto px-2">
+                        <div class="w-10 h-10 bg-secondary-container text-primary rounded-full flex items-center justify-center">
+                            <span class="material-symbols-outlined">pending_actions</span>
+                        </div>
+                        <div>
+                            <div class="font-black text-primary">Antrean Menunggu</div>
+                            <div class="text-xs text-on-surface-variant font-bold">3 Siswa siap diuji</div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
+                        <div class="relative w-full sm:w-64">
+                            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline">search</span>
+                            <input type="text" placeholder="Cari nama..." class="w-full bg-surface-container-low border-[3px] border-surface-container-high rounded-full py-3 pl-12 pr-4 font-bold text-sm focus:border-secondary outline-none transition-colors">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 gap-6">
+                    
+                    <div class="card-solid p-6 md:p-8 flex flex-col lg:flex-row items-start lg:items-center gap-6 lg:gap-8">
+                        <div class="flex items-center gap-5 w-full lg:w-1/3">
+                            <div class="w-16 h-16 rounded-[1.2rem] border-[4px] border-secondary-container overflow-hidden shrink-0">
+                                <img src="https://ui-avatars.com/api/?name=Aditya+Pramana&background=ffca98&color=361F1A" class="w-full h-full object-cover">
+                            </div>
+                            <div>
+                                <div class="font-black text-xl text-primary">Aditya Pramana</div>
+                                <div class="inline-flex items-center gap-1 bg-surface-container-high px-2 py-1 rounded-md text-[10px] font-black uppercase text-primary mt-1">
+                                    <span class="material-symbols-outlined text-[14px]">local_fire_department</span> Ramu
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex-1 w-full lg:border-l-4 border-surface-container-high lg:pl-8 border-dashed">
+                            <div class="text-xs font-black uppercase text-secondary tracking-widest mb-2 flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span> Mengajukan Ujian
+                            </div>
+                            <div class="font-bold text-primary text-xl mb-1">Poin 14: Tali Temali (Pionering)</div>
+                            <p class="text-sm text-on-surface-variant font-medium">Membuat simpul mati, simpul hidup, simpul anyam, simpul tiang, simpul pangkal, dan dapat menyusuk tali.</p>
+                            <div class="text-xs text-on-surface-variant font-bold mt-3 flex items-center gap-2">
+                                <span class="material-symbols-outlined text-[16px]">schedule</span> Diajukan: Hari ini, 09:15 WIB
+                            </div>
+                        </div>
+                        
+                        <div class="w-full lg:w-auto mt-2 lg:mt-0 shrink-0">
+                            <button onclick="openTestPanel('Aditya Pramana', 'Ramu', 'Poin 14: Tali Temali (Pionering)', 'Membuat simpul mati, simpul hidup, simpul anyam, simpul tiang, simpul pangkal, dan dapat menyusuk tali.')" class="w-full bg-primary text-white px-8 py-4 rounded-2xl border-b-[4px] border-black/40 hover:bg-secondary font-black flex items-center justify-center gap-2 squishy-btn">
+                                <span class="material-symbols-outlined text-[20px]">play_arrow</span> Mulai Uji
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card-solid p-6 md:p-8 flex flex-col lg:flex-row items-start lg:items-center gap-6 lg:gap-8">
+                        <div class="flex items-center gap-5 w-full lg:w-1/3">
+                            <div class="w-16 h-16 rounded-[1.2rem] border-[4px] border-primary-fixed overflow-hidden shrink-0">
+                                <img src="https://ui-avatars.com/api/?name=Nadia+Salsabila&background=ffdad3&color=361F1A" class="w-full h-full object-cover">
+                            </div>
+                            <div>
+                                <div class="font-black text-xl text-primary">Nadia Salsabila</div>
+                                <div class="inline-flex items-center gap-1 bg-surface-container-high px-2 py-1 rounded-md text-[10px] font-black uppercase text-primary mt-1">
+                                    <span class="material-symbols-outlined text-[14px]">local_fire_department</span> Rakit
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex-1 w-full lg:border-l-4 border-surface-container-high lg:pl-8 border-dashed">
+                            <div class="text-xs font-black uppercase text-secondary tracking-widest mb-2 flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span> Mengajukan Ujian
+                            </div>
+                            <div class="font-bold text-primary text-xl mb-1">Poin 5: Sandi & Isyarat</div>
+                            <p class="text-sm text-on-surface-variant font-medium">Dapat menerima dan mengirim pesan menggunakan sandi morse dan semaphore dengan lancar.</p>
+                            <div class="text-xs text-on-surface-variant font-bold mt-3 flex items-center gap-2">
+                                <span class="material-symbols-outlined text-[16px]">schedule</span> Diajukan: Hari ini, 08:30 WIB
+                            </div>
+                        </div>
+                        <div class="w-full lg:w-auto mt-2 lg:mt-0 shrink-0">
+                            <button onclick="openTestPanel('Nadia Salsabila', 'Rakit', 'Poin 5: Sandi & Isyarat', 'Dapat menerima dan mengirim pesan menggunakan sandi morse dan semaphore dengan lancar.')" class="w-full bg-primary text-white px-8 py-4 rounded-2xl border-b-[4px] border-black/40 hover:bg-secondary font-black flex items-center justify-center gap-2 squishy-btn">
+                                <span class="material-symbols-outlined text-[20px]">play_arrow</span> Mulai Uji
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card-solid p-6 md:p-8 flex flex-col lg:flex-row items-start lg:items-center gap-6 lg:gap-8 opacity-75">
+                        <div class="flex items-center gap-5 w-full lg:w-1/3">
+                            <div class="w-16 h-16 rounded-[1.2rem] border-[4px] border-outline-variant overflow-hidden shrink-0">
+                                <img src="https://ui-avatars.com/api/?name=Gilang+Ramadhan&background=e9e1df&color=361F1A" class="w-full h-full object-cover">
+                            </div>
+                            <div>
+                                <div class="font-black text-xl text-primary">Gilang Ramadhan</div>
+                                <div class="inline-flex items-center gap-1 bg-surface-container-high px-2 py-1 rounded-md text-[10px] font-black uppercase text-primary mt-1">
+                                    <span class="material-symbols-outlined text-[14px]">workspace_premium</span> Terap
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex-1 w-full lg:border-l-4 border-surface-container-high lg:pl-8 border-dashed">
+                            <div class="text-xs font-black uppercase text-on-surface-variant tracking-widest mb-2 flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-outline-variant"></span> Tertunda
+                            </div>
+                            <div class="font-bold text-primary text-xl mb-1">Poin 22: P3K & Kesamaptaan</div>
+                            <p class="text-sm text-on-surface-variant font-medium">Dapat menjelaskan dan mempraktikkan cara memberi pertolongan pertama pada kecelakaan ringan.</p>
+                            <div class="text-xs text-on-surface-variant font-bold mt-3 flex items-center gap-2">
+                                <span class="material-symbols-outlined text-[16px]">schedule</span> Diajukan: Kemarin, 15:45 WIB
+                            </div>
+                        </div>
+                        <div class="w-full lg:w-auto mt-2 lg:mt-0 shrink-0">
+                            <button onclick="openTestPanel('Gilang Ramadhan', 'Terap', 'Poin 22: P3K & Kesamaptaan', 'Dapat menjelaskan dan mempraktikkan cara memberi pertolongan pertama pada kecelakaan ringan.')" class="w-full bg-primary text-white px-8 py-4 rounded-2xl border-b-[4px] border-black/40 hover:bg-secondary font-black flex items-center justify-center gap-2 squishy-btn">
+                                <span class="material-symbols-outlined text-[20px]">play_arrow</span> Mulai Uji
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div id="view-test" class="view-section">
+                
+                <div class="flex items-center gap-4 mb-6 md:mb-8">
+                    <button onclick="toggleView('view-queue')" class="w-12 h-12 bg-white border-[4px] border-surface-container-high rounded-full flex items-center justify-center text-primary hover:border-secondary hover:text-secondary squishy-btn shrink-0">
+                        <span class="material-symbols-outlined">arrow_back</span>
+                    </button>
+                    <div>
+                        <div class="inline-flex items-center gap-2 bg-secondary/10 text-secondary px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest mb-1">
+                            <span class="w-1.5 h-1.5 bg-secondary rounded-full animate-pulse"></span> Sesi Ujian Aktif
+                        </div>
+                        <h2 class="font-headline-lg text-2xl md:text-3xl font-black text-primary">Lembar Penilaian SKU</h2>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
+                    
+                    <div class="lg:col-span-1 space-y-6">
+                        <div class="card-solid p-6 bg-gradient-to-b from-white to-surface-container-low">
+                            <div class="flex flex-col items-center text-center">
+                                <div class="w-24 h-24 rounded-full border-[6px] border-white shadow-lg overflow-hidden mb-4 bg-surface-container-high">
+                                    <img id="test-student-img" src="" class="w-full h-full object-cover">
+                                </div>
+                                <h3 id="test-student-name" class="font-black text-2xl text-primary mb-1">Nama Siswa</h3>
+                                <div id="test-student-level" class="inline-flex items-center gap-1 bg-surface-container-high border-2 border-outline-variant/30 px-3 py-1.5 rounded-lg text-xs font-black uppercase text-primary">
+                                    Tingkatan
+                                </div>
+                            </div>
+                            <div class="border-t-4 border-surface-container-high border-dashed mt-6 pt-6">
+                                <div class="text-xs font-black uppercase text-on-surface-variant tracking-widest mb-3">Bukti / Lampiran Ujian</div>
+                                <div class="bg-white border-[3px] border-surface-container-high rounded-2xl p-4 flex items-center gap-3 cursor-pointer hover:border-secondary transition-colors group">
+                                    <div class="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+                                        <span class="material-symbols-outlined">image</span>
+                                    </div>
+                                    <div>
+                                        <div class="font-bold text-sm text-primary">Foto_Simpul.jpg</div>
+                                        <div class="text-xs text-on-surface-variant">Dikirim 10 menit lalu</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-2">
+                        <div class="card-solid p-6 md:p-10 h-full flex flex-col">
+                            
+                            <div class="bg-surface-container-low border-[4px] border-surface-container-high rounded-3xl p-6 md:p-8 mb-8 relative overflow-hidden">
+                                <div class="absolute right-0 top-0 w-24 h-24 bg-secondary/10 rounded-bl-full flex items-center justify-center">
+                                    <span class="material-symbols-outlined text-secondary text-4xl mr-4 mb-4">menu_book</span>
+                                </div>
+                                <div class="text-xs font-black uppercase text-secondary tracking-widest mb-2">Materi Evaluasi</div>
+                                <h3 id="test-sku-title" class="font-headline-md text-2xl md:text-3xl font-black text-primary mb-3 relative z-10 w-[85%]">Judul Poin SKU</h3>
+                                <p id="test-sku-desc" class="text-on-surface-variant font-medium text-base md:text-lg relative z-10">Deskripsi syarat yang harus dipenuhi oleh siswa.</p>
+                                
+                                <div class="mt-6 pt-6 border-t-[3px] border-surface-container-high flex flex-col gap-3">
+                                    <label class="flex items-center gap-3 cursor-pointer group">
+                                        <input type="checkbox" class="grade-checkbox">
+                                        <span class="font-bold text-sm text-primary group-hover:text-secondary">Siswa memahami teori dasar</span>
+                                    </label>
+                                    <label class="flex items-center gap-3 cursor-pointer group">
+                                        <input type="checkbox" class="grade-checkbox">
+                                        <span class="font-bold text-sm text-primary group-hover:text-secondary">Siswa mempraktikkan dengan benar</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="flex-1 flex flex-col space-y-3 mb-8">
+                                <label class="block text-xs font-black text-on-surface-variant uppercase tracking-widest pl-2">Catatan Evaluasi (Feedback)</label>
+                                <textarea id="eval-notes" rows="4" placeholder="Berikan catatan perbaikan atau apresiasi untuk siswa..." class="input-solid resize-none flex-1 min-h-[120px]"></textarea>
+                            </div>
+
+                            <div class="flex flex-col sm:flex-row gap-4 pt-6 border-t-4 border-surface-container-high border-dashed">
+                                <button onclick="submitGrade('fail')" class="flex-1 py-4 bg-white border-[4px] border-error text-error rounded-2xl font-black text-lg hover:bg-error/10 transition-colors squishy-btn flex items-center justify-center gap-2">
+                                    <span class="material-symbols-outlined">cancel</span> Belum Lulus (Revisi)
+                                </button>
+                                <button onclick="submitGrade('pass')" id="btn-pass" class="flex-1 py-4 bg-success border-b-[4px] border-black/30 text-white rounded-2xl font-black text-lg hover:brightness-110 transition-all squishy-btn flex items-center justify-center gap-2">
+                                    <span class="material-symbols-outlined">task_alt</span> Lulus Poin Ini
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+</div>
+
+<script>
+    // ===== FUNGSI GANTI VIEW (SPA Style) =====
+    function toggleView(viewId) {
+        document.querySelectorAll('.view-section').forEach(el => {
+            el.classList.remove('active');
+        });
+        document.getElementById(viewId).classList.add('active');
+        document.querySelector('main').scrollTop = 0;
+    }
+
+    // ===== BUKA PANEL UJIAN (Isi Data Dinamis) =====
+    function openTestPanel(name, level, title, desc) {
+        // Set dynamic content based on selected student
+        document.getElementById('test-student-name').textContent = name;
+        document.getElementById('test-student-level').innerHTML = `<span class="material-symbols-outlined text-[14px]">local_fire_department</span> Penggalang ${level}`;
+        document.getElementById('test-sku-title').textContent = title;
+        document.getElementById('test-sku-desc').textContent = desc;
+        
+        // Generate pseudo avatar
+        const formattedName = name.replace(' ', '+');
+        let bgColor = "ffca98";
+        if(level === 'Rakit') bgColor = "ffdad3";
+        if(level === 'Terap') bgColor = "e9e1df";
+        document.getElementById('test-student-img').src = `https://ui-avatars.com/api/?name=${formattedName}&background=${bgColor}&color=361F1A&size=256`;
+
+        // Reset form
+        document.getElementById('eval-notes').value = '';
+        document.querySelectorAll('.grade-checkbox').forEach(cb => cb.checked = false);
+
+        // Switch View
+        toggleView('view-test');
+    }
+
+    // ===== SUBMIT PENILAIAN =====
+    function submitGrade(status) {
+        const btnPass = document.getElementById('btn-pass');
+        const originalHtml = btnPass.innerHTML;
+        
+        if(status === 'pass') {
+            btnPass.innerHTML = '<span class="material-symbols-outlined animate-spin">sync</span> Menyimpan...';
+            btnPass.style.pointerEvents = 'none';
+        }
+
+        // Simulasi Loading API
+        setTimeout(() => {
+            if(status === 'pass') {
+                btnPass.innerHTML = originalHtml;
+                btnPass.style.pointerEvents = 'auto';
+                showToast('Selamat! Siswa dinyatakan Lulus poin SKU ini.');
+            } else {
+                showToast('Catatan revisi telah dikirim ke siswa.', 'error');
+            }
+            
+            // Kembali ke Antrean
+            setTimeout(() => { toggleView('view-queue'); }, 1000);
+            
+        }, 1200);
+    }
+
+    // ===== TOAST NOTIFICATION =====
+    function showToast(msg, type = 'success') {
+        const old = document.getElementById('toast-notif');
+        if(old) old.remove();
+        
+        const color = type === 'success' ? '#22c55e' : '#ba1a1a';
+        const icon = type === 'success' ? 'check_circle' : 'info';
+        
+        const t = document.createElement('div');
+        t.id = 'toast-notif';
+        t.style.cssText = `position:fixed;top:24px;left:50%;transform:translateX(-50%) translateY(-20px);z-index:999;background:#ffffff;border:4px solid #eee6e5;border-bottom-width:8px;color:#361F1A;padding:16px 24px;border-radius:2rem;box-shadow:0 16px 40px -8px rgba(0,0,0,0.15);display:flex;align-items:center;gap:12px;font-size:16px;font-weight:900;opacity:0;transition:all .5s cubic-bezier(0.16,1,0.3,1)`;
+        t.innerHTML = `<span class="material-symbols-outlined filled" style="color:${color};font-size:28px">${icon}</span> ${msg}`;
+        
+        document.body.appendChild(t);
+        
+        requestAnimationFrame(() => {
+            t.style.opacity = '1'; 
+            t.style.transform = 'translateX(-50%) translateY(0)';
+        });
+        
+        setTimeout(() => {
+            t.style.opacity = '0'; 
+            t.style.transform = 'translateX(-50%) translateY(-20px)';
+            setTimeout(() => t.remove(), 500);
+        }, 3000);
+    }
+
+    // ===== MOBILE SIDEBAR =====
+    const sidebar = document.getElementById('sidebar');
+    const openBtn = document.getElementById('open-sidebar');
+    const closeBtn = document.getElementById('close-sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+
+    function openSidebar() {
+        sidebar.classList.remove('-translate-x-full');
+        overlay.classList.remove('hidden');
+    }
+
+    function closeSidebar() {
+        sidebar.classList.add('-translate-x-full');
+        overlay.classList.add('hidden');
+    }
+
+    openBtn.addEventListener('click', openSidebar);
+    closeBtn.addEventListener('click', closeSidebar);
+    overlay.addEventListener('click', closeSidebar);
+</script>
+</body>
+</html>

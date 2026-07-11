@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="id">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+    <title>Scoutify - Petualangan Pramuka di Genggamanmu</title>
+    
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/landing.css') }}">
+
+    <style>
+        /* static/css/landing.css */
+
+body {
+    font-family: 'Space Grotesk', sans-serif;
+    background-color: #fcf9ed;
+    overflow-x: hidden;
+}
+
+.squishy-button {
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 8px 0px rgba(148, 74, 24, 0.2);
+}
+
+.squishy-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 0px rgba(148, 74, 24, 0.15);
+}
+
+.squishy-button:active {
+    transform: translateY(4px);
+    box-shadow: 0 2px 0px rgba(148, 74, 24, 0.2);
+}
+
+.floating-shape {
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(5deg); }
+    100% { transform: translateY(0px) rotate(0deg); }
+}
+
+.cloud-card {
+    border: 2px solid #dac2b6;
+    box-shadow: 20px 20px 0px rgba(148, 74, 24, 0.05);
+}
+
+.sticker-badge {
+    border: 2px solid currentColor;
+}
+    </style>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-container": "#132924",
+                        "secondary-container": "#ffca98",
+                        "on-secondary-container": "#7a532b",
+                        "primary": "#361F1A",
+                        "surface-container-low": "#faf2f0",
+                        "surface-variant": "#e9e1df",
+                        "secondary": "#7d562d",
+                        "primary-fixed": "#ffdad3",
+                        "surface-container-high": "#eee6e5",
+                        "on-secondary-fixed": "#2c1600",
+                        "inverse-surface": "#33302f",
+                        "tertiary": "#00140f",
+                        "surface-container-lowest": "#ffffff",
+                        "on-background": "#1e1b1a",
+                        "surface-container-highest": "#e9e1df",
+                        "on-surface-variant": "#504442",
+                        "on-primary-fixed": "#2b1611",
+                        "on-tertiary-container": "#7a918a",
+                        "on-secondary": "#ffffff",
+                        "inverse-on-surface": "#f7efed",
+                        "outline-variant": "#d4c3bf",
+                        "surface-container": "#f4ecea",
+                        "on-tertiary-fixed": "#091f1b",
+                        "on-error-container": "#93000a",
+                        "surface-bright": "#fff8f6",
+                        "on-primary-fixed-variant": "#5c403a",
+                        "surface-tint": "#755751",
+                        "surface": "#fff8f6",
+                        "on-secondary-fixed-variant": "#623f18",
+                        "error-container": "#ffdad6",
+                        "surface-dim": "#e0d8d7",
+                        "primary-fixed-dim": "#e5beb6",
+                        "primary-container": "#361f1a",
+                        "tertiary-fixed": "#cfe8e0",
+                        "secondary-fixed": "#ffdcbe",
+                        "on-tertiary-fixed-variant": "#354b45",
+                        "on-tertiary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "tertiary-fixed-dim": "#b3ccc4",
+                        "outline": "#827471",
+                        "inverse-primary": "#e5beb6",
+                        "error": "#ba1a1a",
+                        "on-surface": "#1e1b1a",
+                        "on-primary": "#ffffff",
+                        "background": "#fff8f6",
+                        "secondary-fixed-dim": "#f0bd8b",
+                        "on-primary-container": "#a7847d"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "2rem",
+                        "lg": "3rem",
+                        "xl": "5rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-lg": "32px",
+                        "stack-sm": "8px",
+                        "stack-md": "16px",
+                        "container-margin-mobile": "16px",
+                        "container-margin-desktop": "40px",
+                        "unit": "8px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Space Grotesk"],
+                        "body-md": ["Space Grotesk"],
+                        "headline-lg-mobile": ["Space Grotesk"],
+                        "headline-lg": ["Space Grotesk"],
+                        "label-sm": ["Space Grotesk"],
+                        "label-lg": ["Space Grotesk"],
+                        "body-lg": ["Space Grotesk"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "500"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "600"}],
+                        "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "500"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-secondary-container dot-pattern">
+
+    {% include 'utils/navbar_landing.html' %}
+
+    <main>
+        <section class="relative min-h-screen flex items-center justify-center overflow-hidden pt-28 pb-20 md:pt-24" id="hero">
+            <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+                <div class="absolute inset-0 parallax-layer" data-speed="0.1">
+                    <img class="w-full h-full object-cover opacity-50 md:opacity-60" data-alt="A cinematic wide shot of scouts hiking" src="https://sipjkdlfjzmxptldxgxa.supabase.co/storage/v1/object/public/images/kompress_squere.jpg"/>
+                    <div class="absolute inset-0 bg-gradient-to-b from-primary/10 via-background/60 to-background"></div>
+                </div>
+                <div class="absolute top-20 left-10 w-32 md:w-48 h-16 md:h-24 bg-white/60 blur-xl rounded-full parallax-layer" data-speed="0.3"></div>
+                <div class="absolute top-40 right-10 md:right-20 w-48 md:w-64 h-24 md:h-32 bg-white/40 blur-2xl rounded-full parallax-layer" data-speed="0.5"></div>
+                <div class="absolute bottom-4 left-1/2 -translate-x-1/2 w-48 h-48 bg-secondary-container/30 blur-3xl rounded-full parallax-layer" data-speed="0.4"></div>
+            </div>
+            
+            <div class="relative z-10 text-center px-4 md:px-container-margin-desktop max-w-5xl reveal active">
+                <div class="inline-flex items-center gap-1.5 md:gap-2 bg-secondary-container/90 backdrop-blur-md text-on-secondary-container px-4 py-2 md:px-8 md:py-3 rounded-full font-label-lg mb-6 md:mb-8 shadow-[0_6px_0_#7a532b44] md:shadow-[0_8px_0_#7a532b44] border-2 border-white hover:translate-y-1 transition-transform text-xs md:text-base">
+                    <span class="material-symbols-outlined text-base md:text-lg">campground</span>
+                    <span>Petualangan Dimulai!</span>
+                </div>
+                
+                <h1 class="font-headline-lg text-4xl sm:text-5xl md:text-[88px] md:leading-[0.95] text-primary mb-6 md:mb-8 drop-shadow-[0_10px_10px_rgba(0,0,0,0.05)] font-extrabold tracking-tight">
+                    Petualangan Pramuka <br class="hidden sm:block"/> <span class="text-secondary">di Genggamanmu</span>
+                </h1>
+                
+                <p class="font-body-lg text-base sm:text-lg md:text-2xl text-on-surface-variant mb-10 md:mb-12 max-w-3xl mx-auto font-medium leading-relaxed px-2">
+                    Revolusi digital kegiatan kepramukaan dengan teknologi AI dan panduan bertahan hidup modern. Siap menjelajah lebih jauh?
+                </p>
+                
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-8 px-4 sm:px-0">
+                    <a href="#features" class="w-full sm:w-auto bg-primary text-on-primary px-8 py-5 md:px-12 md:py-6 rounded-full font-headline-md text-lg md:text-xl hover:scale-105 transition-all shadow-[0_15px_30px_rgba(30,10,7,0.3)] flex items-center justify-center gap-3 md:gap-4 border-b-[6px] md:border-b-8 border-black active:border-b-4 active:translate-y-1">
+                        <span class="material-symbols-outlined text-2xl md:text-3xl">explore</span>
+                        Mulai Explore
+                    </a>
+                    <a href="#download" class="w-full sm:w-auto bg-white border-[4px] md:border-[6px] border-surface-container-high text-primary px-8 py-5 md:px-12 md:py-6 rounded-full font-headline-md text-lg md:text-xl hover:bg-surface-container-low transition-all flex items-center justify-center gap-3 md:gap-4 shadow-xl border-b-[8px] md:border-b-[12px] active:border-b-[4px] active:translate-y-1">
+                        <span class="material-symbols-outlined text-2xl md:text-3xl">download</span>
+                        Unduh App
+                    </a>
+                </div>
+            </div>
+
+            <div class="absolute bottom-6 md:bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 md:gap-2 text-primary/40 hidden sm:flex">
+                <span class="text-[10px] md:text-xs font-black uppercase tracking-widest">Gulir</span>
+                <div class="w-1 h-8 md:h-12 bg-surface-container-high rounded-full overflow-hidden relative">
+                    <div class="absolute top-0 left-0 w-full h-1/2 bg-primary rounded-full animate-bounce"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-16 min-[375px]:py-20 md:py-32 bg-surface-container-low px-4 sm:px-6 md:px-container-margin-desktop relative overflow-hidden" id="features">
+    <div class="absolute top-0 left-0 w-full h-8 min-[375px]:h-12 md:h-24 bg-background wavy-divider rotate-180 z-20"></div>
+    
+    <div class="absolute top-40 left-[-10%] w-64 h-64 md:w-96 md:h-96 bg-secondary-container/30 blur-[80px] md:blur-[120px] rounded-full pointer-events-none parallax-layer" data-speed="0.2"></div>
+    <div class="absolute bottom-20 right-[-10%] w-72 h-72 md:w-[30rem] md:h-[30rem] bg-primary-fixed/30 blur-[100px] md:blur-[150px] rounded-full pointer-events-none parallax-layer" data-speed="-0.1"></div>
+    
+    <div class="absolute top-1/4 right-10 text-secondary/30 floating pointer-events-none hidden md:block"><span class="material-symbols-outlined text-4xl">code</span></div>
+    <div class="absolute bottom-1/3 left-10 text-primary/20 floating pointer-events-none hidden md:block" style="animation-delay: 1.5s;"><span class="material-symbols-outlined text-5xl">memory</span></div>
+
+    <div class="max-w-7xl mx-auto relative z-10 mt-8 md:mt-12">
+        
+        <div class="text-center mb-12 min-[375px]:mb-16 md:mb-24 reveal">
+            <div class="inline-flex items-center gap-2 bg-white text-primary px-4 min-[375px]:px-6 py-2 md:py-3 rounded-full font-label-sm uppercase tracking-[0.1em] md:tracking-[0.2em] border-[3px] border-surface-container-high shadow-lg text-[10px] min-[375px]:text-xs font-black hover:scale-105 transition-transform cursor-default mb-4">
+                <span class="material-symbols-outlined text-sm md:text-base text-secondary">stars</span> 
+                <span>Fitur Unggulan</span>
+            </div>
+            
+            <h2 class="font-headline-lg text-3xl min-[375px]:text-4xl sm:text-5xl md:text-7xl mt-4 md:mt-8 mb-4 md:mb-8 font-extrabold leading-tight text-transparent bg-clip-text bg-gradient-to-r from-primary via-secondary to-primary drop-shadow-sm px-2">
+                Lengkap, Cerdas, <br class="hidden min-[375px]:block md:hidden"/>&amp; Efisien
+            </h2>
+            
+            <div class="w-16 min-[375px]:w-20 md:w-32 h-1.5 md:h-2 bg-gradient-to-r from-secondary-container to-secondary mx-auto rounded-full mb-6 md:mb-10"></div>
+            
+            <p class="text-on-surface-variant max-w-3xl mx-auto text-sm min-[375px]:text-base sm:text-xl md:text-2xl font-medium px-2 leading-relaxed">
+                Dirancang khusus untuk memudahkan setiap langkah petualanganmu, dari pemecahan sandi rumit hingga navigasi presisi di alam liar.
+            </p>
+        </div>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 min-[375px]:gap-6 md:gap-10">
+            
+            <div class="relative group reveal">
+                <div class="absolute -inset-1 bg-gradient-to-br from-primary-fixed to-secondary-container rounded-[2rem] md:rounded-[3rem] blur-xl opacity-0 group-hover:opacity-100 transition duration-500 pointer-events-none"></div>
+                
+                <div class="squishy-card relative h-full p-5 min-[375px]:p-6 md:p-10 rounded-[1.5rem] min-[375px]:rounded-[2rem] md:rounded-[3rem] flex flex-col items-center text-center z-10 overflow-hidden bg-white/95 backdrop-blur-xl border-white/60">
+                    <div class="absolute -top-10 -right-10 w-24 h-24 md:w-32 md:h-32 bg-primary-fixed/50 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700"></div>
+                    
+                    <div class="relative z-10 w-14 h-14 min-[375px]:w-16 min-[375px]:h-16 md:w-20 md:h-20 bg-primary-fixed rounded-full flex items-center justify-center text-primary mb-5 md:mb-8 floating border-[3px] md:border-[5px] border-white shadow-md group-hover:shadow-2xl group-hover:rotate-12 group-hover:scale-110 transition-all duration-300">
+                        <span class="material-symbols-outlined text-2xl min-[375px]:text-3xl md:text-4xl">password</span>
+                    </div>
+                    <h3 class="relative z-10 font-headline-md text-xl min-[375px]:text-2xl md:text-3xl text-primary mb-3 md:mb-4 font-black group-hover:text-secondary transition-colors">Sandi Interaktif</h3>
+                    <p class="relative z-10 text-on-surface-variant font-body-md text-xs min-[375px]:text-sm md:text-lg leading-relaxed flex-grow">Dekripsi sandi Morse, Rumput, dan Kotak secara instan dengan input keyboard interaktif khusus.</p>
+                    
+                    <div class="relative z-10 mt-5 md:mt-8 pt-2 w-full flex items-center justify-center opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">
+                        <span class="inline-flex items-center gap-2 bg-surface-container-low px-4 py-2 md:px-5 md:py-2.5 rounded-full border-2 border-primary/10 group-hover:bg-primary group-hover:text-white group-hover:border-primary transition-all font-bold shadow-sm">
+                            <span class="text-[10px] min-[375px]:text-xs md:text-sm uppercase tracking-widest">Pelajari</span>
+                            <span class="material-symbols-outlined text-sm md:text-base group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="relative group reveal" style="transition-delay: 0.1s">
+                <div class="absolute -inset-1 bg-gradient-to-br from-tertiary-fixed to-secondary-fixed rounded-[2rem] md:rounded-[3rem] blur-xl opacity-0 group-hover:opacity-100 transition duration-500 pointer-events-none"></div>
+                
+                <div class="squishy-card relative h-full p-5 min-[375px]:p-6 md:p-10 rounded-[1.5rem] min-[375px]:rounded-[2rem] md:rounded-[3rem] flex flex-col items-center text-center z-10 overflow-hidden bg-white/95 backdrop-blur-xl border-white/60">
+                    <div class="absolute -top-10 -left-10 w-24 h-24 md:w-32 md:h-32 bg-tertiary-fixed/50 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700"></div>
+                    
+                    <div class="relative z-10 w-14 h-14 min-[375px]:w-16 min-[375px]:h-16 md:w-20 md:h-20 bg-tertiary-fixed rounded-full flex items-center justify-center text-tertiary mb-5 md:mb-8 floating border-[3px] md:border-[5px] border-white shadow-md group-hover:shadow-2xl group-hover:-rotate-12 group-hover:scale-110 transition-all duration-300" style="animation-delay: 0.5s">
+                        <span class="material-symbols-outlined text-2xl min-[375px]:text-3xl md:text-4xl">linked_camera</span>
+                    </div>
+                    <h3 class="relative z-10 font-headline-md text-xl min-[375px]:text-2xl md:text-3xl text-primary mb-3 md:mb-4 font-black group-hover:text-secondary transition-colors">Kamera AI Semaphore</h3>
+                    <p class="relative z-10 text-on-surface-variant font-body-md text-xs min-[375px]:text-sm md:text-lg leading-relaxed flex-grow">Terjemahkan gerakan bendera semaphore secara *real-time* menggunakan teknologi Vision AI terkini.</p>
+                    
+                    <div class="relative z-10 mt-5 md:mt-8 pt-2 w-full flex items-center justify-center opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">
+                        <span class="inline-flex items-center gap-2 bg-surface-container-low px-4 py-2 md:px-5 md:py-2.5 rounded-full border-2 border-tertiary/10 group-hover:bg-tertiary group-hover:text-white group-hover:border-tertiary transition-all font-bold shadow-sm">
+                            <span class="text-[10px] min-[375px]:text-xs md:text-sm uppercase tracking-widest">Pelajari</span>
+                            <span class="material-symbols-outlined text-sm md:text-base group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="relative group reveal" style="transition-delay: 0.2s">
+                <div class="absolute -inset-1 bg-gradient-to-br from-secondary-fixed to-primary-fixed rounded-[2rem] md:rounded-[3rem] blur-xl opacity-0 group-hover:opacity-100 transition duration-500 pointer-events-none"></div>
+                
+                <div class="squishy-card relative h-full p-5 min-[375px]:p-6 md:p-10 rounded-[1.5rem] min-[375px]:rounded-[2rem] md:rounded-[3rem] flex flex-col items-center text-center z-10 overflow-hidden bg-white/95 backdrop-blur-xl border-white/60">
+                    <div class="absolute bottom-0 right-0 w-32 h-32 md:w-40 md:h-40 bg-secondary-fixed/50 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700"></div>
+                    
+                    <div class="relative z-10 w-14 h-14 min-[375px]:w-16 min-[375px]:h-16 md:w-20 md:h-20 bg-secondary-fixed rounded-full flex items-center justify-center text-secondary mb-5 md:mb-8 floating border-[3px] md:border-[5px] border-white shadow-md group-hover:shadow-2xl group-hover:rotate-12 group-hover:scale-110 transition-all duration-300" style="animation-delay: 1s">
+                        <span class="material-symbols-outlined text-2xl min-[375px]:text-3xl md:text-4xl">quiz</span>
+                    </div>
+                    <h3 class="relative z-10 font-headline-md text-xl min-[375px]:text-2xl md:text-3xl text-primary mb-3 md:mb-4 font-black group-hover:text-secondary transition-colors">Tantangan Kuis</h3>
+                    <p class="relative z-10 text-on-surface-variant font-body-md text-xs min-[375px]:text-sm md:text-lg leading-relaxed flex-grow">Uji pengetahuan kepramukaanmu dan kumpulkan *badge* prestasi digital keren setiap minggunya.</p>
+                    
+                    <div class="relative z-10 mt-5 md:mt-8 pt-2 w-full flex items-center justify-center opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">
+                        <span class="inline-flex items-center gap-2 bg-surface-container-low px-4 py-2 md:px-5 md:py-2.5 rounded-full border-2 border-secondary/10 group-hover:bg-secondary group-hover:text-white group-hover:border-secondary transition-all font-bold shadow-sm">
+                            <span class="text-[10px] min-[375px]:text-xs md:text-sm uppercase tracking-widest">Pelajari</span>
+                            <span class="material-symbols-outlined text-sm md:text-base group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="relative group reveal" style="transition-delay: 0.3s">
+                <div class="absolute -inset-1 bg-gradient-to-br from-surface-container-high to-surface-variant rounded-[2rem] md:rounded-[3rem] blur-xl opacity-0 group-hover:opacity-100 transition duration-500 pointer-events-none"></div>
+                
+                <div class="squishy-card relative h-full p-5 min-[375px]:p-6 md:p-10 rounded-[1.5rem] min-[375px]:rounded-[2rem] md:rounded-[3rem] flex flex-col items-center text-center z-10 overflow-hidden bg-white/95 backdrop-blur-xl border-white/60">
+                    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 md:w-48 md:h-48 bg-surface-container-highest/50 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700"></div>
+                    
+                    <div class="relative z-10 w-14 h-14 min-[375px]:w-16 min-[375px]:h-16 md:w-20 md:h-20 bg-surface-container-high rounded-full flex items-center justify-center text-primary mb-5 md:mb-8 floating border-[3px] md:border-[5px] border-white shadow-md group-hover:shadow-2xl group-hover:-rotate-12 group-hover:scale-110 transition-all duration-300" style="animation-delay: 0.3s">
+                        <span class="material-symbols-outlined text-2xl min-[375px]:text-3xl md:text-4xl">my_location</span>
+                    </div>
+                    <h3 class="relative z-10 font-headline-md text-xl min-[375px]:text-2xl md:text-3xl text-primary mb-3 md:mb-4 font-black group-hover:text-secondary transition-colors">Navigasi Presisi</h3>
+                    <p class="relative z-10 text-on-surface-variant font-body-md text-xs min-[375px]:text-sm md:text-lg leading-relaxed flex-grow">Akses peta *offline* dengan kompas digital cerdas terintegrasi untuk orientasi medan yang akurat.</p>
+                    
+                    <div class="relative z-10 mt-5 md:mt-8 pt-2 w-full flex items-center justify-center opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">
+                        <span class="inline-flex items-center gap-2 bg-surface-container-low px-4 py-2 md:px-5 md:py-2.5 rounded-full border-2 border-primary/10 group-hover:bg-primary group-hover:text-white group-hover:border-primary transition-all font-bold shadow-sm">
+                            <span class="text-[10px] min-[375px]:text-xs md:text-sm uppercase tracking-widest">Pelajari</span>
+                            <span class="material-symbols-outlined text-sm md:text-base group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="relative group reveal" style="transition-delay: 0.4s">
+                <div class="absolute -inset-1 bg-gradient-to-br from-primary-fixed-dim to-secondary-fixed-dim rounded-[2rem] md:rounded-[3rem] blur-xl opacity-0 group-hover:opacity-100 transition duration-500 pointer-events-none"></div>
+                
+                <div class="squishy-card relative h-full p-5 min-[375px]:p-6 md:p-10 rounded-[1.5rem] min-[375px]:rounded-[2rem] md:rounded-[3rem] flex flex-col items-center text-center z-10 overflow-hidden bg-white/95 backdrop-blur-xl border-white/60">
+                    <div class="absolute -top-10 right-0 w-24 h-24 md:w-32 md:h-32 bg-primary-fixed-dim/50 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700"></div>
+                    
+                    <div class="relative z-10 w-14 h-14 min-[375px]:w-16 min-[375px]:h-16 md:w-20 md:h-20 bg-primary-fixed-dim rounded-full flex items-center justify-center text-primary mb-5 md:mb-8 floating border-[3px] md:border-[5px] border-white shadow-md group-hover:shadow-2xl group-hover:rotate-12 group-hover:scale-110 transition-all duration-300" style="animation-delay: 0.8s">
+                        <span class="material-symbols-outlined text-2xl min-[375px]:text-3xl md:text-4xl">menu_book</span>
+                    </div>
+                    <h3 class="relative z-10 font-headline-md text-xl min-[375px]:text-2xl md:text-3xl text-primary mb-3 md:mb-4 font-black group-hover:text-secondary transition-colors">Materi SKU &amp; SKK</h3>
+                    <p class="relative z-10 text-on-surface-variant font-body-md text-xs min-[375px]:text-sm md:text-lg leading-relaxed flex-grow">Akses perpustakaan kurikulum Syarat Kecakapan Umum lengkap dengan ilustrasi pendukung visual.</p>
+                    
+                    <div class="relative z-10 mt-5 md:mt-8 pt-2 w-full flex items-center justify-center opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">
+                        <span class="inline-flex items-center gap-2 bg-surface-container-low px-4 py-2 md:px-5 md:py-2.5 rounded-full border-2 border-primary/10 group-hover:bg-primary group-hover:text-white group-hover:border-primary transition-all font-bold shadow-sm">
+                            <span class="text-[10px] min-[375px]:text-xs md:text-sm uppercase tracking-widest">Pelajari</span>
+                            <span class="material-symbols-outlined text-sm md:text-base group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="relative group reveal" style="transition-delay: 0.5s">
+                <div class="absolute -inset-1 bg-gradient-to-br from-tertiary-fixed-dim to-surface-container-high rounded-[2rem] md:rounded-[3rem] blur-xl opacity-0 group-hover:opacity-100 transition duration-500 pointer-events-none"></div>
+                
+                <div class="squishy-card relative h-full p-5 min-[375px]:p-6 md:p-10 rounded-[1.5rem] min-[375px]:rounded-[2rem] md:rounded-[3rem] flex flex-col items-center text-center z-10 overflow-hidden bg-white/95 backdrop-blur-xl border-white/60">
+                    <div class="absolute bottom-0 left-0 w-32 h-32 md:w-40 md:h-40 bg-tertiary-fixed-dim/50 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700"></div>
+                    
+                    <div class="relative z-10 w-14 h-14 min-[375px]:w-16 min-[375px]:h-16 md:w-20 md:h-20 bg-tertiary-fixed-dim rounded-full flex items-center justify-center text-tertiary mb-5 md:mb-8 floating border-[3px] md:border-[5px] border-white shadow-md group-hover:shadow-2xl group-hover:-rotate-12 group-hover:scale-110 transition-all duration-300" style="animation-delay: 1.2s">
+                        <span class="material-symbols-outlined text-2xl min-[375px]:text-3xl md:text-4xl">handyman</span>
+                    </div>
+                    <h3 class="relative z-10 font-headline-md text-xl min-[375px]:text-2xl md:text-3xl text-primary mb-3 md:mb-4 font-black group-hover:text-secondary transition-colors">Panduan Survival</h3>
+                    <p class="relative z-10 text-on-surface-variant font-body-md text-xs min-[375px]:text-sm md:text-lg leading-relaxed flex-grow">Tips taktis pertolongan pertama, mendirikan bivak, dan membuat perapian dalam kondisi cuaca ekstrem.</p>
+                    
+                    <div class="relative z-10 mt-5 md:mt-8 pt-2 w-full flex items-center justify-center opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">
+                        <span class="inline-flex items-center gap-2 bg-surface-container-low px-4 py-2 md:px-5 md:py-2.5 rounded-full border-2 border-tertiary/10 group-hover:bg-tertiary group-hover:text-white group-hover:border-tertiary transition-all font-bold shadow-sm">
+                            <span class="text-[10px] min-[375px]:text-xs md:text-sm uppercase tracking-widest">Pelajari</span>
+                            <span class="material-symbols-outlined text-sm md:text-base group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    
+    <div class="absolute bottom-0 left-0 w-full h-8 min-[375px]:h-12 md:h-24 bg-background wavy-divider z-20"></div>
+</section>
+
+        <section class="py-20 md:py-32 bg-surface px-4 md:px-container-margin-desktop overflow-hidden" id="ai-spotlight">
+            <div class="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-12 lg:gap-24">
+                
+                <div class="flex-1 reveal w-full">
+                    <div class="relative group max-w-[320px] sm:max-w-md md:max-w-full mx-auto">
+                        <div class="absolute -inset-8 md:-inset-16 bg-secondary-fixed opacity-30 blur-[60px] md:blur-[100px] rounded-full floating"></div>
+                        <div class="absolute -inset-2 md:-inset-4 bg-gradient-to-tr from-secondary to-transparent opacity-20 blur-xl md:blur-2xl rounded-[3rem] md:rounded-[4rem]"></div>
+                        
+                        <div class="relative bg-white p-4 md:p-8 rounded-[3rem] md:rounded-[4rem] shadow-[0_20px_50px_rgba(0,0,0,0.1)] md:shadow-[0_40px_100px_rgba(0,0,0,0.1)] border-[4px] md:border-[8px] border-surface-container-high transform lg:-rotate-3 transition-transform duration-700 group-hover:rotate-0 group-hover:scale-[1.02]">
+                            <img class="w-full h-[350px] sm:h-[450px] md:h-[550px] object-cover rounded-[2rem] md:rounded-[3rem]" data-alt="AI Semaphore Detection Illustration" src="https://sipjkdlfjzmxptldxgxa.supabase.co/storage/v1/object/public/images/kompress_squere.jpg"/>
+                            
+                            <div class="absolute -bottom-6 -right-6 md:-bottom-10 md:-right-10 w-20 h-20 md:w-32 md:h-32 bg-secondary rounded-full flex items-center justify-center border-[6px] md:border-[8px] border-white shadow-2xl floating">
+                                <span class="material-symbols-outlined text-white text-4xl md:text-6xl">verified</span>
+                            </div>
+                            
+                            <div class="absolute -top-6 left-6 md:-top-10 md:left-10 text-secondary-container floating" style="animation-delay: 0.5s"><span class="material-symbols-outlined text-4xl md:text-6xl" style="font-variation-settings: 'FILL' 1;">star</span></div>
+                            <div class="absolute top-1/2 -left-6 md:-left-10 text-primary-fixed floating" style="animation-delay: 1.2s"><span class="material-symbols-outlined text-3xl md:text-4xl" style="font-variation-settings: 'FILL' 1;">star</span></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex-1 reveal text-center lg:text-left">
+                    <span class="bg-tertiary-container text-on-tertiary-container px-6 py-2 md:px-8 md:py-3 rounded-full font-label-sm md:font-label-lg font-bold uppercase tracking-widest mb-6 md:mb-10 inline-block shadow-lg border-2 border-white text-[10px] md:text-xs">Teknologi Terkini</span>
+                    <h2 class="font-headline-lg text-4xl sm:text-5xl md:text-6xl text-primary mb-6 md:mb-10 font-extrabold leading-tight">Deteksi Vision AI <br class="hidden lg:block"/>Semaphore</h2>
+                    <p class="text-on-surface-variant font-body-lg text-base sm:text-lg md:text-xl mb-8 md:mb-12 leading-relaxed font-medium">
+                        Lupakan menghafal manual yang membosankan. Cukup arahkan kamera smartphone Anda, dan biarkan algoritma cerdas kami menerjemahkan setiap pesan secara real-time.
+                    </p>
+                    <div class="space-y-4 md:space-y-8 max-w-lg mx-auto lg:mx-0">
+                        <div class="group flex items-center gap-4 md:gap-6 p-4 md:p-6 bg-surface-container-low rounded-[2rem] md:rounded-[2.5rem] border-[3px] md:border-[4px] border-white shadow-lg hover:shadow-2xl transition-all hover:-translate-y-2 cursor-pointer text-left">
+                            <div class="bg-primary text-on-primary p-3 md:p-5 rounded-2xl md:rounded-3xl group-hover:rotate-12 transition-transform">
+                                <span class="material-symbols-outlined text-2xl md:text-3xl">auto_fix_high</span>
+                            </div>
+                            <div>
+                                <span class="font-headline-md text-xl md:text-2xl text-primary block mb-0.5 md:mb-1">Akurasi 98%</span>
+                                <span class="text-on-surface-variant font-medium text-sm md:text-lg leading-tight block">Optimal dalam berbagai kondisi cahaya.</span>
+                            </div>
+                        </div>
+                        <div class="group flex items-center gap-4 md:gap-6 p-4 md:p-6 bg-surface-container-low rounded-[2rem] md:rounded-[2.5rem] border-[3px] md:border-[4px] border-white shadow-lg hover:shadow-2xl transition-all hover:-translate-y-2 cursor-pointer text-left">
+                            <div class="bg-secondary text-white p-3 md:p-5 rounded-2xl md:rounded-3xl group-hover:rotate-12 transition-transform">
+                                <span class="material-symbols-outlined text-2xl md:text-3xl">bolt</span>
+                            </div>
+                            <div>
+                                <span class="font-headline-md text-xl md:text-2xl text-primary block mb-0.5 md:mb-1">Respons Instan</span>
+                                <span class="text-on-surface-variant font-medium text-sm md:text-lg leading-tight block">Terjemahan muncul dalam kejap mata.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-20 md:py-32 px-4 md:px-container-margin-desktop" id="download">
+            <div class="max-w-7xl mx-auto bg-primary text-on-primary rounded-[3rem] md:rounded-[5rem] p-8 sm:p-12 md:p-32 relative overflow-hidden shadow-[0_30px_60px_rgba(30,10,7,0.4)] md:shadow-[0_50px_100px_rgba(30,10,7,0.4)] border-b-[12px] md:border-b-[24px] border-black/30">
+                
+                <div class="absolute top-10 right-10 md:right-20 opacity-20 md:opacity-30 floating">
+                    <span class="material-symbols-outlined text-[100px] md:text-[180px] text-secondary-container">forest</span>
+                </div>
+                <div class="absolute bottom-5 left-5 md:bottom-10 md:left-10 opacity-20 md:opacity-30 floating" style="animation-delay: 2s">
+                    <span class="material-symbols-outlined text-[80px] md:text-[150px] text-primary-fixed">landscape</span>
+                </div>
+                <div class="absolute top-1/2 left-1/4 opacity-10 floating hidden sm:block" style="animation-delay: 1s">
+                    <span class="material-symbols-outlined text-[120px] text-white">cloud</span>
+                </div>
+                
+                <div class="relative z-10 flex flex-col items-center text-center">
+                    <div class="reveal mb-12 md:mb-16">
+                        <h2 class="font-headline-lg text-4xl sm:text-5xl md:text-8xl text-white mb-6 md:mb-10 font-extrabold tracking-tighter leading-tight">Siap Menjadi <br class="sm:hidden"/>Pramuka Modern?</h2>
+                        <p class="text-primary-fixed-dim font-body-lg max-w-3xl mx-auto text-lg sm:text-2xl md:text-3xl opacity-90 font-medium leading-relaxed px-2">Unduh Scoutify sekarang dan bergabunglah dengan ribuan scout keren lainnya di seluruh Indonesia!</p>
+                    </div>
+                    
+                    <div class="flex flex-row flex-wrap justify-center gap-8 sm:gap-16 mb-16 md:mb-24 reveal w-full">
+                        <div class="text-center group w-[40%] sm:w-auto">
+                            <div class="text-4xl sm:text-6xl md:text-8xl font-black text-secondary-container mb-2 md:mb-4 group-hover:scale-110 transition-transform">10K+</div>
+                            <div class="text-[10px] md:text-lg font-black text-white/60 uppercase tracking-[0.2em] md:tracking-[0.3em]">Downloads</div>
+                        </div>
+                        <div class="h-16 md:h-24 w-1 bg-white/20 rounded-full hidden sm:block self-center"></div>
+                        <div class="text-center group w-[40%] sm:w-auto">
+                            <div class="text-4xl sm:text-6xl md:text-8xl font-black text-secondary-container mb-2 md:mb-4 group-hover:scale-110 transition-transform">50+</div>
+                            <div class="text-[10px] md:text-lg font-black text-white/60 uppercase tracking-[0.2em] md:tracking-[0.3em]">Materi SKU</div>
+                        </div>
+                        <div class="h-16 md:h-24 w-1 bg-white/20 rounded-full hidden sm:block self-center"></div>
+                        <div class="text-center group w-full sm:w-auto mt-4 sm:mt-0">
+                            <div class="text-4xl sm:text-6xl md:text-8xl font-black text-secondary-container mb-2 md:mb-4 group-hover:scale-110 transition-transform">4.8</div>
+                            <div class="flex items-center justify-center gap-1 md:gap-2 text-secondary-container mb-2 md:mb-4">
+                                <span class="material-symbols-outlined text-2xl md:text-4xl" style="font-variation-settings: 'FILL' 1;">star</span>
+                                <span class="material-symbols-outlined text-2xl md:text-4xl" style="font-variation-settings: 'FILL' 1;">star</span>
+                                <span class="material-symbols-outlined text-2xl md:text-4xl" style="font-variation-settings: 'FILL' 1;">star</span>
+                                <span class="material-symbols-outlined text-2xl md:text-4xl" style="font-variation-settings: 'FILL' 1;">star</span>
+                                <span class="material-symbols-outlined text-2xl md:text-4xl" style="font-variation-settings: 'FILL' 1;">star</span>
+                            </div>
+                            <div class="text-[10px] md:text-lg font-black text-white/60 uppercase tracking-[0.2em] md:tracking-[0.3em]">Rating</div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-col sm:flex-row gap-4 sm:gap-10 reveal w-full sm:w-auto">
+                        <a href="{{ url_for('google_login') }}" class="bg-white text-primary p-2 md:p-3 pr-6 md:pr-12 rounded-[2rem] md:rounded-full flex items-center gap-4 md:gap-6 hover:scale-105 md:hover:scale-110 transition-all shadow-[0_15px_30px_rgba(0,0,0,0.3)] group border-b-[6px] md:border-b-[10px] border-surface-container-high active:border-b-[3px] active:translate-y-2 w-full justify-center sm:justify-start">
+                            <div class="w-14 h-14 md:w-20 md:h-20 bg-surface-container-lowest border-[3px] md:border-4 border-surface-container-high rounded-full flex items-center justify-center group-hover:rotate-12 transition-transform shrink-0">
+                                <img src="https://sipjkdlfjzmxptldxgxa.supabase.co/storage/v1/object/public/images/google-logo-history-png-2608.png" alt="Google" class="w-7 h-7 md:w-10 md:h-10 object-contain">
+                            </div>
+                            <div class="text-left py-2">
+                                <div class="text-[10px] md:text-sm uppercase font-black leading-none opacity-50 mb-1">Lanjutkan dengan</div>
+                                <div class="text-xl md:text-3xl font-black leading-tight">Google</div>
+                            </div>
+                        </a>
+                        
+                        <a href="#download" class="bg-white text-primary p-2 md:p-3 pr-6 md:pr-12 rounded-[2rem] md:rounded-full flex items-center gap-4 md:gap-6 hover:scale-105 md:hover:scale-110 transition-all shadow-[0_15px_30px_rgba(0,0,0,0.3)] group border-b-[6px] md:border-b-[10px] border-surface-container-high active:border-b-[3px] active:translate-y-2 w-full justify-center sm:justify-start">
+                            <div class="w-14 h-14 md:w-20 md:h-20 bg-surface-container-lowest border-[3px] md:border-4 border-surface-container-high rounded-full flex items-center justify-center group-hover:rotate-12 transition-transform shrink-0">
+                                <img src="https://sipjkdlfjzmxptldxgxa.supabase.co/storage/v1/object/public/images/google-play-png-logo-3799.png" alt="Google Play" class="w-7 h-7 md:w-10 md:h-10 object-contain">
+                            </div>
+                            <div class="text-left py-2">
+                                <div class="text-[10px] md:text-sm uppercase font-black leading-none opacity-50 mb-1">Get it on</div>
+                                <div class="text-xl md:text-3xl font-black leading-tight">Google Play</div>
+                            </div>
+                        </a>
+                    </div>
+                    
+                </div>
+            </div>
+        </section>
+
+        <section class="py-20 md:py-32 bg-surface-container-low relative overflow-hidden" id="testimonials-contact">
+    <div class="absolute top-0 left-0 w-full h-12 md:h-24 bg-surface wavy-divider rotate-180"></div>
+    
+    <div class="max-w-7xl mx-auto px-4 md:px-container-margin-desktop relative z-10 mt-8 md:mt-12 flex flex-col gap-20 md:gap-32">
+        
+        <div class="w-full space-y-10">
+            <div class="flex flex-col sm:flex-row items-center gap-4 md:gap-6 reveal text-center sm:text-left">
+                <h3 class="font-headline-lg text-4xl sm:text-5xl md:text-6xl text-primary font-black leading-tight drop-shadow-sm">Apa Kata Mereka?</h3>
+                <div class="w-24 h-1.5 sm:flex-grow sm:h-2 bg-gradient-to-r from-secondary-container to-transparent rounded-full mt-2 sm:mt-0"></div>
+            </div>
+            
+            <div class="flex overflow-hidden pause-marquee pb-8 w-full mask-fade-edges">
+                
+                <div class="flex gap-6 md:gap-8 animate-marquee min-w-max pr-6 md:pr-8 py-4">
+                    <div class="squishy-card p-6 md:p-8 rounded-[2rem] md:rounded-[3rem] w-[300px] md:w-[380px] bg-white cursor-pointer hover:bg-surface-container-low transition-colors shrink-0">
+                        <div class="flex items-center gap-4 mb-5">
+                            <div class="w-14 h-14 md:w-16 md:h-16 rounded-full overflow-hidden border-4 border-surface-container-high shadow-md shrink-0">
+                                <img alt="User" src="https://ui-avatars.com/api/?name=Adit+Pratama&background=ffca98&color=361F1A&size=128" class="w-full h-full object-cover"/>
+                            </div>
+                            <div>
+                                <div class="font-black text-lg md:text-xl text-primary leading-tight">Adit Pratama</div>
+                                <div class="text-[10px] md:text-xs text-secondary font-black uppercase tracking-widest mt-1">Penggalang Ramu</div>
+                            </div>
+                        </div>
+                        <p class="text-on-surface-variant italic font-medium text-sm md:text-base leading-relaxed">"Sangat membantu pas kemah kemarin. Terutama fitur peta offline-nya beneran nyelamatin waktu tersesat!"</p>
+                    </div>
+                    
+                    <div class="squishy-card p-6 md:p-8 rounded-[2rem] md:rounded-[3rem] w-[300px] md:w-[380px] bg-white cursor-pointer hover:bg-surface-container-low transition-colors shrink-0">
+                        <div class="flex items-center gap-4 mb-5">
+                            <div class="w-14 h-14 md:w-16 md:h-16 rounded-full overflow-hidden border-4 border-surface-container-high shadow-md shrink-0">
+                                <img alt="User" src="https://ui-avatars.com/api/?name=Santi+Wijaya&background=e5beb6&color=361F1A&size=128" class="w-full h-full object-cover"/>
+                            </div>
+                            <div>
+                                <div class="font-black text-lg md:text-xl text-primary leading-tight">Santi Wijaya</div>
+                                <div class="text-[10px] md:text-xs text-secondary font-black uppercase tracking-widest mt-1">Pembina Pramuka</div>
+                            </div>
+                        </div>
+                        <p class="text-on-surface-variant italic font-medium text-sm md:text-base leading-relaxed">"Aplikasi ini membuat materi SKU jadi jauh lebih menarik buat anak-anak didik saya. Fitur kuisnya juara!"</p>
+                    </div>
+
+                    <div class="squishy-card p-6 md:p-8 rounded-[2rem] md:rounded-[3rem] w-[300px] md:w-[380px] bg-white cursor-pointer hover:bg-surface-container-low transition-colors shrink-0">
+                        <div class="flex items-center gap-4 mb-5">
+                            <div class="w-14 h-14 md:w-16 md:h-16 rounded-full overflow-hidden border-4 border-surface-container-high shadow-md shrink-0">
+                                <img alt="User" src="https://ui-avatars.com/api/?name=Budi+Santoso&background=b3ccc4&color=361F1A&size=128" class="w-full h-full object-cover"/>
+                            </div>
+                            <div>
+                                <div class="font-black text-lg md:text-xl text-primary leading-tight">Budi Santoso</div>
+                                <div class="text-[10px] md:text-xs text-secondary font-black uppercase tracking-widest mt-1">Penegak Bantara</div>
+                            </div>
+                        </div>
+                        <p class="text-on-surface-variant italic font-medium text-sm md:text-base leading-relaxed">"AI Semaphore-nya gila sih! Tinggal arahin kamera, langsung terjemah otomatis. Keren banget aplikasinya!"</p>
+                    </div>
+                </div>
+
+                <div class="flex gap-6 md:gap-8 animate-marquee min-w-max pr-6 md:pr-8 py-4" aria-hidden="true">
+                    <div class="squishy-card p-6 md:p-8 rounded-[2rem] md:rounded-[3rem] w-[300px] md:w-[380px] bg-white cursor-pointer hover:bg-surface-container-low transition-colors shrink-0">
+                        <div class="flex items-center gap-4 mb-5">
+                            <div class="w-14 h-14 md:w-16 md:h-16 rounded-full overflow-hidden border-4 border-surface-container-high shadow-md shrink-0">
+                                <img alt="User" src="https://ui-avatars.com/api/?name=Adit+Pratama&background=ffca98&color=361F1A&size=128" class="w-full h-full object-cover"/>
+                            </div>
+                            <div>
+                                <div class="font-black text-lg md:text-xl text-primary leading-tight">Adit Pratama</div>
+                                <div class="text-[10px] md:text-xs text-secondary font-black uppercase tracking-widest mt-1">Penggalang Ramu</div>
+                            </div>
+                        </div>
+                        <p class="text-on-surface-variant italic font-medium text-sm md:text-base leading-relaxed">"Sangat membantu pas kemah kemarin. Terutama fitur peta offline-nya beneran nyelamatin waktu tersesat!"</p>
+                    </div>
+                    
+                    <div class="squishy-card p-6 md:p-8 rounded-[2rem] md:rounded-[3rem] w-[300px] md:w-[380px] bg-white cursor-pointer hover:bg-surface-container-low transition-colors shrink-0">
+                        <div class="flex items-center gap-4 mb-5">
+                            <div class="w-14 h-14 md:w-16 md:h-16 rounded-full overflow-hidden border-4 border-surface-container-high shadow-md shrink-0">
+                                <img alt="User" src="https://ui-avatars.com/api/?name=Santi+Wijaya&background=e5beb6&color=361F1A&size=128" class="w-full h-full object-cover"/>
+                            </div>
+                            <div>
+                                <div class="font-black text-lg md:text-xl text-primary leading-tight">Santi Wijaya</div>
+                                <div class="text-[10px] md:text-xs text-secondary font-black uppercase tracking-widest mt-1">Pembina Pramuka</div>
+                            </div>
+                        </div>
+                        <p class="text-on-surface-variant italic font-medium text-sm md:text-base leading-relaxed">"Aplikasi ini membuat materi SKU jadi jauh lebih menarik buat anak-anak didik saya. Fitur kuisnya juara!"</p>
+                    </div>
+
+                    <div class="squishy-card p-6 md:p-8 rounded-[2rem] md:rounded-[3rem] w-[300px] md:w-[380px] bg-white cursor-pointer hover:bg-surface-container-low transition-colors shrink-0">
+                        <div class="flex items-center gap-4 mb-5">
+                            <div class="w-14 h-14 md:w-16 md:h-16 rounded-full overflow-hidden border-4 border-surface-container-high shadow-md shrink-0">
+                                <img alt="User" src="https://ui-avatars.com/api/?name=Budi+Santoso&background=b3ccc4&color=361F1A&size=128" class="w-full h-full object-cover"/>
+                            </div>
+                            <div>
+                                <div class="font-black text-lg md:text-xl text-primary leading-tight">Budi Santoso</div>
+                                <div class="text-[10px] md:text-xs text-secondary font-black uppercase tracking-widest mt-1">Penegak Bantara</div>
+                            </div>
+                        </div>
+                        <p class="text-on-surface-variant italic font-medium text-sm md:text-base leading-relaxed">"AI Semaphore-nya gila sih! Tinggal arahin kamera, langsung terjemah otomatis. Keren banget aplikasinya!"</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="reveal w-full max-w-4xl mx-auto">
+            <div class="bg-white rounded-[2.5rem] md:rounded-[4rem] border-[6px] md:border-[8px] border-surface-container-high shadow-[0_20px_40px_rgba(0,0,0,0.1)] border-b-[12px] md:border-b-[16px] overflow-hidden">
+                
+                <button id="toggle-contact-form" class="w-full p-6 sm:p-8 flex items-center justify-between bg-primary-fixed/20 hover:bg-primary-fixed/40 transition-colors animate-wiggle outline-none focus:outline-none">
+                    <div class="flex items-center gap-4 md:gap-6 text-left">
+                        <div class="w-14 h-14 md:w-16 md:h-16 bg-primary rounded-full flex items-center justify-center text-white border-4 border-white shadow-md wiggle-icon shrink-0">
+                            <span class="material-symbols-outlined text-2xl md:text-3xl">mark_email_unread</span>
+                        </div>
+                        <div>
+                            <h3 class="font-headline-md text-xl md:text-3xl text-primary font-black leading-tight">Punya Pertanyaan Lain?</h3>
+                            <p class="text-xs md:text-base text-on-surface-variant font-bold mt-1">Ketuk untuk mengirim surat kepada tim kami</p>
+                        </div>
+                    </div>
+                    <div id="contact-chevron" class="w-10 h-10 md:w-12 md:h-12 bg-white rounded-full flex items-center justify-center text-primary shadow-sm border-2 border-surface-container-high transition-transform duration-500 shrink-0">
+                        <span class="material-symbols-outlined md:text-2xl">expand_more</span>
+                    </div>
+                </button>
+
+                <div id="contact-form-content" class="form-dropdown-content bg-white">
+                    <div class="p-6 sm:p-8 md:p-10 border-t-[4px] border-surface-container-high/50">
+                        <form id="contact-form" class="space-y-6 md:space-y-8">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                                <div>
+                                    <label class="block text-[12px] md:text-[14px] font-black text-on-surface-variant mb-2 uppercase tracking-widest">Nama Lengkap</label>
+                                    <input class="w-full bg-surface-container-low border-[3px] md:border-[4px] border-surface-container-high rounded-[1.5rem] p-4 focus:ring-4 focus:ring-secondary/10 focus:border-secondary transition-all outline-none font-bold text-sm md:text-base" placeholder="Nama Anda" type="text" required/>
+                                </div>
+                                <div>
+                                    <label class="block text-[12px] md:text-[14px] font-black text-on-surface-variant mb-2 uppercase tracking-widest">Email</label>
+                                    <input class="w-full bg-surface-container-low border-[3px] md:border-[4px] border-surface-container-high rounded-[1.5rem] p-4 focus:ring-4 focus:ring-secondary/10 focus:border-secondary transition-all outline-none font-bold text-sm md:text-base" placeholder="nama@email.com" type="email" required/>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-[12px] md:text-[14px] font-black text-on-surface-variant mb-2 uppercase tracking-widest">Pesan</label>
+                                <textarea class="w-full bg-surface-container-low border-[3px] md:border-[4px] border-surface-container-high rounded-[1.5rem] p-4 focus:ring-4 focus:ring-secondary/10 focus:border-secondary transition-all outline-none font-bold text-sm md:text-base resize-none" placeholder="Ada yang bisa kami bantu atau sarankan?" rows="4" required></textarea>
+                            </div>
+                            <button class="w-full bg-primary text-on-primary py-4 md:py-5 rounded-full font-black text-lg md:text-xl hover:bg-secondary md:hover:scale-[1.02] transition-all shadow-[0_10px_20px_rgba(30,10,7,0.2)] border-b-[4px] md:border-b-[6px] border-black active:translate-y-1 active:border-b-[2px] flex items-center justify-center gap-2 mt-4" type="submit">
+                                <span class="material-symbols-outlined text-xl md:text-2xl">send</span>
+                                <span>Kirim Pesan</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        
+    </div>
+</section>
+    </main>
+
+    {% include 'utils/footer.html' %}
+
+    <script>
+        // --- LOGIKA DROPDOWN HUBUNGI KAMI ---
+        const contactToggleBtn = document.getElementById('toggle-contact-form');
+        const contactFormContent = document.getElementById('contact-form-content');
+        const contactChevron = document.getElementById('contact-chevron');
+
+        if (contactToggleBtn && contactFormContent) {
+            contactToggleBtn.addEventListener('click', () => {
+                const isOpen = contactFormContent.classList.contains('open');
+                
+                if (isOpen) {
+                    // Tutup Form
+                    contactFormContent.style.maxHeight = null;
+                    contactFormContent.classList.remove('open');
+                    contactChevron.style.transform = 'rotate(0deg)';
+                } else {
+                    // Buka Form
+                    contactFormContent.classList.add('open');
+                    // Dapatkan tinggi sebenarnya dari isi form
+                    contactFormContent.style.maxHeight = contactFormContent.scrollHeight + "px";
+                    contactChevron.style.transform = 'rotate(180deg)';
+                }
+            });
+        }
+
+
+
+        // Form Submission Logic
+        const form = document.getElementById('contact-form');
+        if (form) {
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const btn = e.target.querySelector('button[type="submit"]');
+                const originalText = btn.innerHTML;
+                
+                // State: Mengirim
+                btn.innerHTML = '<span class="material-symbols-outlined animate-spin text-2xl md:text-3xl">sync</span> <span>Mengirim...</span>';
+                btn.disabled = true;
+                
+                setTimeout(() => {
+                    // State: Terkirim
+                    btn.innerHTML = '<span class="material-symbols-outlined text-2xl md:text-3xl">done_all</span> <span>Terkirim!</span>';
+                    btn.classList.replace('bg-primary', 'bg-secondary');
+                    
+                    setTimeout(() => {
+                        // Reset Form & Button
+                        btn.innerHTML = originalText;
+                        btn.classList.replace('bg-secondary', 'bg-primary');
+                        btn.disabled = false;
+                        e.target.reset();
+                    }, 3000);
+                }, 1500);
+            });
+        }
+
+        // Parallax Effect
+        window.addEventListener('scroll', () => {
+            if(window.innerWidth > 768) {
+                const scrolled = window.pageYOffset;
+                const layers = document.querySelectorAll('.parallax-layer');
+                layers.forEach(layer => {
+                    const speed = layer.getAttribute('data-speed');
+                    const yPos = -(scrolled * speed);
+                    layer.style.transform = `translateY(${yPos}px)`;
+                });
+            }
+        });
+
+        // Intersection Observer (Efek Memunculkan Elemen/Reveal)
+        const revealCallback = (entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        };
+
+        const revealObserver = new IntersectionObserver(revealCallback, {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        });
+
+        document.querySelectorAll('.reveal').forEach(el => {
+            revealObserver.observe(el);
+        });
+    </script>
+</body>
+</html>

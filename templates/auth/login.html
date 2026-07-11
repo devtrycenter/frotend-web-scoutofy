@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+    <title>Masuk ke Scoutify - Petualangan Menanti!</title>
+    
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    
+    <style>
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: #fcf9ed;
+            overflow-x: hidden;
+        }
+
+        .squishy-button {
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 8px 0px rgba(148, 74, 24, 0.2);
+        }
+
+        .squishy-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 0px rgba(148, 74, 24, 0.15);
+        }
+
+        .squishy-button:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0px rgba(148, 74, 24, 0.2);
+        }
+
+        .floating-shape {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+
+        .cloud-card {
+            border: 2px solid #dac2b6;
+            box-shadow: 20px 20px 0px rgba(148, 74, 24, 0.05);
+        }
+
+        .sticker-badge {
+            border: 2px solid currentColor;
+        }
+    </style>
+    
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#944a18",
+                        "secondary": "#47664b",
+                        "surface-dim": "#dddacf",
+                        "tertiary-fixed": "#ffe173",
+                        "error": "#ba1a1a",
+                        "surface": "#fcf9ed",
+                        "on-error-container": "#93000a",
+                        "on-primary-fixed-variant": "#763300",
+                        "tertiary-fixed-dim": "#e8c426",
+                        "surface-variant": "#e5e3d7",
+                        "on-primary-container": "#773401",
+                        "on-tertiary": "#ffffff",
+                        "surface-container": "#f1eee2",
+                        "secondary-fixed-dim": "#adcfaf",
+                        "on-primary-fixed": "#331200",
+                        "on-secondary": "#ffffff",
+                        "outline-variant": "#dac2b6",
+                        "tertiary-container": "#d7b40e",
+                        "surface-container-highest": "#e5e3d7",
+                        "on-error": "#ffffff",
+                        "outline": "#877369",
+                        "inverse-on-surface": "#f4f1e5",
+                        "background": "#fcf9ed",
+                        "primary-container": "#ff9f66",
+                        "surface-container-high": "#ebe8dd",
+                        "on-secondary-fixed-variant": "#304d35",
+                        "on-primary": "#ffffff",
+                        "surface-tint": "#944a18",
+                        "on-secondary-fixed": "#03210c",
+                        "on-tertiary-fixed-variant": "#554500",
+                        "surface-bright": "#fcf9ed",
+                        "surface-container-low": "#f7f4e8",
+                        "inverse-surface": "#313129",
+                        "inverse-primary": "#ffb68d",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface-variant": "#54433a",
+                        "on-secondary-container": "#4b6a4f",
+                        "on-surface": "#1c1c15",
+                        "on-tertiary-fixed": "#221b00",
+                        "tertiary": "#705d00",
+                        "primary-fixed-dim": "#ffb68d",
+                        "secondary-fixed": "#c8ebca",
+                        "on-background": "#1c1c15",
+                        "on-tertiary-container": "#564600",
+                        "primary-fixed": "#ffdbc9",
+                        "secondary-container": "#c6e9c7",
+                        "error-container": "#ffdad6"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        "base": "8px",
+                        "section-gap": "48px",
+                        "container-padding-mobile": "20px",
+                        "gutter": "16px",
+                        "container-padding-desktop": "40px"
+                    },
+                    fontFamily: {
+                        "headline-xl": ["Space Grotesk"],
+                        "body-lg": ["Space Grotesk"],
+                        "headline-lg-mobile": ["Space Grotesk"],
+                        "label-md": ["Space Grotesk"],
+                        "body-md": ["Space Grotesk"],
+                        "headline-lg": ["Space Grotesk"]
+                    },
+                    fontSize: {
+                        "headline-xl": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "500" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "700" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "500" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="min-h-screen flex flex-col md:flex-row bg-background">
+    
+    <section class="relative w-full md:w-1/2 flex items-center justify-center p-container-padding-mobile pb-16 md:pb-container-padding-desktop md:p-container-padding-desktop bg-surface-container overflow-hidden pt-12 md:pt-0">
+        <div class="absolute inset-0 z-0">
+            <div class="absolute top-10 left-10 w-32 h-32 rounded-full bg-primary-container opacity-20 floating-shape" style="animation-delay: 0s"></div>
+            <div class="absolute bottom-20 right-10 w-48 h-48 rounded-full bg-secondary-container opacity-20 floating-shape" style="animation-delay: 1s"></div>
+            <div class="absolute top-1/2 left-1/4 w-16 h-16 rounded-xl bg-tertiary-fixed opacity-30 floating-shape rotate-12" style="animation-delay: 2s"></div>
+        </div>
+        
+        <div class="relative z-10 max-w-lg text-center md:text-left">
+            <div class="mb-6 md:mb-8">
+                <span class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary flex items-center gap-2 justify-center md:justify-start">
+                    <span class="material-symbols-outlined text-4xl" data-weight="fill">scuba_diving</span>
+                    Scoutify
+                </span>
+            </div>
+            
+            <h1 class="font-headline-xl text-[36px] leading-[44px] md:text-headline-xl text-primary mb-8 md:mb-12">
+                Jelajahi Rimba Bersama Scoutify
+            </h1>
+            
+            <div class="flex flex-wrap gap-3 md:gap-4 justify-center md:justify-start">
+                <div class="sticker-badge bg-primary-fixed text-on-primary-fixed px-5 md:px-6 py-2.5 md:py-3 rounded-full flex items-center gap-2 transform -rotate-2 hover:rotate-0 transition-transform cursor-default">
+                    <span class="material-symbols-outlined text-sm md:text-base" data-weight="fill">groups</span>
+                    <span class="font-label-md text-label-md">12K+ Anggota</span>
+                </div>
+                <div class="sticker-badge bg-secondary-fixed text-on-secondary-fixed px-5 md:px-6 py-2.5 md:py-3 rounded-full flex items-center gap-2 transform rotate-3 hover:rotate-0 transition-transform cursor-default">
+                    <span class="material-symbols-outlined text-sm md:text-base" data-weight="fill">home_pin</span>
+                    <span class="font-label-md text-label-md">480 Gugus Depan</span>
+                </div>
+                <div class="sticker-badge bg-tertiary-fixed text-on-tertiary-fixed px-5 md:px-6 py-2.5 md:py-3 rounded-full flex items-center gap-2 transform -rotate-1 hover:rotate-0 transition-transform cursor-default">
+                    <span class="material-symbols-outlined text-sm md:text-base" data-weight="fill">verified</span>
+                    <span class="font-label-md text-label-md">98% Puas</span>
+                </div>
+            </div>
+            
+            <div class="mt-16 relative hidden md:block">
+                <img alt="Scouting adventure" class="w-full h-80 object-cover rounded-xl border-4 border-white shadow-xl rotate-2" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBUuArDfdAWQxpIiYHx0wDuCv5WyW9znWs8AS1l1DPlLvffmWihP9cSbB40JAkesw-JaVWRWPk53np8waf_VyfQUSackBAcU4bWR5Cow_gGJoRX9ORczY_ti-VIeEHqWZnC_MoFk_UK-Zjei-cdcC3JKDYywGNw5MHjSf4uKjKlDovpSGz4K5nqBLfeYt3a2-eD8NrYlsWV5iFubqOcYZhTEJ737-jhabnb9zTXwIkxMRx3lYA1KBXUsJwN9qXZ6jkb6Nt944R7Tt8" />
+                <div class="absolute -top-6 -right-6 w-20 h-20 bg-tertiary-container rounded-full flex items-center justify-center border-4 border-white shadow-lg floating-shape">
+                    <span class="material-symbols-outlined text-white text-3xl">local_fire_department</span>
+                </div>
+                <div class="absolute -bottom-4 -left-4 w-16 h-16 bg-secondary rounded-full flex items-center justify-center border-4 border-white shadow-lg floating-shape" style="animation-delay: 1.5s">
+                    <span class="material-symbols-outlined text-white text-2xl">forest</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <main class="w-full md:w-1/2 flex items-start md:items-center justify-center p-container-padding-mobile md:p-container-padding-desktop bg-surface relative z-20 -mt-10 md:mt-0 rounded-t-[2.5rem] md:rounded-none pt-10 md:pt-container-padding-desktop">
+        <div class="w-full max-w-md">
+            <div class="cloud-card bg-surface-container-lowest rounded-xl p-6 md:p-10 relative overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-br from-transparent to-primary-fixed opacity-10 pointer-events-none"></div>
+                <div class="relative z-10">
+                    <h2 class="font-headline-lg text-headline-lg text-on-surface mb-2">Selamat Datang Kembali!</h2>
+                    <p class="font-body-md text-body-md text-on-surface-variant mb-8">Siapkan ranselmu dan mulai petualangan baru hari ini.</p>
+                    
+                    <form class="space-y-6" action="{{ url_for('login_post') }}" method="POST">
+                        <div>
+                            <label class="block font-label-md text-label-md text-on-surface mb-2 ml-2">Email Pramuka</label>
+                            <input name="email" class="w-full px-6 py-4 rounded-full border-2 border-surface-variant focus:border-primary focus:ring-0 bg-surface text-body-md transition-colors placeholder:text-surface-dim" placeholder="nama@email.com" type="email" required />
+                        </div>
+                        <div>
+                            <label class="block font-label-md text-label-md text-on-surface mb-2 ml-2">Kata Sandi</label>
+                            <div class="relative">
+                                <input id="password" name="password" class="w-full px-6 py-4 rounded-full border-2 border-surface-variant focus:border-primary focus:ring-0 bg-surface text-body-md transition-colors placeholder:text-surface-dim" placeholder="••••••••" type="password" required />
+                                <button id="togglePassword" class="absolute right-6 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-primary" type="button">
+                                    <span id="passwordIcon" class="material-symbols-outlined">visibility</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between ml-2">
+                            <label class="flex items-center gap-2 cursor-pointer group">
+                                <input class="w-6 h-6 rounded-lg border-2 border-surface-variant text-secondary focus:ring-0 transition-all group-hover:scale-110" type="checkbox" />
+                                <span class="font-label-md text-label-md text-on-surface-variant">Ingat saya</span>
+                            </label>
+                            <a class="font-label-md text-label-md text-primary hover:underline" href="{{ url_for('forgot_password') }}">Lupa Sandi?</a>
+                        </div>
+                        <button type="submit" class="squishy-button w-full bg-primary-container text-on-primary-container font-headline-lg-mobile text-headline-lg-mobile py-4 rounded-full border-b-4 border-on-primary-fixed-variant flex items-center justify-center gap-2">
+                            <span>Masuk Sekarang</span>
+                            <span class="material-symbols-outlined">arrow_forward</span>
+                        </button>
+                    </form>
+
+                    <div class="relative my-10 text-center">
+                        <div class="absolute inset-0 flex items-center">
+                            <div class="w-full border-t-2 border-surface-variant"></div>
+                        </div>
+                        <span class="relative px-4 bg-surface-container-lowest font-label-md text-label-md text-on-surface-variant">Atau gunakan</span>
+                    </div>
+
+                    <a href="{{ url_for('google_login') }}" class="w-full py-4 rounded-full border-2 border-surface-variant hover:bg-surface-container transition-colors flex items-center justify-center gap-3 font-body-md text-body-md text-on-surface cursor-pointer">
+                        <svg class="w-6 h-6" viewBox="0 0 24 24">
+                            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"></path>
+                            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"></path>
+                            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"></path>
+                            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"></path>
+                        </svg>
+                        Lanjutkan dengan Google
+                    </a>
+
+                    <div class="mt-6 text-center">
+                        <span class="font-body-md text-body-md text-on-surface-variant">Belum punya akun?</span>
+                        <a href="{{ url_for('register') }}" class="font-body-md text-body-md text-primary font-semibold hover:underline">Daftar</a>
+                    </div>
+                </div>
+                <div class="absolute bottom-4 right-4 opacity-20 transform rotate-12 pointer-events-none">
+                    <span class="material-symbols-outlined text-6xl text-primary" data-weight="fill">workspace_premium</span>
+                </div>
+            </div>
+            
+            <div class="mt-8 flex flex-col items-center gap-3 text-center md:hidden pb-6">
+                <div class="flex gap-4">
+                    <a class="text-on-surface-variant font-label-md text-xs hover:text-primary transition-colors" href="{{ url_for('about') }}">Tentang</a>
+                    <span class="text-surface-variant">•</span>
+                    <a class="text-on-surface-variant font-label-md text-xs hover:text-primary transition-colors" href="{{ url_for('privacy') }}">Privasi</a>
+                    <span class="text-surface-variant">•</span>
+                    <a class="text-on-surface-variant font-label-md text-xs hover:text-primary transition-colors" href="{{ url_for('terms') }}">Syarat</a>
+                </div>
+                <p class="font-body-md text-[12px] text-on-surface-variant/70">© 2024 Scoutify.</p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="fixed bottom-0 left-0 w-full py-4 px-container-padding-desktop hidden md:flex justify-between items-center bg-transparent pointer-events-none z-30">
+        <div class="pointer-events-auto">
+            <p class="font-body-md text-body-md text-secondary">© 2024 Scoutify. Dibuat dengan penuh semangat kepramukaan.</p>
+        </div>
+        <div class="flex gap-6 pointer-events-auto">
+            <a class="text-on-surface-variant font-body-md text-body-md hover:text-primary transition-colors" href="{{ url_for('about') }}">Tentang Kami</a>
+            <a class="text-on-surface-variant font-body-md text-body-md hover:text-primary transition-colors" href="{{ url_for('privacy') }}">Privasi</a>
+            <a class="text-on-surface-variant font-body-md text-body-md hover:text-primary transition-colors" href="{{ url_for('terms') }}">Syarat & Ketentuan</a>
+        </div>
+    </footer>
+
+    <script>
+        // Micro-interaction for inputs
+        const inputs = document.querySelectorAll('input');
+        inputs.forEach(input => {
+            input.addEventListener('focus', () => {
+                input.parentElement.closest('div').classList.add('scale-[1.02]');
+                input.style.transition = 'all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+            });
+            input.addEventListener('blur', () => {
+                input.parentElement.closest('div').classList.remove('scale-[1.02]');
+            });
+        });
+
+        // Add "pop" effect for checkbox
+        const checkbox = document.querySelector('input[type="checkbox"]');
+        if(checkbox) {
+            checkbox.addEventListener('change', function() {
+                if(this.checked) {
+                    this.classList.add('scale-125');
+                    setTimeout(() => this.classList.remove('scale-125'), 200);
+                }
+            });
+        }
+
+        // Toggle Password Visibility
+        const togglePassword = document.getElementById("togglePassword");
+        if(togglePassword) {
+            togglePassword.addEventListener("click", function () {
+                const password = document.getElementById("password");
+                const icon = document.getElementById("passwordIcon");
+
+                if (password.type === "password") {
+                    password.type = "text";
+                    icon.innerText = "visibility_off";
+                } else {
+                    password.type = "password";
+                    icon.innerText = "visibility";
+                }
+            });
+        }
+    </script>
+</body>
+</html>

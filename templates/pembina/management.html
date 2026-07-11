@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="id">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>Manajemen Siswa - Scoutify</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+        darkMode: "class",
+        theme: {
+            extend: {
+                "colors": {
+                    "tertiary-container": "#132924",
+                    "secondary-container": "#ffca98",
+                    "on-secondary-container": "#7a532b",
+                    "primary": "#361F1A",
+                    "surface-container-low": "#faf2f0",
+                    "surface-variant": "#e9e1df",
+                    "secondary": "#7d562d",
+                    "primary-fixed": "#ffdad3",
+                    "surface-container-high": "#eee6e5",
+                    "on-secondary-fixed": "#2c1600",
+                    "inverse-surface": "#33302f",
+                    "tertiary": "#00140f",
+                    "surface-container-lowest": "#ffffff",
+                    "on-background": "#1e1b1a",
+                    "surface-container-highest": "#e9e1df",
+                    "on-surface-variant": "#504442",
+                    "on-primary-fixed": "#2b1611",
+                    "on-tertiary-container": "#7a918a",
+                    "on-secondary": "#ffffff",
+                    "outline-variant": "#d4c3bf",
+                    "surface-container": "#f4ecea",
+                    "surface-bright": "#fff8f6",
+                    "surface-tint": "#755751",
+                    "surface": "#fff8f6",
+                    "background": "#fff8f6",
+                    "error": "#ba1a1a",
+                },
+                "borderRadius": {
+                    "DEFAULT": "2rem",
+                    "lg": "3rem",
+                    "xl": "5rem",
+                    "full": "9999px"
+                },
+                "fontFamily": {
+                    "headline-md": ["Space Grotesk"],
+                    "body-md": ["Space Grotesk"],
+                    "headline-lg": ["Space Grotesk"],
+                    "label-lg": ["Space Grotesk"],
+                    "body-lg": ["Space Grotesk"]
+                }
+            },
+        },
+    }
+</script>
+<style>
+    body {
+        background-color: #faf2f0;
+    }
+    
+    /* Dot Pattern Background */
+    .dot-pattern {
+        background-image: radial-gradient(#d4c3bf 1.5px, transparent 1.5px);
+        background-size: 24px 24px;
+    }
+
+    /* Squishy UI Elements */
+    .squishy-btn {
+        transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.5);
+    }
+    .squishy-btn:active {
+        transform: translateY(4px) scale(0.95);
+        border-bottom-width: 2px !important;
+        margin-top: 2px;
+    }
+
+    .card-solid {
+        background: #ffffff;
+        border: 4px solid #eee6e5;
+        border-bottom-width: 8px;
+        border-radius: 2rem;
+        transition: all 0.3s ease;
+    }
+    .card-solid:hover {
+        border-color: #ffca98;
+        transform: translateY(-4px);
+        border-bottom-width: 6px;
+        margin-top: 2px;
+    }
+
+    /* Form Inputs */
+    .input-solid {
+        width: 100%;
+        background: #faf2f0;
+        border: 4px solid #eee6e5;
+        border-radius: 1.5rem;
+        padding: 1rem 1.25rem;
+        font-weight: 700;
+        color: #361F1A;
+        transition: all 0.3s ease;
+        outline: none;
+    }
+    .input-solid:focus {
+        background: #ffffff;
+        border-color: #7d562d;
+        box-shadow: 0 0 0 4px rgba(125, 86, 45, 0.1);
+    }
+    .input-solid::placeholder {
+        color: #827471;
+        font-weight: 500;
+    }
+
+    /* Progress Bar */
+    .progress-track {
+        background: #eee6e5;
+        border-radius: 999px;
+        height: 12px;
+        overflow: hidden;
+        border: 2px solid #e9e1df;
+    }
+    .progress-fill {
+        background: #755751;
+        height: 100%;
+        border-radius: 999px;
+        transition: width 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    /* View Transitions */
+    .view-section {
+        display: none;
+        animation: fadeSlideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .view-section.active {
+        display: block;
+    }
+    @keyframes fadeSlideUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Sidebar */
+    #sidebar { transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #faf2f0; }
+    ::-webkit-scrollbar-thumb { background: #d4c3bf; border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: #827471; }
+</style>
+</head>
+<body class="text-on-background font-body-md dot-pattern h-screen flex overflow-hidden selection:bg-secondary-container">
+
+<!-- ===== SIDEBAR ===== -->
+<aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-72 bg-white border-r-[6px] border-surface-container-high flex flex-col transform -translate-x-full lg:translate-x-0 lg:relative lg:flex-shrink-0 shadow-[20px_0_50px_rgba(0,0,0,0.05)] lg:shadow-none h-full">
+    <div class="p-6 md:p-8 flex items-center justify-between">
+        <a href="dashboard.html" class="flex items-center gap-3 group">
+            <div class="w-12 h-12 bg-secondary rounded-full flex items-center justify-center text-white group-hover:rotate-12 transition-transform shadow-md">
+                <span class="material-symbols-outlined text-3xl">eco</span>
+            </div>
+            <span class="font-headline-lg text-2xl font-extrabold text-primary tracking-tight">Scoutify</span>
+        </a>
+        <button id="close-sidebar" class="lg:hidden text-on-surface-variant hover:text-primary">
+            <span class="material-symbols-outlined text-3xl">close</span>
+        </button>
+    </div>
+
+    <nav class="flex-1 px-4 md:px-6 space-y-3 overflow-y-auto">
+        <a href="dashboard.html" class="flex items-center gap-4 px-5 py-4 text-on-surface-variant hover:bg-surface-container rounded-2xl font-bold transition-colors group">
+            <span class="material-symbols-outlined group-hover:text-secondary transition-colors">dashboard</span>
+            Dashboard
+        </a>
+        <a href="#" class="flex items-center gap-4 px-5 py-4 bg-primary text-white rounded-2xl font-bold shadow-[0_8px_0_#2b1611] border-2 border-primary squishy-btn">
+            <span class="material-symbols-outlined filled">groups</span>
+            Manajemen Siswa
+        </a>
+        <a href="#" class="flex items-center gap-4 px-5 py-4 text-on-surface-variant hover:bg-surface-container rounded-2xl font-bold transition-colors group">
+            <span class="material-symbols-outlined group-hover:text-secondary transition-colors">checklist</span>
+            Uji SKU
+            <span class="ml-auto bg-error text-white text-xs px-2 py-1 rounded-full font-black">5 Baru</span>
+        </a>
+        <a href="#" class="flex items-center gap-4 px-5 py-4 text-on-surface-variant hover:bg-surface-container rounded-2xl font-bold transition-colors group">
+            <span class="material-symbols-outlined group-hover:text-secondary transition-colors">leaderboard</span>
+            Leaderboard
+        </a>
+    </nav>
+
+    <div class="p-6">
+        <a href="index.html" class="flex items-center justify-center gap-3 w-full bg-surface-container-high text-primary px-5 py-4 rounded-2xl font-bold hover:bg-error hover:text-white transition-all shadow-sm border-b-4 border-outline-variant squishy-btn">
+            <span class="material-symbols-outlined">logout</span> Keluar
+        </a>
+    </div>
+</aside>
+
+<!-- Mobile Overlay -->
+<div id="sidebar-overlay" class="fixed inset-0 bg-primary/40 backdrop-blur-sm z-40 hidden lg:hidden"></div>
+
+<!-- ===== MAIN CONTENT ===== -->
+<div class="flex-1 flex flex-col h-full overflow-hidden">
+    
+    <!-- Topbar -->
+    <header class="bg-white/80 backdrop-blur-xl border-b-[6px] border-surface-container-high px-6 py-4 flex items-center justify-between z-30 sticky top-0">
+        <div class="flex items-center gap-4">
+            <button id="open-sidebar" class="lg:hidden text-primary hover:text-secondary transition-colors p-2 bg-surface-container rounded-xl">
+                <span class="material-symbols-outlined text-2xl">menu_open</span>
+            </button>
+            <div>
+                <h1 class="font-headline-md text-xl md:text-2xl font-black text-primary">Manajemen Siswa</h1>
+                <p class="text-on-surface-variant text-xs md:text-sm font-medium hidden sm:block">Kelola data dan progress siswa binaan.</p>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-4">
+            <div class="hidden sm:flex items-center gap-3 pl-4 border-l-4 border-surface-container-high">
+                <div class="text-right">
+                    <div class="font-black text-primary text-sm">Fahri Putra</div>
+                    <div class="text-xs font-bold text-secondary uppercase tracking-widest">Pembina</div>
+                </div>
+                <div class="w-12 h-12 rounded-full overflow-hidden border-[3px] border-secondary-container">
+                    <img src="https://ui-avatars.com/api/?name=Fahri+Putra&background=ffca98&color=361F1A&size=128" alt="Profile" class="w-full h-full object-cover">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Scrollable Area -->
+    <main class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
+        <div class="max-w-7xl mx-auto relative">
+            
+            <!-- ========================================== -->
+            <!-- VIEW 1: DAFTAR SISWA (MANAGEMENT)          -->
+            <!-- ========================================== -->
+            <div id="view-list" class="view-section active space-y-8">
+                
+                <!-- Action Bar -->
+                <div class="flex flex-col md:flex-row gap-4 justify-between items-center bg-white p-4 rounded-[2rem] border-[4px] border-surface-container-high shadow-sm">
+                    <!-- Search & Filter -->
+                    <div class="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
+                        <div class="relative w-full sm:w-72">
+                            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline">search</span>
+                            <input type="text" placeholder="Cari nama atau NIS..." class="w-full bg-surface-container-low border-[3px] border-surface-container-high rounded-full py-3 pl-12 pr-4 font-bold text-sm focus:border-secondary outline-none transition-colors">
+                        </div>
+                        <select class="bg-surface-container-low border-[3px] border-surface-container-high rounded-full py-3 px-5 font-bold text-sm text-primary focus:border-secondary outline-none cursor-pointer w-full sm:w-auto">
+                            <option value="all">Semua Tingkatan</option>
+                            <option value="ramu">Penggalang Ramu</option>
+                            <option value="rakit">Penggalang Rakit</option>
+                            <option value="terap">Penggalang Terap</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Add Button -->
+                    <button onclick="toggleView('view-add')" class="w-full md:w-auto bg-primary text-white px-6 py-3 rounded-full font-bold flex items-center justify-center gap-2 border-b-[4px] border-black/40 hover:bg-secondary squishy-btn shrink-0">
+                        <span class="material-symbols-outlined">person_add</span>
+                        Tambah Siswa Baru
+                    </button>
+                </div>
+
+                <!-- Grid Data Siswa -->
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                    
+                    <!-- Card Siswa 1 -->
+                    <div class="card-solid p-6 flex flex-col gap-5 relative overflow-hidden">
+                        <div class="absolute -right-4 -top-4 w-24 h-24 bg-secondary-container/30 rounded-full blur-xl pointer-events-none"></div>
+                        <div class="flex items-start gap-4 relative z-10">
+                            <div class="w-16 h-16 rounded-[1.2rem] border-[4px] border-secondary-container overflow-hidden shrink-0">
+                                <img src="https://ui-avatars.com/api/?name=Aditya+Pramana&background=ffca98&color=361F1A" class="w-full h-full object-cover">
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="font-black text-xl text-primary truncate">Aditya Pramana</div>
+                                <div class="text-xs font-bold text-on-surface-variant">NIS: 10293847</div>
+                                <div class="inline-flex items-center gap-1 bg-surface-container-high px-2 py-1 rounded-md text-[10px] font-black uppercase text-primary mt-2">
+                                    <span class="material-symbols-outlined text-[14px]">local_fire_department</span> Ramu
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Progress SKU -->
+                        <div>
+                            <div class="flex justify-between text-xs font-bold mb-2">
+                                <span class="text-on-surface-variant">Progress SKU</span>
+                                <span class="text-primary">12/30 (40%)</span>
+                            </div>
+                            <div class="progress-track">
+                                <div class="progress-fill" style="width: 40%;"></div>
+                            </div>
+                        </div>
+                        <!-- Actions -->
+                        <div class="flex gap-2 mt-auto pt-2">
+                            <button class="flex-1 py-2.5 bg-surface-container-high text-primary rounded-xl font-bold text-sm hover:bg-secondary-container hover:text-on-secondary-container transition-colors">Lihat Detail</button>
+                            <button class="w-10 h-10 flex items-center justify-center bg-surface-container-high text-primary rounded-xl hover:bg-primary hover:text-white transition-colors"><span class="material-symbols-outlined text-[20px]">edit</span></button>
+                        </div>
+                    </div>
+
+                    <!-- Card Siswa 2 -->
+                    <div class="card-solid p-6 flex flex-col gap-5 relative overflow-hidden">
+                        <div class="flex items-start gap-4 relative z-10">
+                            <div class="w-16 h-16 rounded-[1.2rem] border-[4px] border-primary-fixed overflow-hidden shrink-0">
+                                <img src="https://ui-avatars.com/api/?name=Nadia+Salsabila&background=ffdad3&color=361F1A" class="w-full h-full object-cover">
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="font-black text-xl text-primary truncate">Nadia Salsabila</div>
+                                <div class="text-xs font-bold text-on-surface-variant">NIS: 10293848</div>
+                                <div class="inline-flex items-center gap-1 bg-surface-container-high px-2 py-1 rounded-md text-[10px] font-black uppercase text-primary mt-2">
+                                    <span class="material-symbols-outlined text-[14px]">local_fire_department</span> Rakit
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-xs font-bold mb-2">
+                                <span class="text-on-surface-variant">Progress SKU</span>
+                                <span class="text-primary">25/30 (83%)</span>
+                            </div>
+                            <div class="progress-track">
+                                <div class="progress-fill" style="width: 83%; background: #22c55e;"></div>
+                            </div>
+                        </div>
+                        <div class="flex gap-2 mt-auto pt-2">
+                            <button class="flex-1 py-2.5 bg-surface-container-high text-primary rounded-xl font-bold text-sm hover:bg-secondary-container hover:text-on-secondary-container transition-colors">Lihat Detail</button>
+                            <button class="w-10 h-10 flex items-center justify-center bg-surface-container-high text-primary rounded-xl hover:bg-primary hover:text-white transition-colors"><span class="material-symbols-outlined text-[20px]">edit</span></button>
+                        </div>
+                    </div>
+
+                    <!-- Card Siswa 3 -->
+                    <div class="card-solid p-6 flex flex-col gap-5 relative overflow-hidden">
+                        <div class="flex items-start gap-4 relative z-10">
+                            <div class="w-16 h-16 rounded-[1.2rem] border-[4px] border-outline-variant overflow-hidden shrink-0">
+                                <img src="https://ui-avatars.com/api/?name=Gilang+Ramadhan&background=e9e1df&color=361F1A" class="w-full h-full object-cover">
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="font-black text-xl text-primary truncate">Gilang Ramadhan</div>
+                                <div class="text-xs font-bold text-on-surface-variant">NIS: 10293849</div>
+                                <div class="inline-flex items-center gap-1 bg-surface-container-high px-2 py-1 rounded-md text-[10px] font-black uppercase text-primary mt-2">
+                                    <span class="material-symbols-outlined text-[14px] text-secondary">workspace_premium</span> Terap
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-xs font-bold mb-2">
+                                <span class="text-on-surface-variant">Progress SKU</span>
+                                <span class="text-primary">30/30 (100%)</span>
+                            </div>
+                            <div class="progress-track">
+                                <div class="progress-fill" style="width: 100%; background: #eab308;"></div>
+                            </div>
+                        </div>
+                        <div class="flex gap-2 mt-auto pt-2">
+                            <button class="flex-1 py-2.5 bg-surface-container-high text-primary rounded-xl font-bold text-sm hover:bg-secondary-container hover:text-on-secondary-container transition-colors">Lihat Detail</button>
+                            <button class="w-10 h-10 flex items-center justify-center bg-surface-container-high text-primary rounded-xl hover:bg-primary hover:text-white transition-colors"><span class="material-symbols-outlined text-[20px]">edit</span></button>
+                        </div>
+                    </div>
+
+                </div>
+                
+                <!-- Pagination Simple -->
+                <div class="flex justify-center items-center gap-2 pt-4">
+                    <button class="w-10 h-10 rounded-full border-4 border-surface-container-high flex items-center justify-center text-outline-variant hover:border-primary hover:text-primary transition-colors"><span class="material-symbols-outlined">chevron_left</span></button>
+                    <button class="w-10 h-10 rounded-full border-4 border-primary bg-primary text-white flex items-center justify-center font-black">1</button>
+                    <button class="w-10 h-10 rounded-full border-4 border-surface-container-high flex items-center justify-center text-primary font-black hover:border-primary transition-colors">2</button>
+                    <button class="w-10 h-10 rounded-full border-4 border-surface-container-high flex items-center justify-center text-primary hover:border-primary transition-colors"><span class="material-symbols-outlined">chevron_right</span></button>
+                </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- VIEW 2: FORM TAMBAH SISWA                  -->
+            <!-- ========================================== -->
+            <div id="view-add" class="view-section">
+                
+                <!-- Header & Back Button -->
+                <div class="flex items-center gap-4 mb-8">
+                    <button onclick="toggleView('view-list')" class="w-12 h-12 bg-white border-[4px] border-surface-container-high rounded-full flex items-center justify-center text-primary hover:border-secondary hover:text-secondary squishy-btn">
+                        <span class="material-symbols-outlined">arrow_back</span>
+                    </button>
+                    <div>
+                        <h2 class="font-headline-lg text-3xl font-black text-primary">Tambah Siswa Baru</h2>
+                        <p class="text-on-surface-variant font-medium">Masukkan data lengkap anggota pramuka binaan Anda.</p>
+                    </div>
+                </div>
+
+                <div class="card-solid p-6 md:p-10 max-w-4xl mx-auto">
+                    <form onsubmit="handleSaveStudent(event)" class="space-y-8">
+                        
+                        <!-- Upload Foto -->
+                        <div class="flex flex-col md:flex-row items-center gap-6 pb-8 border-b-4 border-surface-container-high border-dashed">
+                            <div class="w-32 h-32 bg-surface-container-high border-[4px] border-outline-variant border-dashed rounded-[2rem] flex flex-col items-center justify-center text-outline-variant relative overflow-hidden group cursor-pointer hover:border-secondary hover:text-secondary transition-colors">
+                                <span class="material-symbols-outlined text-4xl mb-1">add_a_photo</span>
+                                <span class="text-[10px] font-black uppercase tracking-widest">Upload</span>
+                                <input type="file" class="absolute inset-0 opacity-0 cursor-pointer">
+                            </div>
+                            <div class="text-center md:text-left">
+                                <h4 class="font-black text-primary text-lg mb-1">Foto Profil (Opsional)</h4>
+                                <p class="text-sm text-on-surface-variant">Gunakan foto berseragam pramuka agar lebih rapi. Maksimal ukuran file 2MB.</p>
+                            </div>
+                        </div>
+
+                        <!-- Grid Form Inputs -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            
+                            <!-- Nama -->
+                            <div class="space-y-2">
+                                <label class="block text-xs font-black text-on-surface-variant uppercase tracking-widest pl-2">Nama Lengkap *</label>
+                                <input type="text" required placeholder="Contoh: Aditya Pramana" class="input-solid">
+                            </div>
+
+                            <!-- NIS/NISN -->
+                            <div class="space-y-2">
+                                <label class="block text-xs font-black text-on-surface-variant uppercase tracking-widest pl-2">NIS / NISN *</label>
+                                <input type="number" required placeholder="Contoh: 10293847" class="input-solid">
+                            </div>
+
+                            <!-- Tingkatan -->
+                            <div class="space-y-2">
+                                <label class="block text-xs font-black text-on-surface-variant uppercase tracking-widest pl-2">Tingkatan Awal *</label>
+                                <div class="relative">
+                                    <select class="input-solid appearance-none cursor-pointer">
+                                        <option value="ramu">Penggalang Ramu</option>
+                                        <option value="rakit">Penggalang Rakit</option>
+                                        <option value="terap">Penggalang Terap</option>
+                                    </select>
+                                    <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-primary">expand_more</span>
+                                </div>
+                            </div>
+
+                            <!-- Tanggal Lahir -->
+                            <div class="space-y-2">
+                                <label class="block text-xs font-black text-on-surface-variant uppercase tracking-widest pl-2">Tanggal Lahir</label>
+                                <input type="date" class="input-solid text-on-surface-variant cursor-pointer">
+                            </div>
+
+                            <!-- Alamat/Gudep -->
+                            <div class="space-y-2 md:col-span-2">
+                                <label class="block text-xs font-black text-on-surface-variant uppercase tracking-widest pl-2">Asal Regu / Catatan Tambahan</label>
+                                <textarea rows="3" placeholder="Masukkan nama regu atau catatan khusus siswa..." class="input-solid resize-none"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="flex flex-col-reverse sm:flex-row justify-end gap-4 pt-4 border-t-4 border-surface-container-high border-dashed">
+                            <button type="button" onclick="toggleView('view-list')" class="px-8 py-4 rounded-2xl font-black text-primary bg-surface-container border-[4px] border-surface-container-high hover:bg-surface-variant transition-colors squishy-btn w-full sm:w-auto">
+                                Batal
+                            </button>
+                            <button type="submit" id="save-btn" class="px-10 py-4 rounded-2xl font-black text-white bg-primary border-b-[4px] border-black/40 hover:bg-secondary transition-all squishy-btn w-full sm:w-auto flex items-center justify-center gap-2">
+                                <span class="material-symbols-outlined">save</span> Simpan Data
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </main>
+</div>
+
+<script>
+    // ===== FUNGSI GANTI VIEW (SPA Style) =====
+    function toggleView(viewId) {
+        // Hide all views
+        document.querySelectorAll('.view-section').forEach(el => {
+            el.classList.remove('active');
+        });
+        // Show target view
+        document.getElementById(viewId).classList.add('active');
+        // Scroll to top
+        document.querySelector('main').scrollTop = 0;
+    }
+
+    // ===== HANDLER SIMPAN SISWA =====
+    function handleSaveStudent(e) {
+        e.preventDefault();
+        const btn = document.getElementById('save-btn');
+        const originalHtml = btn.innerHTML;
+        
+        // Loading State
+        btn.innerHTML = '<span class="material-symbols-outlined animate-spin">sync</span> Menyimpan...';
+        btn.disabled = true;
+        btn.classList.add('opacity-80');
+
+        // Simulasi request API
+        setTimeout(() => {
+            // Panggil Toast
+            showToast('Siswa berhasil ditambahkan!');
+            
+            // Reset Form & Button
+            e.target.reset();
+            btn.innerHTML = originalHtml;
+            btn.disabled = false;
+            btn.classList.remove('opacity-80');
+            
+            // Kembali ke list
+            toggleView('view-list');
+        }, 1500);
+    }
+
+    // ===== TOAST NOTIFICATION =====
+    function showToast(msg) {
+        const old = document.getElementById('toast-notif');
+        if(old) old.remove();
+        
+        const t = document.createElement('div');
+        t.id = 'toast-notif';
+        t.style.cssText = 'position:fixed;top:24px;left:50%;transform:translateX(-50%) translateY(-20px);z-index:999;background:#ffffff;border:4px solid #eee6e5;border-bottom-width:8px;color:#361F1A;padding:16px 24px;border-radius:2rem;box-shadow:0 16px 40px -8px rgba(0,0,0,0.15);display:flex;align-items:center;gap:12px;font-size:16px;font-weight:900;opacity:0;transition:all .5s cubic-bezier(0.16,1,0.3,1)';
+        t.innerHTML = '<span class="material-symbols-outlined filled" style="color:#22c55e;font-size:28px">check_circle</span>' + msg;
+        
+        document.body.appendChild(t);
+        
+        requestAnimationFrame(() => {
+            t.style.opacity = '1'; 
+            t.style.transform = 'translateX(-50%) translateY(0)';
+        });
+        
+        setTimeout(() => {
+            t.style.opacity = '0'; 
+            t.style.transform = 'translateX(-50%) translateY(-20px)';
+            setTimeout(() => t.remove(), 500);
+        }, 3000);
+    }
+
+    // ===== MOBILE SIDEBAR =====
+    const sidebar = document.getElementById('sidebar');
+    const openBtn = document.getElementById('open-sidebar');
+    const closeBtn = document.getElementById('close-sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+
+    function openSidebar() {
+        sidebar.classList.remove('-translate-x-full');
+        overlay.classList.remove('hidden');
+    }
+
+    function closeSidebar() {
+        sidebar.classList.add('-translate-x-full');
+        overlay.classList.add('hidden');
+    }
+
+    openBtn.addEventListener('click', openSidebar);
+    closeBtn.addEventListener('click', closeSidebar);
+    overlay.addEventListener('click', closeSidebar);
+</script>
+</body>
+</html>

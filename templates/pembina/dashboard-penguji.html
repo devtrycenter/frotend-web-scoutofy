@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="id">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>Dashboard Penguji - Scoutify</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+        darkMode: "class",
+        theme: {
+            extend: {
+                "colors": {
+                    "tertiary-container": "#132924",
+                    "secondary-container": "#ffca98",
+                    "on-secondary-container": "#7a532b",
+                    "primary": "#361F1A",
+                    "surface-container-low": "#faf2f0",
+                    "surface-variant": "#e9e1df",
+                    "secondary": "#7d562d",
+                    "primary-fixed": "#ffdad3",
+                    "surface-container-high": "#eee6e5",
+                    "on-secondary-fixed": "#2c1600",
+                    "inverse-surface": "#33302f",
+                    "tertiary": "#00140f",
+                    "surface-container-lowest": "#ffffff",
+                    "on-background": "#1e1b1a",
+                    "surface-container-highest": "#e9e1df",
+                    "on-surface-variant": "#504442",
+                    "on-primary-fixed": "#2b1611",
+                    "on-tertiary-container": "#7a918a",
+                    "on-secondary": "#ffffff",
+                    "inverse-on-surface": "#f7efed",
+                    "outline-variant": "#d4c3bf",
+                    "surface-container": "#f4ecea",
+                    "surface-bright": "#fff8f6",
+                    "surface-tint": "#755751",
+                    "surface": "#fff8f6",
+                    "background": "#fff8f6",
+                },
+                "borderRadius": {
+                    "DEFAULT": "2rem",
+                    "lg": "3rem",
+                    "xl": "5rem",
+                    "full": "9999px"
+                },
+                "fontFamily": {
+                    "headline-md": ["Space Grotesk"],
+                    "body-md": ["Space Grotesk"],
+                    "headline-lg": ["Space Grotesk"],
+                    "label-lg": ["Space Grotesk"],
+                    "body-lg": ["Space Grotesk"]
+                }
+            },
+        },
+    }
+</script>
+<style>
+    body {
+        background-color: #faf2f0; /* surface-container-low */
+    }
+    
+    /* Dot Pattern Background */
+    .dot-pattern {
+        background-image: radial-gradient(#d4c3bf 1.5px, transparent 1.5px);
+        background-size: 24px 24px;
+    }
+
+    /* Squishy UI Elements */
+    .squishy-btn {
+        transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.5);
+    }
+    .squishy-btn:active {
+        transform: translateY(4px) scale(0.95);
+        border-bottom-width: 2px !important;
+        margin-top: 2px;
+    }
+
+    .card-solid {
+        background: #ffffff;
+        border: 4px solid #eee6e5;
+        border-bottom-width: 8px;
+        border-radius: 2rem;
+        transition: all 0.3s ease;
+    }
+    .card-solid:hover {
+        border-color: #ffca98;
+        transform: translateY(-4px);
+        border-bottom-width: 6px;
+        margin-top: 2px;
+    }
+
+    /* Sidebar Animations */
+    #sidebar {
+        transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #faf2f0; }
+    ::-webkit-scrollbar-thumb { background: #d4c3bf; border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: #827471; }
+</style>
+</head>
+<body class="text-on-background font-body-md dot-pattern h-screen flex overflow-hidden selection:bg-secondary-container">
+
+<!-- ===== SIDEBAR (Desktop & Mobile Drawer) ===== -->
+<aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-72 bg-white border-r-[6px] border-surface-container-high flex flex-col transform -translate-x-full lg:translate-x-0 lg:relative lg:flex-shrink-0 shadow-[20px_0_50px_rgba(0,0,0,0.05)] lg:shadow-none h-full">
+    
+    <!-- Logo -->
+    <div class="p-6 md:p-8 flex items-center justify-between">
+        <a href="#" class="flex items-center gap-3 group">
+            <div class="w-12 h-12 bg-secondary rounded-full flex items-center justify-center text-white group-hover:rotate-12 transition-transform shadow-md">
+                <span class="material-symbols-outlined text-3xl">eco</span>
+            </div>
+            <span class="font-headline-lg text-2xl font-extrabold text-primary tracking-tight">Scoutify</span>
+        </a>
+        <button id="close-sidebar" class="lg:hidden text-on-surface-variant hover:text-primary">
+            <span class="material-symbols-outlined text-3xl">close</span>
+        </button>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="flex-1 px-4 md:px-6 space-y-3 overflow-y-auto">
+        <a href="#" class="flex items-center gap-4 px-5 py-4 bg-primary text-white rounded-2xl font-bold shadow-[0_8px_0_#2b1611] border-2 border-primary squishy-btn">
+            <span class="material-symbols-outlined filled">dashboard</span>
+            Dashboard
+        </a>
+        <a href="#" class="flex items-center gap-4 px-5 py-4 text-on-surface-variant hover:bg-surface-container rounded-2xl font-bold transition-colors group">
+            <span class="material-symbols-outlined group-hover:text-secondary transition-colors">checklist</span>
+            Uji SKU
+            <span class="ml-auto bg-error text-white text-xs px-2 py-1 rounded-full font-black">5 Baru</span>
+        </a>
+        <a href="#" class="flex items-center gap-4 px-5 py-4 text-on-surface-variant hover:bg-surface-container rounded-2xl font-bold transition-colors group">
+            <span class="material-symbols-outlined group-hover:text-secondary transition-colors">leaderboard</span>
+            Leaderboard
+        </a>
+        <a href="#" class="flex items-center gap-4 px-5 py-4 text-on-surface-variant hover:bg-surface-container rounded-2xl font-bold transition-colors group">
+            <span class="material-symbols-outlined group-hover:text-secondary transition-colors">menu_book</span>
+            Materi Pramuka
+        </a>
+        <a href="#" class="flex items-center gap-4 px-5 py-4 text-on-surface-variant hover:bg-surface-container rounded-2xl font-bold transition-colors group">
+            <span class="material-symbols-outlined group-hover:text-secondary transition-colors">settings</span>
+            Pengaturan
+        </a>
+    </nav>
+
+    <!-- Logout -->
+    <div class="p-6">
+        <a href="index.html" class="flex items-center justify-center gap-3 w-full bg-surface-container-high text-primary px-5 py-4 rounded-2xl font-bold hover:bg-error hover:text-white transition-all shadow-sm border-b-4 border-outline-variant squishy-btn">
+            <span class="material-symbols-outlined">logout</span>
+            Keluar
+        </a>
+    </div>
+</aside>
+
+<!-- Mobile Overlay -->
+<div id="sidebar-overlay" class="fixed inset-0 bg-primary/40 backdrop-blur-sm z-40 hidden lg:hidden"></div>
+
+<!-- ===== MAIN CONTENT ===== -->
+<div class="flex-1 flex flex-col h-full overflow-hidden">
+    
+    <!-- Topbar -->
+    <header class="bg-white/80 backdrop-blur-xl border-b-[6px] border-surface-container-high px-6 py-4 flex items-center justify-between z-30 sticky top-0">
+        <div class="flex items-center gap-4">
+            <button id="open-sidebar" class="lg:hidden text-primary hover:text-secondary transition-colors p-2 bg-surface-container rounded-xl">
+                <span class="material-symbols-outlined text-2xl">menu_open</span>
+            </button>
+            <div>
+                <h1 class="font-headline-md text-xl md:text-2xl font-black text-primary">Area Penguji</h1>
+                <p class="text-on-surface-variant text-xs md:text-sm font-medium hidden sm:block">Kelola dan evaluasi kecakapan pramuka.</p>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-4">
+            <button class="relative p-3 bg-surface-container-low border-2 border-surface-container-high rounded-full hover:bg-secondary-container transition-colors text-primary">
+                <span class="material-symbols-outlined">notifications</span>
+                <span class="absolute top-1 right-1 w-3 h-3 bg-error border-2 border-white rounded-full"></span>
+            </button>
+            <div class="hidden sm:flex items-center gap-3 pl-4 border-l-4 border-surface-container-high">
+                <div class="text-right">
+                    <div class="font-black text-primary text-sm">Fahri Putra</div>
+                    <div class="text-xs font-bold text-secondary uppercase tracking-widest">Pembina</div>
+                </div>
+                <div class="w-12 h-12 rounded-full overflow-hidden border-[3px] border-secondary-container">
+                    <img src="https://ui-avatars.com/api/?name=Fahri+Putra&background=ffca98&color=361F1A&size=128" alt="Profile" class="w-full h-full object-cover">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Scrollable Content -->
+    <main class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
+        <div class="max-w-7xl mx-auto space-y-8">
+            
+            <!-- Welcome Profile Snippet -->
+            <div class="bg-primary text-white rounded-[2.5rem] p-8 md:p-10 border-b-[12px] border-black/30 shadow-[0_20px_40px_rgba(0,0,0,0.15)] relative overflow-hidden">
+                <div class="absolute top-0 right-0 opacity-10 pointer-events-none">
+                    <span class="material-symbols-outlined text-[200px]">explore</span>
+                </div>
+                
+                <div class="flex flex-col md:flex-row items-center gap-8 relative z-10">
+                    <div class="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden border-[6px] border-secondary-container shadow-xl shrink-0">
+                        <img src="https://ui-avatars.com/api/?name=Fahri+Putra&background=ffca98&color=361F1A&size=256" alt="Profile" class="w-full h-full object-cover">
+                    </div>
+                    <div class="text-center md:text-left flex-1">
+                        <div class="inline-block bg-secondary-container text-on-secondary-container px-4 py-1 rounded-full text-xs font-black uppercase tracking-widest mb-3">Penguji Aktif</div>
+                        <h2 class="font-headline-lg text-3xl md:text-5xl font-extrabold mb-2">Halo, Kak Fahri! 👋</h2>
+                        <p class="text-primary-fixed-dim font-medium text-lg">Pangkalan: Politeknik Harapan Bersama</p>
+                    </div>
+                    
+                    <!-- Quick Stats -->
+                    <div class="flex gap-4 md:gap-6 mt-6 md:mt-0 w-full md:w-auto justify-center">
+                        <div class="bg-white/10 backdrop-blur-md border-[3px] border-white/20 rounded-3xl p-4 md:p-6 text-center w-32">
+                            <div class="text-3xl md:text-4xl font-black text-secondary-container mb-1">45</div>
+                            <div class="text-xs uppercase font-bold tracking-wider opacity-80">Siswa Binaan</div>
+                        </div>
+                        <div class="bg-white/10 backdrop-blur-md border-[3px] border-white/20 rounded-3xl p-4 md:p-6 text-center w-32">
+                            <div class="text-3xl md:text-4xl font-black text-secondary-container mb-1">128</div>
+                            <div class="text-xs uppercase font-bold tracking-wider opacity-80">Ujian Selesai</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grid Layout untuk Main Dashboard -->
+            <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+                
+                <!-- KOLOM KIRI (Lebar 2/3): UJI SKU -->
+                <div class="xl:col-span-2 space-y-6">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <h3 class="font-headline-md text-2xl font-black text-primary flex items-center gap-3">
+                            <span class="material-symbols-outlined text-secondary text-3xl">fact_check</span>
+                            Permintaan Uji SKU
+                        </h3>
+                        <!-- Search/Filter -->
+                        <div class="relative w-full sm:w-64">
+                            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+                            <input type="text" placeholder="Cari nama siswa..." class="w-full bg-white border-[4px] border-surface-container-high rounded-full py-3 pl-12 pr-4 font-bold text-sm focus:border-secondary focus:ring-0 outline-none transition-colors">
+                        </div>
+                    </div>
+
+                    <!-- List Kartu Permintaan -->
+                    <div class="space-y-4">
+                        
+                        <!-- Item 1 -->
+                        <div class="card-solid p-5 md:p-6 flex flex-col md:flex-row items-center gap-6">
+                            <div class="flex items-center gap-4 w-full md:w-auto">
+                                <div class="w-14 h-14 rounded-full bg-secondary-container flex items-center justify-center font-black text-primary border-4 border-surface-container-high shrink-0">AD</div>
+                                <div>
+                                    <div class="font-black text-lg text-primary">Aditya Pramana</div>
+                                    <div class="text-sm font-bold text-on-surface-variant flex items-center gap-1">
+                                        <span class="material-symbols-outlined text-[16px] text-secondary">verified</span> Penggalang Ramu
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex-1 w-full text-center md:text-left md:px-6 md:border-l-4 border-surface-container-high border-dashed">
+                                <div class="text-xs font-black uppercase text-on-surface-variant tracking-widest mb-1">Materi Ujian</div>
+                                <div class="font-bold text-primary text-lg">Poin 14: Tali Temali (Pionering)</div>
+                            </div>
+                            <div class="flex gap-3 w-full md:w-auto mt-4 md:mt-0">
+                                <button class="flex-1 md:flex-none bg-surface-container-high text-primary p-3 rounded-xl hover:bg-error hover:text-white transition-colors font-bold flex items-center justify-center">
+                                    <span class="material-symbols-outlined">close</span>
+                                </button>
+                                <button class="flex-1 md:flex-none bg-primary text-white px-6 py-3 rounded-xl border-b-[4px] border-black/40 active:border-b-0 active:translate-y-1 hover:bg-secondary font-bold flex items-center justify-center gap-2 transition-all">
+                                    <span class="material-symbols-outlined">play_arrow</span> Uji Sekarang
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Item 2 -->
+                        <div class="card-solid p-5 md:p-6 flex flex-col md:flex-row items-center gap-6">
+                            <div class="flex items-center gap-4 w-full md:w-auto">
+                                <div class="w-14 h-14 rounded-full bg-primary-fixed flex items-center justify-center font-black text-primary border-4 border-surface-container-high shrink-0">ND</div>
+                                <div>
+                                    <div class="font-black text-lg text-primary">Nadia Salsabila</div>
+                                    <div class="text-sm font-bold text-on-surface-variant flex items-center gap-1">
+                                        <span class="material-symbols-outlined text-[16px] text-secondary">verified</span> Penggalang Rakit
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex-1 w-full text-center md:text-left md:px-6 md:border-l-4 border-surface-container-high border-dashed">
+                                <div class="text-xs font-black uppercase text-on-surface-variant tracking-widest mb-1">Materi Ujian</div>
+                                <div class="font-bold text-primary text-lg">Poin 5: Sandi Semaphore</div>
+                            </div>
+                            <div class="flex gap-3 w-full md:w-auto mt-4 md:mt-0">
+                                <button class="flex-1 md:flex-none bg-surface-container-high text-primary p-3 rounded-xl hover:bg-error hover:text-white transition-colors font-bold flex items-center justify-center">
+                                    <span class="material-symbols-outlined">close</span>
+                                </button>
+                                <button class="flex-1 md:flex-none bg-primary text-white px-6 py-3 rounded-xl border-b-[4px] border-black/40 active:border-b-0 active:translate-y-1 hover:bg-secondary font-bold flex items-center justify-center gap-2 transition-all">
+                                    <span class="material-symbols-outlined">play_arrow</span> Uji Sekarang
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Item 3 -->
+                        <div class="card-solid p-5 md:p-6 flex flex-col md:flex-row items-center gap-6">
+                            <div class="flex items-center gap-4 w-full md:w-auto">
+                                <div class="w-14 h-14 rounded-full bg-tertiary-fixed flex items-center justify-center font-black text-primary border-4 border-surface-container-high shrink-0">BS</div>
+                                <div>
+                                    <div class="font-black text-lg text-primary">Bima Saputra</div>
+                                    <div class="text-sm font-bold text-on-surface-variant flex items-center gap-1">
+                                        <span class="material-symbols-outlined text-[16px] text-secondary">verified</span> Penggalang Terap
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex-1 w-full text-center md:text-left md:px-6 md:border-l-4 border-surface-container-high border-dashed">
+                                <div class="text-xs font-black uppercase text-on-surface-variant tracking-widest mb-1">Materi Ujian</div>
+                                <div class="font-bold text-primary text-lg">Poin 22: P3K Dasar</div>
+                            </div>
+                            <div class="flex gap-3 w-full md:w-auto mt-4 md:mt-0">
+                                <button class="flex-1 md:flex-none bg-surface-container-high text-primary p-3 rounded-xl hover:bg-error hover:text-white transition-colors font-bold flex items-center justify-center">
+                                    <span class="material-symbols-outlined">close</span>
+                                </button>
+                                <button class="flex-1 md:flex-none bg-primary text-white px-6 py-3 rounded-xl border-b-[4px] border-black/40 active:border-b-0 active:translate-y-1 hover:bg-secondary font-bold flex items-center justify-center gap-2 transition-all">
+                                    <span class="material-symbols-outlined">play_arrow</span> Uji Sekarang
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Lihat Semua -->
+                        <button class="w-full py-4 text-secondary font-black hover:bg-surface-container-high rounded-2xl transition-colors border-4 border-transparent hover:border-surface-container-high">
+                            Lihat Semua Permintaan (12)
+                        </button>
+
+                    </div>
+                </div>
+
+                <!-- KOLOM KANAN (Lebar 1/3): LEADERBOARD -->
+                <div class="xl:col-span-1">
+                    <div class="card-solid h-full flex flex-col p-6 lg:p-8 bg-gradient-to-b from-white to-surface-container-low">
+                        <div class="flex items-center gap-3 mb-8">
+                            <div class="w-12 h-12 bg-secondary-container rounded-full flex items-center justify-center text-primary shadow-md">
+                                <span class="material-symbols-outlined filled text-2xl text-[#f59e0b]">emoji_events</span>
+                            </div>
+                            <h3 class="font-headline-md text-2xl font-black text-primary">Leaderboard</h3>
+                        </div>
+
+                        <div class="space-y-4 flex-1">
+                            <!-- Rank 1 -->
+                            <div class="flex items-center gap-4 bg-white p-3 rounded-2xl border-[3px] border-[#f59e0b] shadow-sm transform hover:scale-105 transition-transform cursor-pointer relative overflow-hidden">
+                                <div class="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-[#f59e0b]/20 to-transparent pointer-events-none"></div>
+                                <div class="w-8 h-8 rounded-full bg-[#f59e0b] text-white flex items-center justify-center font-black text-sm shrink-0 shadow-inner">1</div>
+                                <div class="w-10 h-10 rounded-full bg-surface-container-high overflow-hidden shrink-0">
+                                    <img src="https://ui-avatars.com/api/?name=Gilang+R&background=random" class="w-full h-full object-cover">
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="font-black text-primary truncate">Gilang Ramadhan</div>
+                                    <div class="text-xs font-bold text-on-surface-variant truncate">Penggalang Terap</div>
+                                </div>
+                                <div class="font-black text-lg text-primary text-right shrink-0">2,450</div>
+                            </div>
+
+                            <!-- Rank 2 -->
+                            <div class="flex items-center gap-4 bg-white p-3 rounded-2xl border-[3px] border-outline-variant shadow-sm transform hover:scale-105 transition-transform cursor-pointer relative overflow-hidden">
+                                <div class="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-outline-variant/30 to-transparent pointer-events-none"></div>
+                                <div class="w-8 h-8 rounded-full bg-outline-variant text-white flex items-center justify-center font-black text-sm shrink-0 shadow-inner">2</div>
+                                <div class="w-10 h-10 rounded-full bg-surface-container-high overflow-hidden shrink-0">
+                                    <img src="https://ui-avatars.com/api/?name=Rina+A&background=random" class="w-full h-full object-cover">
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="font-black text-primary truncate">Rina Aprilia</div>
+                                    <div class="text-xs font-bold text-on-surface-variant truncate">Penggalang Rakit</div>
+                                </div>
+                                <div class="font-black text-lg text-primary text-right shrink-0">2,100</div>
+                            </div>
+
+                            <!-- Rank 3 -->
+                            <div class="flex items-center gap-4 bg-white p-3 rounded-2xl border-[3px] border-[#b45309] shadow-sm transform hover:scale-105 transition-transform cursor-pointer relative overflow-hidden">
+                                <div class="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-[#b45309]/20 to-transparent pointer-events-none"></div>
+                                <div class="w-8 h-8 rounded-full bg-[#b45309] text-white flex items-center justify-center font-black text-sm shrink-0 shadow-inner">3</div>
+                                <div class="w-10 h-10 rounded-full bg-surface-container-high overflow-hidden shrink-0">
+                                    <img src="https://ui-avatars.com/api/?name=Kevin+S&background=random" class="w-full h-full object-cover">
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="font-black text-primary truncate">Kevin Sanjaya</div>
+                                    <div class="text-xs font-bold text-on-surface-variant truncate">Penggalang Rakit</div>
+                                </div>
+                                <div class="font-black text-lg text-primary text-right shrink-0">1,950</div>
+                            </div>
+
+                            <!-- Rank 4 -->
+                            <div class="flex items-center gap-4 bg-transparent p-3 rounded-2xl border-[3px] border-transparent hover:border-surface-container-high transition-colors cursor-pointer">
+                                <div class="w-8 font-black text-on-surface-variant text-center shrink-0">4</div>
+                                <div class="w-10 h-10 rounded-full bg-surface-container-high overflow-hidden shrink-0">
+                                    <img src="https://ui-avatars.com/api/?name=Siti+N&background=random" class="w-full h-full object-cover">
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="font-bold text-primary truncate">Siti Nurhaliza</div>
+                                </div>
+                                <div class="font-bold text-on-surface-variant text-right shrink-0">1,820</div>
+                            </div>
+
+                            <!-- Rank 5 -->
+                            <div class="flex items-center gap-4 bg-transparent p-3 rounded-2xl border-[3px] border-transparent hover:border-surface-container-high transition-colors cursor-pointer">
+                                <div class="w-8 font-black text-on-surface-variant text-center shrink-0">5</div>
+                                <div class="w-10 h-10 rounded-full bg-surface-container-high overflow-hidden shrink-0">
+                                    <img src="https://ui-avatars.com/api/?name=Bagas+P&background=random" class="w-full h-full object-cover">
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="font-bold text-primary truncate">Bagas Prakoso</div>
+                                </div>
+                                <div class="font-bold text-on-surface-variant text-right shrink-0">1,600</div>
+                            </div>
+                        </div>
+                        
+                        <button class="w-full mt-6 py-3 bg-surface-container border-[4px] border-surface-container-high text-primary font-black rounded-2xl hover:bg-secondary hover:text-white hover:border-secondary transition-all squishy-btn">
+                            Lihat Peringkat Lengkap
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+            
+            <!-- Footer Simple Dashboard -->
+            <footer class="text-center text-on-surface-variant text-sm font-bold pt-8 pb-4 opacity-60">
+                &copy; 2024 Scoutify. Dashboard Penguji.
+            </footer>
+
+        </div>
+    </main>
+</div>
+
+<script>
+    // Logika Mobile Sidebar Toggle
+    const sidebar = document.getElementById('sidebar');
+    const openBtn = document.getElementById('open-sidebar');
+    const closeBtn = document.getElementById('close-sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+
+    function openSidebar() {
+        sidebar.classList.remove('-translate-x-full');
+        overlay.classList.remove('hidden');
+    }
+
+    function closeSidebar() {
+        sidebar.classList.add('-translate-x-full');
+        overlay.classList.add('hidden');
+    }
+
+    openBtn.addEventListener('click', openSidebar);
+    closeBtn.addEventListener('click', closeSidebar);
+    overlay.addEventListener('click', closeSidebar);
+</script>
+</body>
+</html>

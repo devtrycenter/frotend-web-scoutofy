@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="id">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>Materi & Belajar - Scoutify</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+        darkMode: "class",
+        theme: {
+            extend: {
+                "colors": {
+                    "tertiary-container": "#132924",
+                    "secondary-container": "#ffca98",
+                    "on-secondary-container": "#7a532b",
+                    "primary": "#361F1A",
+                    "surface-container-low": "#faf2f0",
+                    "surface-variant": "#e9e1df",
+                    "secondary": "#7d562d",
+                    "primary-fixed": "#ffdad3",
+                    "surface-container-high": "#eee6e5",
+                    "on-secondary-fixed": "#2c1600",
+                    "inverse-surface": "#33302f",
+                    "tertiary": "#00140f",
+                    "surface-container-lowest": "#ffffff",
+                    "on-background": "#1e1b1a",
+                    "surface-container-highest": "#e9e1df",
+                    "on-surface-variant": "#504442",
+                    "on-primary-fixed": "#2b1611",
+                    "outline-variant": "#d4c3bf",
+                    "surface-container": "#f4ecea",
+                    "surface-bright": "#fff8f6",
+                    "surface-tint": "#755751",
+                    "surface": "#fff8f6",
+                    "background": "#fff8f6",
+                    "success": "#22c55e",
+                    "warning": "#f59e0b",
+                    "error": "#ba1a1a",
+                },
+                "borderRadius": {
+                    "DEFAULT": "2rem",
+                    "lg": "3rem",
+                    "xl": "5rem",
+                    "full": "9999px"
+                },
+                "fontFamily": {
+                    "headline-md": ["Space Grotesk"],
+                    "body-md": ["Space Grotesk"],
+                    "headline-lg": ["Space Grotesk"],
+                    "label-lg": ["Space Grotesk"],
+                    "body-lg": ["Space Grotesk"]
+                }
+            },
+        },
+    }
+</script>
+<style>
+    body {
+        background-color: #faf2f0;
+    }
+    
+    .dot-pattern {
+        background-image: radial-gradient(#d4c3bf 1.5px, transparent 1.5px);
+        background-size: 24px 24px;
+    }
+
+    .squishy-btn {
+        transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.5);
+    }
+    .squishy-btn:active {
+        transform: translateY(4px) scale(0.95);
+        border-bottom-width: 2px !important;
+        margin-top: 2px;
+    }
+
+    .card-solid {
+        background: #ffffff;
+        border: 4px solid #eee6e5;
+        border-bottom-width: 8px;
+        border-radius: 2rem;
+        transition: all 0.3s ease;
+    }
+    .card-solid:hover {
+        border-color: #ffca98;
+        transform: translateY(-4px);
+        border-bottom-width: 6px;
+        margin-top: 2px;
+    }
+
+    #sidebar {
+        transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #faf2f0; }
+    ::-webkit-scrollbar-thumb { background: #d4c3bf; border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: #827471; }
+</style>
+</head>
+<body class="text-on-background font-body-md dot-pattern h-screen flex overflow-hidden selection:bg-secondary-container">
+
+<aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-72 bg-white border-r-[6px] border-surface-container-high flex flex-col transform -translate-x-full lg:translate-x-0 lg:relative lg:flex-shrink-0 shadow-[20px_0_50px_rgba(0,0,0,0.05)] lg:shadow-none h-full">
+    
+    <div class="p-6 md:p-8 flex items-center justify-between">
+        <a href="{{ url_for('landing') }}" class="flex items-center gap-3 group">
+            <div class="w-12 h-12 bg-secondary rounded-full flex items-center justify-center text-white group-hover:rotate-12 transition-transform shadow-md">
+                <span class="material-symbols-outlined text-3xl">eco</span>
+            </div>
+            <span class="font-headline-lg text-2xl font-extrabold text-primary tracking-tight">Scoutify</span>
+        </a>
+        <button id="close-sidebar" class="lg:hidden text-on-surface-variant hover:text-primary">
+            <span class="material-symbols-outlined text-3xl">close</span>
+        </button>
+    </div>
+
+    <nav class="flex-1 px-4 md:px-6 space-y-3 overflow-y-auto">
+        <a href="{{ url_for('dashboard') }}" class="flex items-center gap-4 px-5 py-4 {% if request.endpoint == 'dashboard' %}bg-primary text-white shadow-[0_8px_0_#2b1611] border-2 border-primary{% else %}text-on-surface-variant hover:bg-surface-container hover:text-primary{% endif %} rounded-2xl font-bold transition-all squishy-btn group">
+            <span class="material-symbols-outlined {% if request.endpoint == 'dashboard' %}filled{% else %}group-hover:text-secondary{% endif %}">dashboard</span>
+            Dashboard
+        </a>
+        <a href="{{ url_for('progres_sku') }}" class="flex items-center gap-4 px-5 py-4 {% if request.endpoint == 'progres_sku' %}bg-primary text-white shadow-[0_8px_0_#2b1611] border-2 border-primary{% else %}text-on-surface-variant hover:bg-surface-container hover:text-primary{% endif %} rounded-2xl font-bold transition-all squishy-btn group">
+            <span class="material-symbols-outlined {% if request.endpoint == 'progres_sku' %}filled{% else %}group-hover:text-secondary{% endif %}">task_alt</span>
+            Progres SKU-ku
+        </a>
+        <a href="{{ url_for('materi') }}" class="flex items-center gap-4 px-5 py-4 {% if request.endpoint == 'materi' %}bg-primary text-white shadow-[0_8px_0_#2b1611] border-2 border-primary{% else %}text-on-surface-variant hover:bg-surface-container hover:text-primary{% endif %} rounded-2xl font-bold transition-all squishy-btn group">
+            <span class="material-symbols-outlined {% if request.endpoint == 'materi' %}filled{% else %}group-hover:text-secondary{% endif %}">menu_book</span>
+            Materi & Belajar
+        </a>
+        <a href="{{ url_for('ai_semaphore') }}" class="flex items-center gap-4 px-5 py-4 {% if request.endpoint == 'ai_semaphore' %}bg-primary text-white shadow-[0_8px_0_#2b1611] border-2 border-primary{% else %}text-on-surface-variant hover:bg-surface-container hover:text-primary{% endif %} rounded-2xl font-bold transition-all squishy-btn group">
+            <span class="material-symbols-outlined {% if request.endpoint == 'ai_semaphore' %}filled{% else %}group-hover:text-secondary{% endif %}">linked_camera</span>
+            AI Semaphore
+        </a>
+        <a href="{{ url_for('leaderboard') }}" class="flex items-center gap-4 px-5 py-4 {% if request.endpoint == 'leaderboard' %}bg-primary text-white shadow-[0_8px_0_#2b1611] border-2 border-primary{% else %}text-on-surface-variant hover:bg-surface-container hover:text-primary{% endif %} rounded-2xl font-bold transition-all squishy-btn group">
+            <span class="material-symbols-outlined {% if request.endpoint == 'leaderboard' %}filled{% else %}group-hover:text-secondary{% endif %}">emoji_events</span>
+            Leaderboard
+        </a>
+
+        <div class="h-1 bg-surface-container-high rounded-full my-4 mx-2"></div>
+
+        <a href="{{ url_for('landing') }}" class="flex items-center gap-4 px-5 py-4 text-on-surface-variant hover:bg-secondary-container hover:text-primary rounded-2xl font-bold transition-colors group">
+            <span class="material-symbols-outlined group-hover:text-primary transition-colors">public</span>
+            Halaman Depan
+        </a>
+    </nav>
+
+    <div class="p-6">
+        <a href="{{ url_for('logout') }}" class="flex items-center justify-center gap-3 w-full bg-surface-container-high text-primary px-5 py-4 rounded-2xl font-bold hover:bg-error hover:text-white transition-all shadow-sm border-b-4 border-outline-variant squishy-btn">
+            <span class="material-symbols-outlined">logout</span>
+            Keluar
+        </a>
+    </div>
+</aside>
+
+<div id="sidebar-overlay" class="fixed inset-0 bg-primary/40 backdrop-blur-sm z-40 hidden lg:hidden"></div>
+
+<div class="flex-1 flex flex-col h-full overflow-hidden">
+    
+    <header class="bg-white/80 backdrop-blur-xl border-b-[6px] border-surface-container-high px-6 py-4 flex items-center justify-between z-30 sticky top-0">
+        <div class="flex items-center gap-4">
+            <button id="open-sidebar" class="lg:hidden text-primary hover:text-secondary transition-colors p-2 bg-surface-container rounded-xl">
+                <span class="material-symbols-outlined text-2xl">menu_open</span>
+            </button>
+            <div>
+                <h1 class="font-headline-md text-xl md:text-2xl font-black text-primary">Materi & Belajar</h1>
+                <p class="text-on-surface-variant text-xs md:text-sm font-medium hidden sm:block">Perdalam wawasan kepramukaanmu.</p>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-4">
+            <button class="relative p-3 bg-surface-container-low border-2 border-surface-container-high rounded-full hover:bg-secondary-container transition-colors text-primary">
+                <span class="material-symbols-outlined">notifications</span>
+                {% if user and user.unread_notif %}
+                    <span class="absolute top-1 right-1 w-3 h-3 bg-error border-2 border-white rounded-full"></span>
+                {% endif %}
+            </button>
+            <div class="hidden sm:flex items-center gap-3 pl-4 border-l-4 border-surface-container-high cursor-pointer hover:opacity-80 transition-opacity">
+                <div class="text-right">
+                    <div class="font-black text-primary text-sm">{{ user.fullname | default(user.username) | default('Pramuka') }}</div>
+                    <div class="text-xs font-bold text-secondary uppercase tracking-widest">{{ user.tingkat | default('Penggalang Ramu') }}</div>
+                </div>
+                <div class="w-12 h-12 rounded-full overflow-hidden border-[3px] border-secondary-container">
+                    <img src="https://ui-avatars.com/api/?name={{ (user.fullname | default('Pramuka')) | urlencode }}&background=ffca98&color=361F1A&size=128" alt="Profile" class="w-full h-full object-cover">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
+        <div class="max-w-7xl mx-auto space-y-8">
+            
+            <div class="text-center py-10 bg-secondary-container rounded-[2.5rem] border-b-[12px] border-black/20 shadow-lg relative overflow-hidden">
+                <div class="absolute left-10 top-10 opacity-20"><span class="material-symbols-outlined text-8xl">menu_book</span></div>
+                <div class="absolute right-10 bottom-0 opacity-20"><span class="material-symbols-outlined text-8xl">lightbulb</span></div>
+                <h2 class="font-headline-lg text-4xl font-extrabold text-primary mb-3 relative z-10">Pusat Materi Pramuka</h2>
+                <p class="text-on-secondary-container font-medium text-lg relative z-10">Tingkatkan pengetahuanmu, jadilah pramuka sejati!</p>
+                
+                <div class="mt-8 max-w-md mx-auto relative z-10 px-4">
+                    <input type="text" placeholder="Cari materi... (misal: Morse)" class="w-full pl-6 pr-12 py-4 rounded-full border-4 border-white shadow-sm focus:border-primary focus:ring-0 font-bold text-primary placeholder:font-medium">
+                    <span class="material-symbols-outlined absolute right-8 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+                </div>
+            </div>
+
+            <h3 class="font-headline-md text-2xl font-black text-primary ml-2">Modul Tersedia</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                
+                <div class="card-solid p-6 flex flex-col justify-between group cursor-pointer hover:-translate-y-2">
+                    <div>
+                        <div class="w-16 h-16 bg-primary-fixed rounded-2xl flex items-center justify-center text-primary mb-4 group-hover:rotate-12 transition-transform shadow-inner">
+                            <span class="material-symbols-outlined text-4xl">password</span>
+                        </div>
+                        <h4 class="font-black text-xl text-primary mb-2">Sandi & Isyarat</h4>
+                        <p class="text-sm font-medium text-on-surface-variant mb-4">Pelajari sandi Morse, Semaphore, Sandi Kotak, dan lainnya.</p>
+                    </div>
+                    <div class="flex justify-between items-center text-sm font-bold text-secondary">
+                        <span>12 Topik</span>
+                        <span class="material-symbols-outlined">arrow_forward</span>
+                    </div>
+                </div>
+
+                <div class="card-solid p-6 flex flex-col justify-between group cursor-pointer hover:-translate-y-2">
+                    <div>
+                        <div class="w-16 h-16 bg-tertiary-fixed rounded-2xl flex items-center justify-center text-tertiary mb-4 group-hover:rotate-12 transition-transform shadow-inner">
+                            <span class="material-symbols-outlined text-4xl">medical_services</span>
+                        </div>
+                        <h4 class="font-black text-xl text-primary mb-2">PPPK Dasar</h4>
+                        <p class="text-sm font-medium text-on-surface-variant mb-4">Pertolongan Pertama Pada Kecelakaan untuk pramuka.</p>
+                    </div>
+                    <div class="flex justify-between items-center text-sm font-bold text-tertiary">
+                        <span>8 Topik</span>
+                        <span class="material-symbols-outlined">arrow_forward</span>
+                    </div>
+                </div>
+
+                <div class="card-solid p-6 flex flex-col justify-between group cursor-pointer hover:-translate-y-2">
+                    <div>
+                        <div class="w-16 h-16 bg-success/20 rounded-2xl flex items-center justify-center text-success mb-4 group-hover:rotate-12 transition-transform shadow-inner">
+                            <span class="material-symbols-outlined text-4xl">timeline</span>
+                        </div>
+                        <h4 class="font-black text-xl text-primary mb-2">Sejarah Kepramukaan</h4>
+                        <p class="text-sm font-medium text-on-surface-variant mb-4">Sejarah Baden Powell dan masuknya pramuka di Indonesia.</p>
+                    </div>
+                    <div class="flex justify-between items-center text-sm font-bold text-success">
+                        <span>5 Topik</span>
+                        <span class="material-symbols-outlined">arrow_forward</span>
+                    </div>
+                </div>
+
+                <div class="card-solid p-6 flex flex-col justify-between group cursor-pointer hover:-translate-y-2">
+                    <div>
+                        <div class="w-16 h-16 bg-surface-container-highest rounded-2xl flex items-center justify-center text-primary mb-4 group-hover:rotate-12 transition-transform shadow-inner">
+                            <span class="material-symbols-outlined text-4xl">knot</span>
+                        </div>
+                        <h4 class="font-black text-xl text-primary mb-2">Tali Temali</h4>
+                        <p class="text-sm font-medium text-on-surface-variant mb-4">Berbagai macam simpul dan ikatan serta fungsinya.</p>
+                    </div>
+                    <div class="flex justify-between items-center text-sm font-bold text-primary">
+                        <span>10 Topik</span>
+                        <span class="material-symbols-outlined">arrow_forward</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <footer class="text-center text-on-surface-variant text-sm font-bold pt-8 pb-4 opacity-60">
+                &copy; 2024 Scoutify. Salam Pramuka! ⛺
+            </footer>
+
+        </div>
+    </main>
+</div>
+
+<script>
+    const sidebar = document.getElementById('sidebar');
+    const openBtn = document.getElementById('open-sidebar');
+    const closeBtn = document.getElementById('close-sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+
+    function openSidebar() {
+        sidebar.classList.remove('-translate-x-full');
+        overlay.classList.remove('hidden');
+    }
+
+    function closeSidebar() {
+        sidebar.classList.add('-translate-x-full');
+        overlay.classList.add('hidden');
+    }
+
+    openBtn.addEventListener('click', openSidebar);
+    closeBtn.addEventListener('click', closeSidebar);
+    overlay.addEventListener('click', closeSidebar);
+</script>
+</body>
+</html>
