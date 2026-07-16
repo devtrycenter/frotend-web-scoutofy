@@ -153,10 +153,6 @@
             <span class="material-symbols-outlined {% if request.endpoint == 'progres_sku' %}filled{% else %}group-hover:text-secondary{% endif %}">task_alt</span>
             Progres SKU-ku
         </a>
-        <a href="{{ url_for('materi') }}" class="flex items-center gap-4 px-5 py-4 {% if request.endpoint == 'materi' %}bg-primary text-white shadow-[0_8px_0_#2b1611] border-2 border-primary{% else %}text-on-surface-variant hover:bg-surface-container hover:text-primary{% endif %} rounded-2xl font-bold transition-all squishy-btn group">
-            <span class="material-symbols-outlined {% if request.endpoint == 'materi' %}filled{% else %}group-hover:text-secondary{% endif %}">menu_book</span>
-            Materi & Belajar
-        </a>
         <a href="{{ url_for('ai_semaphore') }}" class="flex items-center gap-4 px-5 py-4 {% if request.endpoint == 'ai_semaphore' %}bg-primary text-white shadow-[0_8px_0_#2b1611] border-2 border-primary{% else %}text-on-surface-variant hover:bg-surface-container hover:text-primary{% endif %} rounded-2xl font-bold transition-all squishy-btn group">
             <span class="material-symbols-outlined {% if request.endpoint == 'ai_semaphore' %}filled{% else %}group-hover:text-secondary{% endif %}">linked_camera</span>
             AI Semaphore
@@ -243,45 +239,38 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="card-solid p-5 flex gap-4 items-start relative overflow-hidden group">
-                    <div class="absolute -right-4 -top-4 opacity-5 group-hover:rotate-12 transition-transform">
-                        <span class="material-symbols-outlined text-[100px]">verified</span>
-                    </div>
-                    <div class="w-12 h-12 bg-success text-white rounded-full flex items-center justify-center shrink-0 border-4 border-surface-container-low z-10">
-                        <span class="material-symbols-outlined">done</span>
-                    </div>
-                    <div class="z-10">
-                        <div class="text-xs font-black text-success uppercase tracking-widest mb-1">Poin 1</div>
-                        <h4 class="font-bold text-primary leading-tight mb-2">Selalu Taat Menjalankan Ibadah</h4>
-                        <p class="text-xs text-on-surface-variant font-medium">Disetujui oleh Kak Pembina pada 12 Mei 2024.</p>
-                    </div>
-                </div>
+    {% for item in sku_list %}
+    <div class="card-solid p-5 flex gap-4 items-start relative overflow-hidden group 
+        {% if item.status_user == 'Selesai' %} border-success {% elif item.status_user == 'Menunggu Validasi' %} border-warning {% endif %}">
+        
+        <div class="w-12 h-12 rounded-full flex items-center justify-center shrink-0 border-4 border-surface-container-low z-10 
+            {% if item.status_user == 'Selesai' %} bg-success text-white 
+            {% elif item.status_user == 'Menunggu Validasi' %} bg-warning text-white 
+            {% else %} bg-surface-container-high text-on-surface-variant {% endif %}">
+            <span class="material-symbols-outlined">
+                {% if item.status_user == 'Selesai' %}done{% elif item.status_user == 'Menunggu Validasi' %}hourglass_empty{% else %}lock{% endif %}
+            </span>
+        </div>
 
-                <div class="card-solid p-5 flex gap-4 items-start relative overflow-hidden group border-warning hover:border-warning">
-                    <div class="w-12 h-12 bg-warning text-white rounded-full flex items-center justify-center shrink-0 border-4 border-surface-container-low z-10">
-                        <span class="material-symbols-outlined">hourglass_empty</span>
-                    </div>
-                    <div class="z-10">
-                        <div class="text-xs font-black text-warning uppercase tracking-widest mb-1">Poin 5</div>
-                        <h4 class="font-bold text-primary leading-tight mb-2">Dapat Menggunakan Sandi Pramuka</h4>
-                        <p class="text-xs text-on-surface-variant font-medium">Menunggu jadwal ujian praktik.</p>
-                    </div>
-                </div>
-
-                <div class="card-solid p-5 flex gap-4 items-start relative overflow-hidden group opacity-70 hover:opacity-100 transition-opacity">
-                    <div class="w-12 h-12 bg-surface-container-high text-on-surface-variant rounded-full flex items-center justify-center shrink-0 border-4 border-surface-container-low z-10">
-                        <span class="material-symbols-outlined">lock</span>
-                    </div>
-                    <div class="z-10">
-                        <div class="text-xs font-black text-on-surface-variant uppercase tracking-widest mb-1">Poin 15</div>
-                        <h4 class="font-bold text-primary leading-tight mb-2">Sejarah Pramuka Indonesia</h4>
-                        <button onclick="window.location.href='{{ url_for('materi') }}'" class="mt-2 text-xs font-bold bg-secondary text-white px-3 py-1.5 rounded-full squishy-btn">Pelajari Materi</button>
-                    </div>
-                </div>
+        <div class="z-10">
+            <div class="text-xs font-black uppercase tracking-widest mb-1 
+                {% if item.status_user == 'Selesai' %} text-success 
+                {% elif item.status_user == 'Menunggu Validasi' %} text-warning 
+                {% else %} text-on-surface-variant {% endif %}">
+                Poin {{ item.nomor_poin }}
             </div>
+            <h4 class="font-bold text-primary leading-tight mb-2">{{ item.deskripsi }}</h4>
+            
+            <p class="text-xs text-on-surface-variant font-medium italic">
+                Status: {{ item.status_user }}
+            </p>
+            </div>
+    </div>
+    {% endfor %}
+</div>
 
             <footer class="text-center text-on-surface-variant text-sm font-bold pt-8 pb-4 opacity-60">
-                &copy; 2024 Scoutify. Salam Pramuka! ⛺
+                &copy; 2026 Scoutify. Salam Pramuka! ⛺
             </footer>
 
         </div>

@@ -232,24 +232,106 @@ def dashboard():
     else:
         user_data = session.get("user", {})
         headers = {"Authorization": f"Bearer {token}"}
+        user_id = user_data.get("id")
+
+        user_data.update({
+            "sku_selesai": 0, "sku_total": 0, "persentase_sku": 0,
+            "target_sku_judul": "Yuk, mulai isi SKU-mu!",
+            "target_sku_deskripsi": "Pilih poin SKU yang ingin kamu selesaikan.",
+            "activities": [], "rank": "-"
+        })
         
+        # Default parameter progress untuk mencegah error Jinja2
+        user_data["sku_selesai"] = 0
+        user_data["sku_total"] = 30
+        user_data["persentase_sku"] = 0
+        user_data["target_sku_judul"] = "Yuk, mulai isi SKU-mu!"
+        user_data["target_sku_deskripsi"] = "Pilih poin SKU yang ingin kamu selesaikan."
+        user_data["activities"] = []
+        user_data["rank"] = "-"
+
         try:
+            # A. Ambil Data Profil Terbaru dari database
             profile_res = api_request("GET", "/profile", headers=headers)
             if profile_res.status_code == 200:
                 profile_json = profile_res.json()
                 if profile_json.get("status") == "success":
                     user_data = profile_json.get("user", user_data)
-                    session["user"] = user_data
-            
+
+            # B. Ambil Peringkat dari Leaderboard
             leaderboard_res = api_request("GET", "/leaderboard", headers=headers)
-            user_data["rank"] = "-"
             if leaderboard_res.status_code == 200:
                 lb_json = leaderboard_res.json()
                 if lb_json.get("status") == "success":
                     for item in lb_json.get("data", []):
-                        if item.get("id") == user_data.get("id"):
+                        if item.get("id") == user_id:
                             user_data["rank"] = item.get("rank")
                             break
+
+            # C. AMBIL PROGRESS SKU RIIL DARI BACKEND FASTAPI
+            # Mengambil data progress user berdasarkan level yang sedang diikuti
+            level_id = user_data.get("current_sku_level_id") or "11111111-1111-1111-1111-111111111111"
+            try:
+                # Ambil Master Soal untuk hitung TOTAL (Denominator)
+                master_res = api_request("GET", f"/uji-sku/master/{level_id}", headers=headers)
+                # Ambil Progress User untuk hitung SELESAI (Numerator)
+                progress_res = api_request("GET", f"/uji-sku/progress/{user_id}/{level_id}", headers=headers)
+                
+                if master_res.status_code == 200 and progress_res.status_code == 200:
+                    master_data = master_res.json().get("data", [])
+                    progress_data = progress_res.json().get("data", [])
+                    
+                    total_soal = len(master_data)
+                    # Hitung yang statusnya 'Selesai'
+                    selesai = len([x for x in progress_data if x.get('status') == 'Selesai'])
+                    
+                    user_data["sku_selesai"] = selesai
+                    user_data["sku_total"] = total_soal
+                    user_data["persentase_sku"] = int((selesai / total_soal) * 100) if total_soal > 0 else 0
+                    
+                    # Cari target soal pertama yang belum selesai
+                    for soal in master_data:
+                        # Cek di progress apakah sudah selesai
+                        prog_item = next((p for p in progress_data if p['uji_sku_id'] == soal['id']), None)
+                        if not prog_item or prog_item.get('status') != 'Selesai':
+                            user_data["target_sku_judul"] = f"Poin {soal.get('nomor_poin')}: {soal.get('kategori', 'Umum')}"
+                            user_data["target_sku_deskripsi"] = soal.get("deskripsi", "Segera selesaikan poin ini.")
+                            break
+
+            except Exception as e:
+                logger.error(f"Error progres SKU: {e}")
+
+            # D. AMBIL RIWAYAT AKTIVITAS RIIL DARI LOGS BACKEND
+            logs_res = api_request("GET", "/info-logs", headers=headers)
+            if logs_res.status_code == 200:
+                logs_json = logs_res.json()
+                if logs_json.get("status") == "success":
+                    mapped_activities = []
+                    # Ambil maksimal 5 aktivitas terakhir agar dashboard rapi
+                    for log in logs_json.get("data", [])[:5]:
+                        activity_text = log.get("activity", "")
+                        
+                        # Parsing status warna timeline berdasarkan isi string aktivitas log
+                        status_type = "info"
+                        if "Lulus" in activity_text or "berhasil" in activity_text:
+                            status_type = "lulus"
+                        elif "Revisi" in activity_text or "gagal" in activity_text:
+                            status_type = "revisi"
+
+                        # Parsing waktu log buatan Supabase
+                        waktu_raw = log.get("created_at", "Baru saja")
+                        waktu_clean = waktu_raw.split("T")[0] if "T" in waktu_raw else waktu_raw
+
+                        mapped_activities.append({
+                            "judul": "Aktivitas Jurnal",
+                            "deskripsi": activity_text,
+                            "waktu": waktu_clean,
+                            "status": status_type
+                        })
+                    user_data["activities"] = mapped_activities
+
+            # Simpan data terbaru ke session
+            session["user"] = user_data
 
         except Exception as e:
             logger.error(f"Error fetching dashboard data: {e}")
@@ -259,16 +341,79 @@ def dashboard():
 # ==========================================================
 # PEMBINA ROUTES
 # ==========================================================
+# Tambahkan ini di app.py bagian routing pembina
 @app.route("/pembina")
 def pembina():
-    """
-    Dashboard khusus untuk Pembina.
-    """
+    token = session.get("token")
     if session.get("role") != "pembina":
-        flash("Akses ditolak. Halaman ini hanya untuk Pembina.", "error")
         return redirect(url_for("dashboard"))
+    
+    pembina_id = session.get("user", {}).get("id")
+    headers = {"Authorization": f"Bearer {token}"}
+    
+    # Inisialisasi data
+    data_dashboard = {"antrian_siswa": []}
+    data_pembina = {
+        "fullname": session.get("user", {}).get("fullname", "Pembina"),
+        "sekolah": "-",
+        "total_siswa": 0,
+        "total_ujian": 0
+    }
+    
+    # 1. Panggil fungsi statistik baru
+    stats = get_pembina_dashboard_stats(pembina_id, token)
+    data_pembina.update(stats)
+    
+    # 2. Ambil data sekolah
+    try:
+        res_pengajuan = api_request("GET", f"/pengajuan-pembina/user/{pembina_id}", headers=headers)
+        if res_pengajuan.status_code == 200:
+            pengajuan = res_pengajuan.json().get("data", {})
+            data_pembina["sekolah"] = pengajuan.get("sekolah", "Pangkalan Tidak Ditemukan")
         
-    return render_template("pembina/dashboard-penguji.html", page_title="Dashboard Pembina", user=session.get("user"))
+        # 3. Ambil Antrian Siswa
+        res_siswa = api_request("GET", f"/uji-sku/pembina/antrian-siswa/{pembina_id}", headers=headers)
+        if res_siswa.status_code == 200:
+            data_dashboard["antrian_siswa"] = res_siswa.json().get("data", [])
+            
+    except Exception as e:
+        logger.error(f"Error loading dashboard: {e}")
+        
+    return render_template("pembina/dashboard-penguji.html", 
+                           data=data_dashboard, 
+                           pembina=data_pembina, 
+                           user=session.get("user"))
+
+
+def get_pembina_dashboard_stats(pembina_id, token):
+    """
+    Fungsi untuk menghitung statistik pembina secara manual dari data mentah.
+    Menghindari perubahan pada backend.
+    """
+    headers = {"Authorization": f"Bearer {token}"}
+    stats = {"total_siswa": 0, "total_ujian": 0}
+    
+    try:
+        # Mengambil semua pengajuan SKU yang pernah ditangani pembina ini
+        res = api_request("GET", f"/sku/pembina/antrian/{pembina_id}", headers=headers)
+        if res.status_code == 200:
+            pengajuan_list = res.json().get("data", [])
+            
+            # 1. Hitung Siswa Binaan (Unik berdasarkan user_id)
+            siswa_unik = {p['user_id'] for p in pengajuan_list}
+            stats["total_siswa"] = len(siswa_unik)
+            
+            # 2. Hitung Ujian Selesai (Status 'approved' dari pengajuan_sku)
+            # Berdasarkan file pengajuan_sku_rows.sql, statusnya adalah 'approved'
+            total_selesai = len([p for p in pengajuan_list if p.get('status') == 'approved'])
+            stats["total_ujian"] = total_selesai
+            
+    except Exception as e:
+        logger.error(f"Gagal menghitung statistik pembina: {e}")
+        
+    return stats
+                           
+
 
 # ==========================================================
 # ADMIN ROUTES
@@ -289,9 +434,52 @@ def admin():
 # ==========================================================
 @app.route("/progres-sku")
 def progres_sku():
-    if not session.get("token"):
+    token = session.get("token")
+    if not token:
         return redirect(url_for("login"))
-    return render_template("users/progres_sku.html", page_title="Progres SKU-ku", user=session.get("user"))
+    
+    user_data = session.get("user", {})
+    user_id = user_data.get("id")
+    level_id = user_data.get("current_sku_level_id") or "11111111-1111-1111-1111-111111111111"
+    headers = {"Authorization": f"Bearer {token}"}
+    
+    # Data default
+    all_sku_items = []
+    
+    try:
+        # 1. Ambil Master Soal SKU dari API
+        master_res = api_request("GET", f"/uji-sku/master/{level_id}", headers=headers)
+        # 2. Ambil Progress User dari API
+        progress_res = api_request("GET", f"/uji-sku/progress/{user_id}/{level_id}", headers=headers)
+        
+        if master_res.status_code == 200:
+            master_data = master_res.json().get("data", [])
+            
+            # Buat map progress agar mudah dicari (status berdasarkan uji_sku_id)
+            progress_list = progress_res.json().get("data", []) if progress_res.status_code == 200 else []
+            progress_map = {p["uji_sku_id"]: p["status"] for p in progress_list}
+            
+            # Gabungkan master soal dengan status user
+            for item in master_data:
+                item["status_user"] = progress_map.get(item["id"], "Belum Diuji")
+                all_sku_items.append(item)
+
+        # Hitung statistik untuk bar progress
+        total_soal = len(all_sku_items)
+        selesai = len([x for x in all_sku_items if x["status_user"] == "Selesai"])
+        persentase = int((selesai / total_soal) * 100) if total_soal > 0 else 0
+        
+        user_data["sku_selesai"] = selesai
+        user_data["sku_total"] = total_soal
+        user_data["persentase_sku"] = persentase
+
+    except Exception as e:
+        logger.error(f"Gagal mengambil progress SKU: {e}")
+
+    return render_template("users/progres_sku.html", 
+                           page_title="Progres SKU-ku", 
+                           user=user_data, 
+                           sku_list=all_sku_items)
 
 @app.route("/materi")
 def materi():
